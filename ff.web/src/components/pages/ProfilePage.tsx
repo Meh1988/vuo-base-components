@@ -8,8 +8,6 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import { CloseOutlined, HeartFilled, PlusOutlined } from "@ant-design/icons";
 import Button from "../atoms/Button";
-import Input from "../atoms/Input";
-import Section from "../atoms/Section";
 import styles from "./ProfilePage.module.scss";
 import { Tabs } from "../molecules/Tabs";
 
