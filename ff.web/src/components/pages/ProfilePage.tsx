@@ -3,11 +3,13 @@ import useStackNavigator from "@vuo/hooks/StackNavigator";
 import Page from "@vuo/templates/Page";
 import { useContext, useEffect, useState } from "react";
 import { Avatar } from "../atoms/Avatar";
-
-import Button from "../atoms/Button";
-import { Tabs } from "../molecules/Tabs";
 import { UserPreferences } from "../organisms/userPreferences";
+import { PlusOutlined } from "@ant-design/icons";
+import Button from "../atoms/Button";
+import Input from "../atoms/Input";
+import Section from "../atoms/Section";
 import styles from "./ProfilePage.module.scss";
+import { Tabs } from "../molecules/Tabs";
 
 const ProfilePage = function () {
   const { toggleTheme } = useContext(ThemeContext);
