@@ -5,6 +5,8 @@ import { useContext, useEffect, useState } from "react";
 import { Avatar } from "../atoms/Avatar";
 import { UserPreferences } from "../organisms/userPreferences";
 import { PlusOutlined } from "@ant-design/icons";
+
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 import Section from "../atoms/Section";
@@ -16,8 +18,11 @@ const ProfilePage = function () {
   const [profileData, setProfileData] = useState<any>(null); // Ensure it's typed correctly
   const { navigateWithState } = useStackNavigator();
   const [diets, setDiets] = useState<string>("");
+  const [dietsList, setDietsList] = useState<string[]>([]);
   const [allergies, setAllergies] = useState<string>("");
+  const [allergiesList, setAllergiesList] = useState<string[]>([]);
   const [likes, setLikes] = useState<string>("");
+  const [likesList, setLikesList] = useState<string[]>([]);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
