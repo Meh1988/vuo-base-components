@@ -24,6 +24,11 @@
     gap: var(--space-8);
     align-items: start;
 
+    &__header {
+      display: flex;
+      gap: var(--space-8);
+    }
+
     &__buttons {
       display: flex;
       gap: var(--space-8);
