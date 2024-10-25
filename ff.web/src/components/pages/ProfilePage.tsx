@@ -15,6 +15,9 @@ const ProfilePage = function () {
   const { toggleTheme } = useContext(ThemeContext);
   const [profileData, setProfileData] = useState<any>(null); // Ensure it's typed correctly
   const { navigateWithState } = useStackNavigator();
+  const [diets, setDiets] = useState<string>("");
+  const [allergies, setAllergies] = useState<string>("");
+  const [likes, setLikes] = useState<string>("");
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
