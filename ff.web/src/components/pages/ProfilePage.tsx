@@ -6,7 +6,7 @@ import { Avatar } from "../atoms/Avatar";
 import { UserPreferences } from "../organisms/userPreferences";
 import { PlusOutlined } from "@ant-design/icons";
 
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { CloseOutlined, HeartFilled, PlusOutlined } from "@ant-design/icons";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 import Section from "../atoms/Section";
