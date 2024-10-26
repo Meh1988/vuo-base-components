@@ -6,7 +6,6 @@ import { Avatar } from "../atoms/Avatar";
 import { UserPreferences } from "../organisms/userPreferences";
 import { PlusOutlined } from "@ant-design/icons";
 
-import { CheckOutlined } from "@ant-design/icons";
 import Button from "../atoms/Button";
 import styles from "./ProfilePage.module.scss";
 import { Tabs } from "../molecules/Tabs";
