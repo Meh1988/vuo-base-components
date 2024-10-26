@@ -1,0 +1,14 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--space-16);
+
+  &__tabButtons {
+    display: flex;
+  }
+}
+
+.tabContent {
+  flex: 1;
+}
