@@ -6,7 +6,12 @@ import { Avatar } from "../atoms/Avatar";
 import { UserPreferences } from "../organisms/userPreferences";
 import { PlusOutlined } from "@ant-design/icons";
 
-import { CloseOutlined, HeartFilled, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  HeartFilled,
+  PlusOutlined,
+} from "@ant-design/icons";
 import Button from "../atoms/Button";
 import styles from "./ProfilePage.module.scss";
 import { Tabs } from "../molecules/Tabs";
@@ -81,6 +86,12 @@ const ProfilePage = function () {
         >
           Change Theme
         </Button>
+        <Button variant="small" color="secondary">
+          Delete account
+        </Button>
+      </div>
+
+      <div className={styles.profilePage__footer}>
         <Button variant="small" color="secondary">
           Delete account
         </Button>
