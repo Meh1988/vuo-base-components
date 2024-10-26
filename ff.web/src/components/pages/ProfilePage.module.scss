@@ -43,6 +43,10 @@
     &__header {
       display: flex;
       gap: var(--space-8);
+
+      &__title {
+        font-size: var(--font-size-18);
+      }
     }
 
     &__description {
