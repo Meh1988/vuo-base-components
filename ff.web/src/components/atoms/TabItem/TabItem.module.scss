@@ -1,0 +1,21 @@
+.tabItem {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  &--active {
+    background: #fff;
+    font-weight: bold;
+    color: var(--adm-color-text);
+  }
+}
