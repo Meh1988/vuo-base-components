@@ -1,11 +1,4 @@
 .profilePage {
-  &__avatar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-  }
-
   &__avatarInfo {
     display: flex;
     flex-direction: column;
@@ -27,6 +20,13 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+
+    &__avatar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+    }
 
     &__title {
       display: flex;
