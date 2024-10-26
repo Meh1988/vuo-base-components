@@ -1,18 +1,9 @@
 .profilePage {
-  &__header {
-    width: 100%;
-    margin-bottom: var(--space-16);
-    gap: var(--space-16);
+  &__avatar {
     display: flex;
     align-items: center;
     gap: 1rem;
-
-    &__title {
-      display: flex;
-      align-items: center;
-      gap: var(--space-8);
-      justify-content: space-between;
-    }
+    flex: 1;
   }
 
   &__avatarInfo {
@@ -26,6 +17,22 @@
     &__role {
       font-size: var(--font-size-16);
       color: var(--adm-color-yellow);
+    }
+  }
+
+  &__header {
+    width: 100%;
+    margin-bottom: var(--space-16);
+    gap: var(--space-16);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      justify-content: space-between;
     }
   }
 
