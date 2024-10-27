@@ -7,16 +7,49 @@ import {
 import Button from "@vuo/components/atoms/Button";
 import Input from "@vuo/components/atoms/Input";
 import Section from "@vuo/components/atoms/Section";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./userPreferences.module.scss";
 
-export const UserPreferences = () => {
-  const [diets, setDiets] = useState<string>("");
-  const [dietsList, setDietsList] = useState<string[]>([]);
-  const [allergies, setAllergies] = useState<string>("");
-  const [allergiesList, setAllergiesList] = useState<string[]>([]);
-  const [likes, setLikes] = useState<string>("");
-  const [likesList, setLikesList] = useState<string[]>([]);
+interface UserPreferencesProps {
+  listOfAllergies: string[];
+  listOfDiets: string[];
+  listOfCuisinePreferences: string[];
+}
+
+export const UserPreferences = ({
+  listOfAllergies,
+  listOfDiets,
+  listOfCuisinePreferences,
+}: UserPreferencesProps) => {
+  const [userDiets, setUserDiets] = useState<string>("");
+  const [userDietsList, setUserDietsList] = useState<string[]>(
+    listOfDiets || [],
+  );
+  const [userAllergies, setUserAllergies] = useState<string>("");
+  const [userAllergiesList, setUserAllergiesList] = useState<string[]>(
+    listOfAllergies || [],
+  );
+  const [userCuisinePreferences, setUserCuisinePreferences] =
+    useState<string>("");
+  const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
+    string[]
+  >(listOfCuisinePreferences || []);
+
+  useEffect(() => {
+    setUserDietsList(listOfDiets || []);
+    setUserAllergiesList(listOfAllergies || []);
+
+    if (listOfCuisinePreferences) {
+      const newListOfCuisinePreferences = Object.entries(
+        listOfCuisinePreferences,
+      )
+        .filter(([_, preference]) => preference === "like")
+        .map(([cuisine]) => cuisine);
+      setUserCuisinePreferencesList(newListOfCuisinePreferences || []);
+    } else {
+      setUserCuisinePreferencesList([]);
+    }
+  }, [listOfDiets, listOfAllergies, listOfCuisinePreferences]);
 
   return (
     <div className={styles.userPreferences}>
@@ -37,13 +70,13 @@ export const UserPreferences = () => {
           Diets you are on
         </p>
         <div className={styles.userPreferences__section__buttons}>
-          {dietsList.map((diet: string, index: number) => (
+          {userDietsList.map((diet: string, index: number) => (
             <Button
               key={index}
               variant="medium"
               color="secondary"
               onClick={() => {
-                setDietsList((prev) =>
+                setUserDietsList((prev) =>
                   prev.filter((_, index) => index !== prev.indexOf(diet)),
                 );
               }}
@@ -54,10 +87,10 @@ export const UserPreferences = () => {
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={diets}
+            value={userDiets}
             placeholder="Add a dislike"
             onChange={(e) => {
-              setDiets(e.target.value);
+              setUserDiets(e.target.value);
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -66,10 +99,10 @@ export const UserPreferences = () => {
             variant="medium"
             color="primary"
             onClick={() => {
-              setDietsList((prev) => [...prev, diets.trim()]);
-              setDiets("");
+              setUserDietsList((prev) => [...prev, userDiets.trim()]);
+              setUserDiets("");
             }}
-            disabled={diets.trim() === ""}
+            disabled={userDiets.trim() === ""}
           >
             Add <PlusOutlined />
           </Button>
@@ -88,12 +121,13 @@ export const UserPreferences = () => {
           recommendations
         </p>
         <div className={styles.userPreferences__section__buttons}>
-          {allergiesList.map((allergy: string) => (
+          {userAllergiesList.map((allergy: string, index: number) => (
             <Button
+              key={index}
               variant="medium"
               color="secondary"
               onClick={() => {
-                setAllergiesList((prev) =>
+                setUserAllergiesList((prev) =>
                   prev.filter((_, index) => index !== prev.indexOf(allergy)),
                 );
               }}
@@ -104,10 +138,10 @@ export const UserPreferences = () => {
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={allergies}
+            value={userAllergies}
             placeholder="Add a like"
             onChange={(e) => {
-              setAllergies(e.target.value);
+              setUserAllergies(e.target.value);
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -116,10 +150,10 @@ export const UserPreferences = () => {
             variant="medium"
             color="primary"
             onClick={() => {
-              setAllergies("");
-              setAllergiesList((prev) => [...prev, allergies]);
+              setUserAllergies("");
+              setUserAllergiesList((prev) => [...prev, userAllergies]);
             }}
-            disabled={allergies.trim() === ""}
+            disabled={userAllergies.trim() === ""}
           >
             Add <PlusOutlined />
           </Button>
@@ -137,12 +171,13 @@ export const UserPreferences = () => {
           Things you like, things you want to be recommended to you!
         </p>
         <div className={styles.userPreferences__section__buttons}>
-          {likesList.map((like: string) => (
+          {userCuisinePreferencesList.map((like: string, index: number) => (
             <Button
+              key={index}
               variant="medium"
               color="secondary"
               onClick={() => {
-                setLikesList((prev) =>
+                setUserCuisinePreferencesList((prev) =>
                   prev.filter((_, index) => index !== prev.indexOf(like)),
                 );
               }}
@@ -153,10 +188,10 @@ export const UserPreferences = () => {
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={likes}
+            value={userCuisinePreferences}
             placeholder="Add a diet"
             onChange={(e) => {
-              setLikes(e.target.value);
+              setUserCuisinePreferences(e.target.value);
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -165,10 +200,13 @@ export const UserPreferences = () => {
             variant="medium"
             color="primary"
             onClick={() => {
-              setLikes("");
-              setLikesList((prev) => [...prev, likes]);
+              setUserCuisinePreferences("");
+              setUserCuisinePreferencesList((prev) => [
+                ...prev,
+                userCuisinePreferences,
+              ]);
             }}
-            disabled={likes.trim() === ""}
+            disabled={userCuisinePreferences.trim() === ""}
           >
             Add <PlusOutlined />
           </Button>
