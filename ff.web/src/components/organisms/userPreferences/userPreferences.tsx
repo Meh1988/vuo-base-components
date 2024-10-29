@@ -7,7 +7,9 @@ import {
 import Button from "@vuo/components/atoms/Button";
 import Input from "@vuo/components/atoms/Input";
 import Section from "@vuo/components/atoms/Section";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
 import styles from "./userPreferences.module.scss";
 
 interface UserPreferencesProps {
@@ -25,16 +27,23 @@ export const UserPreferences = ({
   const [userDietsList, setUserDietsList] = useState<string[]>(
     listOfDiets || [],
   );
+
   const [userAllergies, setUserAllergies] = useState<string>("");
   const [userAllergiesList, setUserAllergiesList] = useState<string[]>(
     listOfAllergies || [],
   );
   const [userCuisinePreferences, setUserCuisinePreferences] =
     useState<string>("");
-
   const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
     string[]
   >([]);
+
+  const itemAnimation = {
+    initial: { opacity: 0, scale: 0.8 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.8 },
+    transition: { duration: 0.2 },
+  };
 
   useEffect(() => {
     setUserDietsList(listOfDiets || []);
@@ -70,20 +79,23 @@ export const UserPreferences = ({
           Diets you are on
         </p>
         <div className={styles.userPreferences__section__buttons}>
-          {userDietsList.map((diet: string, index: number) => (
-            <Button
-              key={index}
-              variant="medium"
-              color="secondary"
-              onClick={() => {
-                setUserDietsList((prev) =>
-                  prev.filter((_, index) => index !== prev.indexOf(diet)),
-                );
-              }}
-            >
-              {diet} <CloseOutlined />
-            </Button>
-          ))}
+          <AnimatePresence>
+            {userDietsList.map((diet: string, index: number) => (
+              <motion.div key={index} layout {...itemAnimation}>
+                <Button
+                  variant="medium"
+                  color="secondary"
+                  onClick={() => {
+                    setUserDietsList((prev) =>
+                      prev.filter((_, index) => index !== prev.indexOf(diet)),
+                    );
+                  }}
+                >
+                  {diet} <CloseOutlined />
+                </Button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
@@ -121,20 +133,25 @@ export const UserPreferences = ({
           recommendations
         </p>
         <div className={styles.userPreferences__section__buttons}>
-          {userAllergiesList.map((allergy: string, index: number) => (
-            <Button
-              key={index}
-              variant="medium"
-              color="secondary"
-              onClick={() => {
-                setUserAllergiesList((prev) =>
-                  prev.filter((_, index) => index !== prev.indexOf(allergy)),
-                );
-              }}
-            >
-              {allergy} <CloseOutlined />
-            </Button>
-          ))}
+          <AnimatePresence>
+            {userAllergiesList.map((allergy: string, index: number) => (
+              <motion.div key={index} layout {...itemAnimation}>
+                <Button
+                  variant="medium"
+                  color="secondary"
+                  onClick={() => {
+                    setUserAllergiesList((prev) =>
+                      prev.filter(
+                        (_, index) => index !== prev.indexOf(allergy),
+                      ),
+                    );
+                  }}
+                >
+                  {allergy} <CloseOutlined />
+                </Button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
@@ -171,20 +188,24 @@ export const UserPreferences = ({
           Things you like, things you want to be recommended to you!
         </p>
         <div className={styles.userPreferences__section__buttons}>
-          {userCuisinePreferencesList.map((like: string, index: number) => (
-            <Button
-              key={index}
-              variant="medium"
-              color="secondary"
-              onClick={() => {
-                setUserCuisinePreferencesList((prev) =>
-                  prev.filter((_, index) => index !== prev.indexOf(like)),
-                );
-              }}
-            >
-              {like} <CloseOutlined />
-            </Button>
-          ))}
+          <AnimatePresence>
+            {userCuisinePreferencesList.map((like: string, index: number) => (
+              <motion.div key={index} layout {...itemAnimation}>
+                <Button
+                  key={index}
+                  variant="medium"
+                  color="secondary"
+                  onClick={() => {
+                    setUserCuisinePreferencesList((prev) =>
+                      prev.filter((_, index) => index !== prev.indexOf(like)),
+                    );
+                  }}
+                >
+                  {like} <CloseOutlined />
+                </Button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
