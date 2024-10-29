@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button as AntDButton } from 'antd-mobile';
-import styles from './Button.module.scss'; // Import SCSS module
+import { Button as AntDButton } from "antd-mobile";
+import React from "react";
+import styles from "./Button.module.scss"; // Import SCSS module
 
 //TODO recreate antd mobile button with identical props
 

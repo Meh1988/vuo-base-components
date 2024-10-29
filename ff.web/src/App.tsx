@@ -2,11 +2,8 @@ import {
   Route,
   Routes,
   BrowserRouter as Router,
-} from 'react-router-dom';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
+} from 'react-router-dom'
+
 import { SafeArea } from "antd-mobile";
 import Login from "./components/pages/Login";
 import ShoppingCart from "./components/pages/ShoppingCart";
@@ -16,35 +13,39 @@ import Home from "./components/pages/Home";
 import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/organisms/Navbar";
 import BottomNavigation from "./components/organisms/BottomNavigation";
+import OnboardingFlow from "./components/organisms/Onboarding";
+import FlavourFlowPage from "./components/pages/FlavourFlowPage";
+import FlavourFlowResultPage from "./components/pages/FlavourFlowResultPage";
 import NotFoundPage from "./components/pages/NotFoundPage";
+import QuestIntro from "./components/pages/QuestIntro";
+import QuestOutro from "./components/pages/QuestOutro";
+import QuestPlay from "./components/pages/QuestPlay";
 import QuestSelection from "./components/pages/QuestSelection";
-import FlavourFlowPage from './components/pages/FlavourFlowPage';
-import FlavourFlowResultPage from './components/pages/FlavourFlowResultPage';
-import OnboardingFlow from './components/organisms/Onboarding';
-import { AppContextProvider } from './context/AppContext';
 import Minigames from './components/pages/Minigames';
-import QuestIntro from './components/pages/QuestIntro';
-import QuestPlay from './components/pages/QuestPlay';
-import QuestOutro from './components/pages/QuestOutro';
+import { AppContextProvider } from "./context/AppContext";
 
 
-const queryClient = new QueryClient();
 function App() {
   return (
     <AppContextProvider>
-      <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <SafeArea position="top" />
             <Router>
-            <Navbar/>
-              <Routes >
+              <Navbar />
+              <Routes>
                 <Route>
-                  <Route path='/' element={ <Login />} />
-                  <Route path='/home' element={<Home />} />
-                  <Route path='/home/quests' element={<QuestSelection />} />
-                  <Route path='/home/quests/:id/intro' element={<QuestIntro />} />
-                  <Route path='/home/quests/:id/play' element={<QuestPlay />} />
-                  <Route path='/home/quests/:id/outro' element={<QuestOutro />} />
+                  <Route path="/" element={<Login />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/home/quests" element={<QuestSelection />} />
+                  <Route
+                    path="/home/quests/:id/intro"
+                    element={<QuestIntro />}
+                  />
+                  <Route path="/home/quests/:id/play" element={<QuestPlay />} />
+                  <Route
+                    path="/home/quests/:id/outro"
+                    element={<QuestOutro />}
+                  />
                   {/* TODO figuring out quest navigation */}
                   <Route path='/meal-map' element={<MealMap />} />
                   <Route path='/shopping-cart' element={<ShoppingCart />} />
@@ -59,15 +60,12 @@ function App() {
                   <Route path='/login' element={<Login />} />
                   </Route> */}
               </Routes>
-              <BottomNavigation/>
+              <BottomNavigation />
             </Router>
             <SafeArea position="bottom" />
           </ThemeProvider>
-        </QueryClientProvider>
       </AppContextProvider>
   );
 }
 
-
 export default App;
-
