@@ -15,7 +15,7 @@
 
 .quizNavigation {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: var(--space-32);
   bottom: var(--space-64);
   padding: var(--space-16);
@@ -104,7 +104,7 @@
   }
 
   &.selected {
-    background-color: var(--surface-brand);
+    background-color: var(--surface-brand-blue);
     color: var(--text-on-brand);
     border-color: var(--surface-brand);
   }
@@ -159,6 +159,11 @@
 
 // Responsive styles
 @media (max-width: 768px) {
+
+  .questionTitle {
+    font-size: 1.4rem;
+  }
+
   .quizOrganism {
     padding: var(--space-16);
   }
@@ -169,3 +174,10 @@
 
   
 }
+
+@media (max-width: 425px) {
+  .questionTitle {
+    font-size: 1.2rem;
+  }
+}
+

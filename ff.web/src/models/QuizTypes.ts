@@ -5,13 +5,17 @@ export interface QuizQuestionData {
   options?: string[];
   min?: number;
   max?: number;
+  imageUrl?: string;
   correctAnswer: Answer;
+  feedbackTitle?: string[];
+  feedbackMessage?: string | string[];
 }
 
 export interface QuizData {
   id: string;
   title: string;
   questions: QuizQuestionData[];
+
 }
 
 export type Answer = string | number | string[] | number[];
