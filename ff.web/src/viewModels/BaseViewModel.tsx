@@ -14,7 +14,8 @@ interface RequestConfig {
   data?: Record<string, unknown>;
 }
 
-const API_URL = "http://localhost:7702";
+// const API_URL = process.env.VITE_FFAPI_BASE_URL
+const API_URL = "https://api-core-app-a2l5n.ondigitalocean.app"
 
 export class BaseViewModel {
   loading: boolean = false;
@@ -35,6 +36,7 @@ export class BaseViewModel {
       if (sessionDataStore.token) {
         headers.Authorization = `Bearer ${sessionDataStore.token}`
       }
+
       const response = await fetch(`${API_URL}/${config.url}`, {
         method: config.method || 'GET',
         body: config.method !== 'GET' ? JSON.stringify(config.data) : undefined,
