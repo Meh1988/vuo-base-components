@@ -19,12 +19,12 @@
     gap: var(--space-16);
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-16);
 
     &__avatar {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: var(--space-16);
       flex: 1;
     }
 
@@ -63,7 +63,7 @@
 
       button {
         margin-bottom: 0;
-        border-radius: 50px;
+        border-radius: var(--radius-128);
 
         .anticon-close {
           font-size: var(--font-size-12) !important;
@@ -73,17 +73,17 @@
 
     &__input {
       background: var(--surface-secondary);
-      border-radius: 12px;
+      border-radius: var(--radius-16);
       display: flex;
       justify-content: center;
       width: 100%;
-      padding: 8px;
+      padding: var(--space-8);
 
       &__text {
         flex: 1;
         box-shadow: none;
         font-size: var(--font-size-16);
-        padding: 0 10px;
+        padding: 0 var(--space-8);
 
         &:focus {
           box-shadow: none;
