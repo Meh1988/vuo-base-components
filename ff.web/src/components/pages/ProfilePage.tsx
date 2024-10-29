@@ -3,12 +3,11 @@ import useStackNavigator from "@vuo/hooks/StackNavigator";
 import Page from "@vuo/templates/Page";
 import { useContext, useEffect, useState } from "react";
 import { Avatar } from "../atoms/Avatar";
-import { UserPreferences } from "../organisms/userPreferences";
-import { PlusOutlined } from "@ant-design/icons";
 
 import Button from "../atoms/Button";
-import styles from "./ProfilePage.module.scss";
 import { Tabs } from "../molecules/Tabs";
+import { UserPreferences } from "../organisms/userPreferences";
+import styles from "./ProfilePage.module.scss";
 
 const ProfilePage = function () {
   const { toggleTheme } = useContext(ThemeContext);
@@ -74,12 +73,6 @@ const ProfilePage = function () {
         >
           Change Theme
         </Button>
-        <Button variant="small" color="secondary">
-          Delete account
-        </Button>
-      </div>
-
-      <div className={styles.profilePage__footer}>
         <Button variant="small" color="secondary">
           Delete account
         </Button>
