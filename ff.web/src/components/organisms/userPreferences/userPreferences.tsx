@@ -24,19 +24,19 @@ export const UserPreferences = ({
   listOfCuisinePreferences,
 }: UserPreferencesProps) => {
   const [userDiets, setUserDiets] = useState<string>("");
-  const [userDietsList, setUserDietsList] = useState<string[]>(
-    listOfDiets || [],
+  const [userDietsList, setUserDietsList] = useState<Set<string>>(
+    new Set(listOfDiets || []),
   );
 
   const [userAllergies, setUserAllergies] = useState<string>("");
-  const [userAllergiesList, setUserAllergiesList] = useState<string[]>(
-    listOfAllergies || [],
+  const [userAllergiesList, setUserAllergiesList] = useState<Set<string>>(
+    new Set(listOfAllergies || []),
   );
   const [userCuisinePreferences, setUserCuisinePreferences] =
     useState<string>("");
   const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
-    string[]
-  >([]);
+    Set<string>
+  >(new Set());
 
   const itemAnimation = {
     initial: { opacity: 0, scale: 0.8 },
@@ -46,17 +46,19 @@ export const UserPreferences = ({
   };
 
   useEffect(() => {
-    setUserDietsList(listOfDiets || []);
-    setUserAllergiesList(listOfAllergies || []);
+    setUserDietsList(new Set(listOfDiets || []));
+    setUserAllergiesList(new Set(listOfAllergies || []));
 
     if (listOfCuisinePreferences) {
       setUserCuisinePreferencesList(
-        Object.entries(listOfCuisinePreferences)
-          .filter(([_, preference]) => preference === "like")
-          .map(([cuisine]) => cuisine),
+        new Set(
+          Object.entries(listOfCuisinePreferences)
+            .filter(([_, preference]) => preference === "like")
+            .map(([cuisine]) => cuisine),
+        ),
       );
     } else {
-      setUserCuisinePreferencesList([]);
+      setUserCuisinePreferencesList(new Set());
     }
   }, [listOfDiets, listOfAllergies]);
 
@@ -80,14 +82,15 @@ export const UserPreferences = ({
         </p>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {userDietsList.map((diet: string, index: number) => (
+            {[...userDietsList].map((diet: string, index: number) => (
               <motion.div key={index} layout {...itemAnimation}>
                 <Button
                   variant="medium"
                   color="secondary"
                   onClick={() => {
-                    setUserDietsList((prev) =>
-                      prev.filter((_, index) => index !== prev.indexOf(diet)),
+                    setUserDietsList(
+                      (prev) =>
+                        new Set([...prev].filter((item) => item !== diet)),
                     );
                   }}
                 >
@@ -111,7 +114,7 @@ export const UserPreferences = ({
             variant="medium"
             color="primary"
             onClick={() => {
-              setUserDietsList((prev) => [...prev, userDiets.trim()]);
+              setUserDietsList((prev) => new Set([...prev, userDiets.trim()]));
               setUserDiets("");
             }}
             disabled={userDiets.trim() === ""}
@@ -134,16 +137,15 @@ export const UserPreferences = ({
         </p>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {userAllergiesList.map((allergy: string, index: number) => (
+            {[...userAllergiesList].map((allergy: string, index: number) => (
               <motion.div key={index} layout {...itemAnimation}>
                 <Button
                   variant="medium"
                   color="secondary"
                   onClick={() => {
-                    setUserAllergiesList((prev) =>
-                      prev.filter(
-                        (_, index) => index !== prev.indexOf(allergy),
-                      ),
+                    setUserAllergiesList(
+                      (prev) =>
+                        new Set([...prev].filter((item) => item !== allergy)),
                     );
                   }}
                 >
@@ -168,7 +170,9 @@ export const UserPreferences = ({
             color="primary"
             onClick={() => {
               setUserAllergies("");
-              setUserAllergiesList((prev) => [...prev, userAllergies]);
+              setUserAllergiesList(
+                (prev) => new Set([...prev, userAllergies.trim()]),
+              );
             }}
             disabled={userAllergies.trim() === ""}
           >
@@ -189,22 +193,25 @@ export const UserPreferences = ({
         </p>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {userCuisinePreferencesList.map((like: string, index: number) => (
-              <motion.div key={index} layout {...itemAnimation}>
-                <Button
-                  key={index}
-                  variant="medium"
-                  color="secondary"
-                  onClick={() => {
-                    setUserCuisinePreferencesList((prev) =>
-                      prev.filter((_, index) => index !== prev.indexOf(like)),
-                    );
-                  }}
-                >
-                  {like} <CloseOutlined />
-                </Button>
-              </motion.div>
-            ))}
+            {[...userCuisinePreferencesList].map(
+              (like: string, index: number) => (
+                <motion.div key={index} layout {...itemAnimation}>
+                  <Button
+                    key={index}
+                    variant="medium"
+                    color="secondary"
+                    onClick={() => {
+                      setUserCuisinePreferencesList(
+                        (prev) =>
+                          new Set([...prev].filter((item) => item !== like)),
+                      );
+                    }}
+                  >
+                    {like} <CloseOutlined />
+                  </Button>
+                </motion.div>
+              ),
+            )}
           </AnimatePresence>
         </div>
         <div className={styles.userPreferences__section__input}>
@@ -222,10 +229,9 @@ export const UserPreferences = ({
             color="primary"
             onClick={() => {
               setUserCuisinePreferences("");
-              setUserCuisinePreferencesList((prev) => [
-                ...prev,
-                userCuisinePreferences,
-              ]);
+              setUserCuisinePreferencesList(
+                (prev) => new Set([...prev, userCuisinePreferences.trim()]),
+              );
             }}
             disabled={userCuisinePreferences.trim() === ""}
           >
