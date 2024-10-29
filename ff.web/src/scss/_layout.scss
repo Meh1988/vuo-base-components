@@ -22,6 +22,13 @@
   --radius-24: #{$radius-24}; // xl
   --radius-32: #{$radius-32}; // xxl
   --radius-128: #{$radius-128}; // 3xl
+
+  // Typography variables
+  --font-size-12: #{$font-size-12}; // xxs
+  --font-size-14: #{$font-size-14}; // xs
+  --font-size-16: #{$font-size-16}; // sm
+  --font-size-18: #{$font-size-18}; // md
+  --font-size-20: #{$font-size-20}; // lg
 }
 
 html {
