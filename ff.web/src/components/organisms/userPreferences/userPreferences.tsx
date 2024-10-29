@@ -13,7 +13,7 @@ import styles from "./userPreferences.module.scss";
 interface UserPreferencesProps {
   listOfAllergies: string[];
   listOfDiets: string[];
-  listOfCuisinePreferences: string[];
+  listOfCuisinePreferences: Record<string, string>;
 }
 
 export const UserPreferences = ({
@@ -31,25 +31,25 @@ export const UserPreferences = ({
   );
   const [userCuisinePreferences, setUserCuisinePreferences] =
     useState<string>("");
+
   const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
     string[]
-  >(listOfCuisinePreferences || []);
+  >([]);
 
   useEffect(() => {
     setUserDietsList(listOfDiets || []);
     setUserAllergiesList(listOfAllergies || []);
 
     if (listOfCuisinePreferences) {
-      const newListOfCuisinePreferences = Object.entries(
-        listOfCuisinePreferences,
-      )
-        .filter(([_, preference]) => preference === "like")
-        .map(([cuisine]) => cuisine);
-      setUserCuisinePreferencesList(newListOfCuisinePreferences || []);
+      setUserCuisinePreferencesList(
+        Object.entries(listOfCuisinePreferences)
+          .filter(([_, preference]) => preference === "like")
+          .map(([cuisine]) => cuisine),
+      );
     } else {
       setUserCuisinePreferencesList([]);
     }
-  }, [listOfDiets, listOfAllergies, listOfCuisinePreferences]);
+  }, [listOfDiets, listOfAllergies]);
 
   return (
     <div className={styles.userPreferences}>

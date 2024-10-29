@@ -40,7 +40,9 @@ export const Tabs = ({ tabs }: TabsProps) => {
       </Section>
 
       <div className={styles.tabContent}>
-        {tabs.map((tab) => (tab.id === activeTab ? tab.content : null))}
+        {tabs.map((tab) => (
+          <div key={tab.id}>{tab.id === activeTab ? tab.content : null}</div>
+        ))}
       </div>
     </div>
   );
