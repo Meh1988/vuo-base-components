@@ -38,25 +38,27 @@ $button-text: #ffffff;
 $space-2: 2px; // xxs
 $space-4: 4px; // xs
 $space-8: 8px; // sm
-$space-16: 16px; // md
-$space-24: 24px; // lg
-$space-32: 32px; // xl
-$space-40: 40px; // xxl
-$space-48: 48px; // 3xl
-$space-64: 64px; // 4xl
-$space-80: 80px; // 5xl
-$space-88: 88px; // 6xl
-$space-96: 96px; // 7xl
-$space-104: 104px; // 8xl
+$space-12: 12px; // md
+$space-16: 16px; // lg
+$space-24: 24px; // xl
+$space-32: 32px; // xxl
+$space-40: 40px; // 3xl
+$space-48: 48px; // 4xl
+$space-64: 64px; // 5xl
+$space-80: 80px; // 6xl
+$space-88: 88px; // 7xl
+$space-96: 96px; // 8xl
+$space-104: 104px; // 9xl
 
 // RADIUS TOKENS
 $radius-2: 2px; // xs
 $radius-4: 4px; // sm
 $radius-8: 8px; // md
-$radius-16: 16px; // lg
-$radius-24: 24px; // xl
-$radius-32: 32px; // xxl
-$radius-128: 128px; // 3xl
+$radius-12: 12px; // lg
+$radius-16: 16px; // xl
+$radius-24: 24px; // xxl
+$radius-32: 32px; // 3xl
+$radius-128: 128px; // 4xl
 
 // TYPOGRAPHY TOKENS
 $font-size-12: 0.75rem; // xxs
