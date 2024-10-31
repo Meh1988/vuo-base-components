@@ -9,10 +9,11 @@
   --space-32: #{$space-32}; // xxl
   --space-40: #{$space-40}; // 3xl
   --space-48: #{$space-48}; // 4xl
-  --space-80: #{$space-80}; // 5xl
-  --space-88: #{$space-88}; // 6xl
-  --space-96: #{$space-96}; // 7xl
-  --space-104: #{$space-104}; // 8xl
+  --space-64: #{$space-64}; // 5xl
+  --space-80: #{$space-80}; // 6xl
+  --space-88: #{$space-88}; // 7xl
+  --space-96: #{$space-96}; // 8xl
+  --space-104: #{$space-104}; // 9xl
 
   // Radius variables
   --radius-2: #{$radius-2}; // xs
@@ -30,6 +31,7 @@
   --font-size-16: #{$font-size-16}; // sm
   --font-size-18: #{$font-size-18}; // md
   --font-size-20: #{$font-size-20}; // lg
+  --font-size-24: #{$font-size-24}; // xl
 }
 
 html {
