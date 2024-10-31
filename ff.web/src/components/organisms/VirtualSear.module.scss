@@ -67,6 +67,7 @@
     align-items: center;
     justify-content: center;
     padding: var(--space-24) 0;
+    height: 200px;
 }
 
 .steak_container {
@@ -76,15 +77,17 @@
     align-items: center;
     border-radius: var(--radius-16);
     position: relative;
-    width: 200px;
-    overflow: hidden;
+    width: 140px;
+    z-index: 2;
+    overflow: visible;
     transition: transform 0.5s ease-in-out;
 }
 
 .steak_half {
     position: relative;
     width: 100%;
-    height: 50px;
+    height: 34px;
+    z-index: 1;
 }
 
 .steak_half_raw {
@@ -174,7 +177,15 @@
 }
 
 .flipped {
-    transform: rotateZ(180deg);
+    transform: rotateZ(180deg) !important;
+}
+
+.placed {
+    transform: translateY(10px) !important;
+}
+
+.flipped.placed {
+    transform: rotateZ(180deg) translateY(-10px) !important;
 }
 
 .doneness_result_container {
@@ -187,3 +198,15 @@
         margin: var(--space-8);
     }
 }
+
+.pan_svg {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    
+    left: 50%;
+    transform: translateX(-41%);
+    z-index: 1;
+    pointer-events: none;
+}
+
