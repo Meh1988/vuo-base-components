@@ -5,7 +5,7 @@ import Button from "@vuo/atoms/Button";
 import FixFoodLogo from "@vuo/atoms/FixFoodLogo";
 import { LogoVariants } from "@vuo/utils/LogoUtils";
 import { useNavigate } from "react-router-dom";
-
+import LoginComponent from "../organisms/Login";
 const Login = function (props: any) {
   const navigate = useNavigate()
   return (
@@ -18,6 +18,7 @@ const Login = function (props: any) {
             </Button>
           </div>
         </div>
+        <LoginComponent/>
       {/* </Page> */}
     </Page>
   );
