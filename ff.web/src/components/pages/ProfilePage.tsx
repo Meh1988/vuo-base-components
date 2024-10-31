@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { Avatar } from "../atoms/Avatar";
 
 import Button from "../atoms/Button";
+import { Modal } from "../molecules/Modal";
 import { Tabs } from "../molecules/Tabs";
 import { UserPreferences } from "../organisms/userPreferences";
 import styles from "./ProfilePage.module.scss";
@@ -13,6 +14,7 @@ const ProfilePage = function () {
   const { toggleTheme } = useContext(ThemeContext);
   const [profileData, setProfileData] = useState<any>(null); // Ensure it's typed correctly
   const { navigateWithState } = useStackNavigator();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
@@ -23,7 +25,28 @@ const ProfilePage = function () {
     }
   }, []);
 
-  //TODO fix this creappy UI
+  const confirmDeleteAccount = () => {
+    localStorage.removeItem("profileData");
+    navigateWithState("/home");
+  };
+
+  const FooterContent = () => {
+    return (
+      <>
+        <Button
+          variant="small"
+          color="tertiary"
+          onClick={() => setIsDeleteModalOpen(false)}
+        >
+          Cancel
+        </Button>
+
+        <Button variant="small" color="primary" onClick={confirmDeleteAccount}>
+          Delete
+        </Button>
+      </>
+    );
+  };
 
   return (
     <Page>
@@ -73,37 +96,26 @@ const ProfilePage = function () {
         >
           Change Theme
         </Button>
-        <Button variant="small" color="secondary">
+        <Button
+          variant="small"
+          color="secondary"
+          onClick={() => {
+            setIsDeleteModalOpen(true);
+          }}
+        >
           Delete account
         </Button>
       </div>
 
-      {/* {profileData && (
-        <div>
-          <h4>Your Dietary Preferences</h4>
-          {Object.entries(profileData).map(([key, value]) => {
-            // Skip rendering if the value is an object but not an array
-            if (typeof value === "object" && !Array.isArray(value)) {
-              return null;
-            }
-
-            return (
-              <div key={key} style={{ marginBottom: "1rem" }}>
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
-                {Array.isArray(value) ? (
-                  <ul>
-                    {value.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>{value}</p>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )} */}
+      {isDeleteModalOpen && (
+        <Modal
+          title="Delete account"
+          isOpen={isDeleteModalOpen}
+          footerContent={<FooterContent />}
+        >
+          <p>Are you sure you want to delete your account?</p>
+        </Modal>
+      )}
     </Page>
   );
 };
