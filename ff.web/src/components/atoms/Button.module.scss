@@ -14,7 +14,7 @@
   @extend .buttonBase;
   border-radius: var(--radius-16);
   padding: var(--space-16);
-  font-size: 24px;
+  font-size: var(--font-size-20);
   font-weight: 600;
 }
 
@@ -22,7 +22,7 @@
   @extend .buttonBase;
   border-radius: var(--radius-24);
   padding: var(--space-16);
-  font-size: 24px;
+  font-size: var(--font-size-20);
   font-weight: 900;
 }
 
@@ -30,7 +30,7 @@
   @extend .buttonBase;
   border-radius: var(--radius-8);
   padding: var(--space-8);
-  font-size: 16px;
+  font-size: var(--font-size-16);
   font-weight: 600;
 }
 
