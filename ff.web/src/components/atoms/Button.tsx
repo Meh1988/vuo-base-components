@@ -5,31 +5,35 @@ import styles from "./Button.module.scss"; // Import SCSS module
 //TODO recreate antd mobile button with identical props
 
 interface CustomButtonProps {
-  color?: 'primary' | 'secondary'  // Custom variants
-  variant?: 'large' | 'heavy' | 'medium' | 'small';  // Custom sizes
+  color?: "primary" | "secondary" | "tertiary"; // Custom variants
+  variant?: "large" | "heavy" | "medium" | "small"; // Custom sizes
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children?: React.ReactNode;
-  className?: string; 
-  disabled?: boolean
+  className?: string;
+  disabled?: boolean;
   style?: React.CSSProperties; // Add style prop
   block?: boolean;
 }
 
 // eslint-disable-next-line react/function-component-definition
 const Button: React.FC<CustomButtonProps> = ({
-  variant = 'large', // Default variant
-  color = 'primary', // Default color
+  variant = "large", // Default variant
+  color = "primary", // Default color
   className = "",
-  onClick, 
+  onClick,
   children,
   disabled = false,
-  style
+  style,
 }) => {
-
   const buttonClass = `${styles[variant]} ${styles[color]} ${className}`; // Use SCSS module
 
   return (
-    <AntDButton className={buttonClass} onClick={onClick} disabled={disabled} style={style}>
+    <AntDButton
+      className={buttonClass}
+      onClick={onClick}
+      disabled={disabled}
+      style={style}
+    >
       {children}
     </AntDButton>
   );
