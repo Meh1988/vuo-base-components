@@ -238,7 +238,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
                     <div className={styles.controls_container}>
                         <div className={styles.flame_container}>
                             {[...Array(temperature)].map(() => (
-                                <FlameSvg key={Math.random()} className={styles.flame} />
+                                <FlameSvg className={styles.flame} />
                             ))}
                         </div>
                         <div className={styles.slider_container}>
