@@ -27,7 +27,7 @@
 
 .onboardingNavigation {
   position: fixed;
-  bottom: 56px;
+  bottom: 0;
   left: 0;
   right: 0;
   background-color: var(--surface-secondary);
@@ -59,7 +59,9 @@
   border-radius: var(--radius-16);
   background-color: var(--surface-secondary);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 
   &:hover {
     background-color: var(--surface-tertiary);
@@ -101,7 +103,10 @@
   background-color: var(--surface-secondary);
   color: var(--text-primary);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
   font-weight: bold;
 
   &:hover {
