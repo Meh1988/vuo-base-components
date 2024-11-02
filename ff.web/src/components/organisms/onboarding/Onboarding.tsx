@@ -652,7 +652,6 @@ const OnboardingFlow = () => {
         <Button
           color="secondary"
           onClick={handleExit}
-          className={styles.onboardingExitButton}
           style={{ position: "absolute", top: 10, right: 10 }}
         >
           <span className={styles.exitIcon}>×</span>
