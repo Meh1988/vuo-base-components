@@ -17,6 +17,12 @@ import ToggleSwitch from "@vuo/molecules/ToggleSwitch";
 
 import { useEffect, useState } from "react";
 import styles from "./Onboarding.module.scss";
+import {
+  cookingSkills,
+  dietsPlan,
+  goals,
+  pantry,
+} from "./constants/OnboardingSteps";
 
 interface PropsRenderStep {
   title: string;
@@ -173,13 +179,7 @@ const OnboardingFlow = () => {
       case "goals":
         return (
           <RenderStepPage title={step.title} description={step.description}>
-            {[
-              "Lose weight",
-              "Hit my macros",
-              "Eat healthy",
-              "Gain weight",
-              "Save time",
-            ].map((goal) => (
+            {goals.map((goal) => (
               <button
                 key={goal}
                 className={`${styles.onboardingButton} ${formData.goals.includes(goal) ? styles.selected : ""}`}
@@ -411,20 +411,7 @@ const OnboardingFlow = () => {
       case "diet-plan":
         return (
           <RenderStepPage title={step.title} description={step.description}>
-            {[
-              {
-                name: "Balanced",
-                description: "Flexible approach, thoughtful portions",
-              },
-              { name: "Pescatarian", description: "Seafood, healthy fats" },
-              { name: "Flexitarian", description: "Less meat, heart-healthy" },
-              {
-                name: "Vegetarian",
-                description: "Clean eating, complex carbs",
-              },
-              { name: "Low carb", description: "Reduced carbohydrate intake" },
-              { name: "Keto", description: "High fat, very low carb" },
-            ].map((diet) =>
+            {dietsPlan.map((diet) =>
               renderOption(
                 diet.name.toLowerCase(),
                 diet.name,
@@ -571,28 +558,7 @@ const OnboardingFlow = () => {
       case "pantry":
         return (
           <RenderStepPage title={step.title} description={step.description}>
-            {[
-              {
-                value: "empty",
-                label: "Empty",
-                description: "Don't have anything",
-              },
-              {
-                value: "basic",
-                label: "Basic",
-                description: "Only have oil, salt, and pepper",
-              },
-              {
-                value: "average",
-                label: "Average",
-                description: "Have common spices and seasonings",
-              },
-              {
-                value: "well-stocked",
-                label: "Well-stocked",
-                description: "Have a wide selection of spices and seasonings",
-              },
-            ].map((option) =>
+            {pantry.map((option) =>
               renderOption(
                 option.value,
                 option.label,
@@ -607,28 +573,7 @@ const OnboardingFlow = () => {
       case "cooking-skills":
         return (
           <RenderStepPage title={step.title} description={step.description}>
-            {[
-              {
-                value: "novice",
-                label: "Novice",
-                description: '"I can cook boxed mac and cheese"',
-              },
-              {
-                value: "basic",
-                label: "Basic",
-                description: '"I only cook simple recipes"',
-              },
-              {
-                value: "intermediate",
-                label: "Intermediate",
-                description: '"I routinely try new recipes"',
-              },
-              {
-                value: "advanced",
-                label: "Advanced",
-                description: '"I\'m comfortable cooking any recipe"',
-              },
-            ].map((option) =>
+            {cookingSkills.map((option) =>
               renderOption(
                 option.value,
                 option.label,
