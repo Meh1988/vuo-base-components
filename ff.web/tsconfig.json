@@ -27,8 +27,14 @@
         "./src/*",
         "./src/components/*"
       ],
+      "@constants/*": [
+        "./src/constants/*"
+      ],
       "@assets/*": [
         "./src/assets/*"
+      ],
+      "@models/*": [
+        "./src/models/*"
       ],
       "@static/*": [
         "./public/static/*"
