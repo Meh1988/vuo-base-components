@@ -6,6 +6,8 @@ import {
   initialOnboardingData,
 } from "@constants/Onboarding";
 
+import { Modal } from "@vuo/molecules/Modal";
+
 import { steps } from "@constants/Onboarding";
 import { OnboardingStatus } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
@@ -36,6 +38,7 @@ const OnboardingFlow = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [isExitOnboarding, setIsExitOnboarding] = useState(false);
   const { setIsOnboardingComplete } = useAppContext();
 
   const [formData, setFormData] = useState(initialOnboardingData);
@@ -111,15 +114,29 @@ const OnboardingFlow = () => {
     navigateWithState("/home");
   };
 
-  const handleExit = () => {
-    if (
-      window.confirm(
-        "Are you sure you want to exit? Your progress will be saved.",
-      )
-    ) {
-      localStorage.setItem("onboardingData", JSON.stringify(formData));
-      navigateWithState("/home");
-    }
+  const FooterContent = () => {
+    return (
+      <>
+        <Button
+          variant="small"
+          color="tertiary"
+          onClick={() => setIsExitOnboarding(false)}
+        >
+          Cancel
+        </Button>
+
+        <Button
+          variant="small"
+          color="primary"
+          onClick={() => {
+            localStorage.setItem("onboardingData", JSON.stringify(formData));
+            navigateWithState("/home");
+          }}
+        >
+          Exit
+        </Button>
+      </>
+    );
   };
 
   const renderOption = (
@@ -592,50 +609,62 @@ const OnboardingFlow = () => {
   };
 
   return (
-    <div className={styles.onboardingContainer}>
-      <div className={styles.onboardingHeader}>
-        <Button
-          color="secondary"
-          onClick={handleExit}
-          style={{ position: "absolute", top: 10, right: 10 }}
-        >
-          <span className={styles.exitIcon}>×</span>
-        </Button>
-      </div>
-      <div className={styles.onboardingContent}>
-        <div className={styles.onboardingStep}>{renderStep()}</div>
-      </div>
-      <div className={styles.onboardingNavigation}>
-        <ProgressBar value={progress} className={styles.onboardingProgress} />
-        <div className={styles.onboardingButtons}>
+    <>
+      <div className={styles.onboardingContainer}>
+        <div className={styles.onboardingHeader}>
           <Button
             color="secondary"
-            onClick={handleBack}
-            className={styles.navButton}
-            disabled={currentStep === 0}
+            onClick={() => setIsExitOnboarding(true)}
+            style={{ position: "absolute", top: 10, right: 10 }}
           >
-            Back
+            <span className={styles.exitIcon}>×</span>
           </Button>
-          {currentStep < steps.length - 1 ? (
+        </div>
+        <div className={styles.onboardingContent}>
+          <div className={styles.onboardingStep}>{renderStep()}</div>
+        </div>
+        <div className={styles.onboardingNavigation}>
+          <ProgressBar value={progress} className={styles.onboardingProgress} />
+          <div className={styles.onboardingButtons}>
             <Button
-              color="primary"
-              onClick={handleNext}
+              color="secondary"
+              onClick={handleBack}
               className={styles.navButton}
+              disabled={currentStep === 0}
             >
-              Next
+              Back
             </Button>
-          ) : (
-            <Button
-              color="primary"
-              onClick={handleFinish}
-              className={styles.navButton}
-            >
-              Finish
-            </Button>
-          )}
+            {currentStep < steps.length - 1 ? (
+              <Button
+                color="primary"
+                onClick={handleNext}
+                className={styles.navButton}
+              >
+                Next
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                onClick={handleFinish}
+                className={styles.navButton}
+              >
+                Finish
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {isExitOnboarding && (
+        <Modal
+          title="Exit onboarding?"
+          isOpen={isExitOnboarding}
+          footerContent={<FooterContent />}
+        >
+          <p>Are you sure you want to exit? Your progress will not be saved.</p>
+        </Modal>
+      )}
+    </>
   );
 };
 
