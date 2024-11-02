@@ -120,20 +120,19 @@ const OnboardingFlow = () => {
         <Button
           variant="small"
           color="tertiary"
-          onClick={() => setIsExitOnboarding(false)}
-        >
-          Cancel
-        </Button>
-
-        <Button
-          variant="small"
-          color="primary"
           onClick={() => {
             localStorage.setItem("onboardingData", JSON.stringify(formData));
             navigateWithState("/home");
           }}
         >
           Exit
+        </Button>
+        <Button
+          variant="small"
+          color="primary"
+          onClick={() => setIsExitOnboarding(false)}
+        >
+          Cancel
         </Button>
       </>
     );
