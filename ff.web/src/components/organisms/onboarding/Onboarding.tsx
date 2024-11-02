@@ -1,108 +1,29 @@
 // @ts-nocheck
+import {
+  allergies,
+  commonDislikes,
+  cuisines,
+  initialOnboardingData,
+} from "@constants/Onboarding";
 
+import { steps } from "@constants/Onboarding";
+import { OnboardingStatus } from "@models/Onboarding";
+import Button from "@vuo/atoms/Button";
+import ProgressBar from "@vuo/atoms/ProgressBar";
+import Slider from "@vuo/atoms/Slider";
 import { useAppContext } from "@vuo/context/AppContext";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
+import ToggleSwitch from "@vuo/molecules/ToggleSwitch";
+
 import { useEffect, useState } from "react";
-import Button from "../../atoms/Button";
-import ProgressBar from "../../atoms/ProgressBar";
-import Slider from "../../atoms/Slider";
-import ToggleSwitch from "../../molecules/ToggleSwitch";
 import styles from "./Onboarding.module.scss";
 
-enum OnboardingStatus {
-  notStarted = "notStarted",
-  completed = "completed",
+interface PropsRenderStep {
+  title: string;
+  description: string;
+  children?: React.ReactNode | React.ReactNode[];
 }
 
-const steps = [
-  {
-    id: "intro",
-    title: "Your meal plan awaits",
-    status: OnboardingStatus.notStarted,
-  },
-  { id: "goals", title: "Your goals", status: OnboardingStatus.notStarted },
-  { id: "sex", title: "About you", status: OnboardingStatus.notStarted },
-  { id: "age", title: "Age", status: OnboardingStatus.notStarted },
-  { id: "height", title: "Height" },
-  {
-    id: "current-weight",
-    title: "Current weight",
-    status: OnboardingStatus.notStarted,
-  },
-  {
-    id: "goal-weight",
-    title: "Goal weight",
-    status: OnboardingStatus.notStarted,
-  },
-  {
-    id: "motivation",
-    title: "Motivation",
-    status: OnboardingStatus.notStarted,
-  },
-  {
-    id: "activity",
-    title: "Activity level",
-    status: OnboardingStatus.notStarted,
-  },
-  { id: "mindset", title: "Your mindset", status: OnboardingStatus.notStarted },
-  { id: "speed", title: "Speed", status: OnboardingStatus.notStarted },
-  { id: "diet-plan", title: "Diet plan" },
-  {
-    id: "past-experience",
-    title: "Past experience",
-    status: OnboardingStatus.notStarted,
-  },
-  { id: "format", title: "Format", status: OnboardingStatus.notStarted },
-  { id: "allergies", title: "Allergies", status: OnboardingStatus.notStarted },
-  { id: "dislikes", title: "Dislikes", status: OnboardingStatus.notStarted },
-  { id: "cuisines", title: "Cuisines", status: OnboardingStatus.notStarted },
-  { id: "pantry", title: "Your pantry", status: OnboardingStatus.notStarted },
-  {
-    id: "cooking-skills",
-    title: "Cooking skills",
-    status: OnboardingStatus.notStarted,
-  },
-];
-
-const allergies = [
-  "Shellfish",
-  "Fish",
-  "Dairy",
-  "Peanut",
-  "Tree nut",
-  "Egg",
-  "Gluten",
-  "Soy",
-  "Sesame",
-];
-const commonDislikes = [
-  "beef",
-  "beets",
-  "bell peppers",
-  "broccoli",
-  "brussels sprouts",
-  "cilantro",
-  "eggplant",
-  "eggs",
-  "fish",
-  "ginger",
-  "kale",
-  "mayonnaise",
-  "mushrooms",
-  "okra",
-  "olives",
-  "peas",
-];
-const cuisines = [
-  "American",
-  "Italian",
-  "Mexican",
-  "Asian",
-  "Chinese",
-  "Japanese",
-  "Thai",
-  "Indian",
-];
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = () => {
   const { navigateWithState } = useStackNavigator();
@@ -111,26 +32,7 @@ const OnboardingFlow = () => {
   const [progress, setProgress] = useState(0);
   const { setIsOnboardingComplete } = useAppContext();
 
-  const [formData, setFormData] = useState({
-    goals: [],
-    sex: "",
-    age: "",
-    height: "",
-    currentWeight: "",
-    goalWeight: "",
-    motivation: "",
-    activityLevel: "",
-    mindset: "",
-    speed: "moderate",
-    dietPlan: "",
-    pastExperience: "",
-    format: "",
-    allergies: [],
-    dislikes: [],
-    cuisinePreferences: {},
-    pantry: "",
-    cookingSkills: "",
-  });
+  const [formData, setFormData] = useState(initialOnboardingData);
 
   useEffect(() => {
     const calculateProgress = () => {
@@ -245,30 +147,32 @@ const OnboardingFlow = () => {
     </div>
   );
 
+  const RenderStepPage = ({
+    title,
+    description,
+    children,
+  }: PropsRenderStep) => {
+    return (
+      <div>
+        <h2>{title}</h2>
+        <p className={styles.description}>{description}</p>
+        {children}
+      </div>
+    );
+  };
+
   const renderStep = () => {
     const step = steps[currentStep];
 
     switch (step.id) {
       case "intro":
         return (
-          <div className={styles.onboardingIntro}>
-            <h2>{step.title}</h2>
-            <p className={styles.description}>
-              We'll learn about your goals and preferences to help build your
-              first custom meal plan.
-            </p>
-          </div>
+          <RenderStepPage title={step.title} description={step.description} />
         );
 
       case "goals":
         return (
-          <div className={styles.onboardingMultiSelect}>
-            <h2>{step.title}</h2>
-            <p>
-              {" "}
-              What can we help you accomplish? We'll personalize our
-              recommendations based on your goals.
-            </p>
+          <RenderStepPage title={step.title} description={step.description}>
             {[
               "Lose weight",
               "Hit my macros",
@@ -284,18 +188,12 @@ const OnboardingFlow = () => {
                 {goal}
               </button>
             ))}
-          </div>
+          </RenderStepPage>
         );
 
       case "sex":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p>
-              {" "}
-              What is your sex? We'll use this to estimate your daily energy
-              needs.
-            </p>
+          <RenderStepPage title={step.title} description={step.description}>
             {renderOption(
               "female",
               "Female",
@@ -310,14 +208,12 @@ const OnboardingFlow = () => {
               formData.sex === "male",
               (value) => setFormData((prev) => ({ ...prev, sex: value })),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "age":
         return (
-          <div className={styles.onboardingInput}>
-            <h2>{step.title}</h2>
-            <p>How old are you?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             <input
               type="number"
               name="age"
@@ -326,14 +222,12 @@ const OnboardingFlow = () => {
               placeholder="Enter your age"
               className={styles.onboardingNumberInput}
             />
-          </div>
+          </RenderStepPage>
         );
 
       case "height":
         return (
-          <div className={styles.onboardingInput}>
-            <h2>{step.title}</h2>
-            <p>How tall are you?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             <input
               type="number"
               name="height"
@@ -342,14 +236,12 @@ const OnboardingFlow = () => {
               placeholder="Enter your height in cm"
               className={styles.onboardingNumberInput}
             />
-          </div>
+          </RenderStepPage>
         );
 
       case "current-weight":
         return (
-          <div className={styles.onboardingInput}>
-            <h2>{step.title}</h2>
-            <p>How much do you currently weigh?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             <input
               type="number"
               name="currentWeight"
@@ -358,14 +250,12 @@ const OnboardingFlow = () => {
               placeholder="Enter your weight in kg"
               className={styles.onboardingNumberInput}
             />
-          </div>
+          </RenderStepPage>
         );
 
       case "goal-weight":
         return (
-          <div className={styles.onboardingInput}>
-            <h2>{step.title}</h2>
-            <p>What is your goal weight?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             <input
               type="number"
               name="goalWeight"
@@ -374,14 +264,12 @@ const OnboardingFlow = () => {
               placeholder="Enter your goal weight in kg"
               className={styles.onboardingNumberInput}
             />
-          </div>
+          </RenderStepPage>
         );
 
       case "motivation":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p>How motivated are you to make changes to your diet?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             {renderOption(
               "very-motivated",
               "Very motivated",
@@ -414,14 +302,12 @@ const OnboardingFlow = () => {
               (value) =>
                 setFormData((prev) => ({ ...prev, motivation: value })),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "activity":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p>How often do you exercise?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             {renderOption(
               "sedentary",
               "Sedentary",
@@ -462,18 +348,12 @@ const OnboardingFlow = () => {
               (value) =>
                 setFormData((prev) => ({ ...prev, activityLevel: value })),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "mindset":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p>
-              How do you relate to the statement: "I know what I should be doing
-              to eat healthy, but I need to find a way to do it that fits into
-              my life"?
-            </p>
+          <RenderStepPage title={step.title} description={step.description}>
             {renderOption(
               "agree",
               "Agree",
@@ -495,17 +375,12 @@ const OnboardingFlow = () => {
               formData.mindset === "disagree",
               (value) => setFormData((prev) => ({ ...prev, mindset: value })),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "speed":
         return (
-          <div className={styles.onboardingSpeed}>
-            <h2>{step.title}</h2>
-            <p>
-              Based on your information, we recommend a moderate pace, but feel
-              free to adjust!
-            </p>
+          <RenderStepPage title={step.title} description={step.description}>
             <div className={styles.onboardingSlider}>
               <span>🐢</span>
               <Slider
@@ -530,17 +405,12 @@ const OnboardingFlow = () => {
               {formData.speed === "moderate" && "Sustainable and moderate pace"}
               {formData.speed === "fast" && "Ambitious and quick pace"}
             </p>
-          </div>
+          </RenderStepPage>
         );
 
       case "diet-plan":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p>
-              We'll start with a 1 week custom plan to help you gain weight.
-              Which plan best suits your preferences?
-            </p>
+          <RenderStepPage title={step.title} description={step.description}>
             {[
               {
                 name: "Balanced",
@@ -564,17 +434,12 @@ const OnboardingFlow = () => {
                   setFormData((prev) => ({ ...prev, dietPlan: value })),
               ),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "past-experience":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p>
-              {" "}
-              What best describes your experience with changing the way you eat?
-            </p>
+          <RenderStepPage title={step.title} description={step.description}>
             {renderOption(
               "no-past-experience",
               "No past experience",
@@ -591,18 +456,12 @@ const OnboardingFlow = () => {
               (value) =>
                 setFormData((prev) => ({ ...prev, pastExperience: value })),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "format":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p>
-              {" "}
-              What meals would you like to plan? You can adjust this if you
-              change your mind later!
-            </p>
+          <RenderStepPage title={step.title} description={step.description}>
             {renderOption(
               "dinners",
               "Dinners",
@@ -631,14 +490,12 @@ const OnboardingFlow = () => {
               formData.format === "custom",
               (value) => setFormData((prev) => ({ ...prev, format: value })),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "allergies":
         return (
-          <div className={styles.onboardingToggleList}>
-            <h2>{step.title}</h2>
-            <p> Do you have any food allergies or restrictions?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             {allergies.map((allergy) => (
               <div key={allergy} className={styles.onboardingToggleItem}>
                 <label htmlFor={allergy}>{allergy}</label>
@@ -656,14 +513,12 @@ const OnboardingFlow = () => {
               recipes that contain a disliked ingredient will not be recommended
               to you.
             </p>
-          </div>
+          </RenderStepPage>
         );
 
       case "dislikes":
         return (
-          <div className={styles.onboardingMultiSelect}>
-            <h2>{step.title}</h2>
-            <p> Are there any foods you dislike?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             <input
               type="text"
               placeholder="Add a food you dislike"
@@ -685,14 +540,12 @@ const OnboardingFlow = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </RenderStepPage>
         );
 
       case "cuisines":
         return (
-          <div className={styles.onboardingCuisinePreferences}>
-            <h2>{step.title}</h2>
-            <p> Are there any cuisines you especially like or dislike?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             {cuisines.map((cuisine) => (
               <div key={cuisine} className={styles.onboardingCuisineItem}>
                 <span>{cuisine}</span>
@@ -712,14 +565,12 @@ const OnboardingFlow = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </RenderStepPage>
         );
 
       case "pantry":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p> How well-stocked is your kitchen right now?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             {[
               {
                 value: "empty",
@@ -750,14 +601,12 @@ const OnboardingFlow = () => {
                 (value) => setFormData((prev) => ({ ...prev, pantry: value })),
               ),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       case "cooking-skills":
         return (
-          <div className={styles.onboardingSingleSelect}>
-            <h2>{step.title}</h2>
-            <p> How would you describe your cooking skills?</p>
+          <RenderStepPage title={step.title} description={step.description}>
             {[
               {
                 value: "novice",
@@ -789,13 +638,14 @@ const OnboardingFlow = () => {
                   setFormData((prev) => ({ ...prev, cookingSkills: value })),
               ),
             )}
-          </div>
+          </RenderStepPage>
         );
 
       default:
         return null;
     }
   };
+
   return (
     <div className={styles.onboardingContainer}>
       <div className={styles.onboardingHeader}>
