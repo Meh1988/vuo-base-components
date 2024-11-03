@@ -45,6 +45,43 @@ export const UserFoodProfile = () => {
           <StarRating />
         </div>
       </Section>
+      <Section className={styles.userFoodProfile__section}>
+        <img
+          className={styles.userFoodProfile__img}
+          src={Day2KetoImage}
+          alt="Image profile"
+        />
+        <div className={styles.userFoodProfile__info}>
+          <p className={styles.userFoodProfile__title}>
+            Mexican cauliflower rice
+          </p>
+          <div className={styles.userFoodProfile__icons}>
+            <HeartFilled />
+            <ShoppingCartOutlined />
+          </div>
+          <p className={styles.userFoodProfile__rating}>Very Good</p>
+          <StarRating />
+        </div>
+      </Section>
+
+      <Section className={styles.userFoodProfile__section}>
+        <img
+          className={styles.userFoodProfile__img}
+          src={Day2KetoImage}
+          alt="Image profile"
+        />
+        <div className={styles.userFoodProfile__info}>
+          <p className={styles.userFoodProfile__title}>
+            Mexican cauliflower rice
+          </p>
+          <div className={styles.userFoodProfile__icons}>
+            <HeartFilled />
+            <ShoppingCartOutlined />
+          </div>
+          <p className={styles.userFoodProfile__rating}>Very Good</p>
+          <StarRating />
+        </div>
+      </Section>
     </div>
   );
 };
