@@ -39,11 +39,11 @@ export const Tabs = ({ tabs }: TabsProps) => {
         </div>
       </Section>
 
-      <div className={styles.tabContent}>
-        {tabs.map((tab) => (
-          <div key={tab.id}>{tab.id === activeTab ? tab.content : null}</div>
-        ))}
-      </div>
+      {tabs.map((tab) => (
+        <div className={styles.tabContent} key={tab.id}>
+          {tab.id === activeTab ? tab.content : null}
+        </div>
+      ))}
     </div>
   );
 };
