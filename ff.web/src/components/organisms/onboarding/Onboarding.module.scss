@@ -25,6 +25,12 @@
   margin: 0 auto;
 }
 
+.onboardingStepPage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
 .onboardingNavigation {
   position: fixed;
   bottom: 0;
@@ -39,14 +45,14 @@
 }
 
 .title {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-24);
   margin-bottom: var(--space-24);
   font-weight: bold;
   line-height: 1.2;
 }
 
 .description {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-16);
   margin-bottom: var(--space-24);
   color: var(--text-secondary);
 }
@@ -90,7 +96,7 @@
 }
 
 .onboardingLabelDescription {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-16);
   color: var(--text-secondary);
 }
 
@@ -131,7 +137,7 @@
 .onboardingNumberInput {
   width: 100%;
   padding: var(--space-8);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-18);
   background-color: var(--surface-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-8);
@@ -146,7 +152,7 @@
 }
 
 .onboardingNote {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-16);
   color: var(--text-secondary);
   margin-top: var(--space-16);
 }
@@ -154,7 +160,7 @@
 .onboardingSearchInput {
   width: 100%;
   padding: var(--space-8);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-18);
   background-color: var(--surface-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-8);
@@ -173,7 +179,7 @@
   padding: var(--space-4) var(--space-8);
   background-color: var(--surface-tertiary);
   border-radius: var(--radius-24);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-16);
 }
 
 .onboardingCommonItems {
@@ -212,11 +218,11 @@
   }
 
   .title {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-24);
   }
 
   .description {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-16);
   }
 
   .onboardingOption {
@@ -224,15 +230,15 @@
   }
 
   .onboardingLabelTitle {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-18);
   }
 
   .onboardingLabelDescription {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-14);
   }
 
   .onboardingButton {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-16);
     padding: var(--space-8) var(--space-16);
   }
 }

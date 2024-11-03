@@ -175,11 +175,13 @@ const OnboardingFlow = () => {
     children,
   }: PropsRenderStep) => {
     return (
-      <div>
-        <h2>{title}</h2>
-        <p className={styles.description}>{description}</p>
+      <>
+        <div className={styles.onboardingStepPage}>
+          <h1>{title}</h1>
+          <p className={styles.description}>{description}</p>
+        </div>
         {children}
-      </div>
+      </>
     );
   };
 
