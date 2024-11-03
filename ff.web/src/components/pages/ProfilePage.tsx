@@ -7,6 +7,7 @@ import { Avatar } from "../atoms/Avatar";
 import Button from "../atoms/Button";
 import { Modal } from "../molecules/Modal";
 import { Tabs } from "../molecules/Tabs";
+import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserPreferences } from "../organisms/userPreferences";
 import styles from "./ProfilePage.module.scss";
 
@@ -82,7 +83,7 @@ const ProfilePage = function () {
               />
             ),
           },
-          { id: "tab2", label: "FOOD PROFILE", content: <div>Content 2</div> },
+          { id: "tab2", label: "FOOD PROFILE", content: <UserFoodProfile /> },
         ]}
       />
 
