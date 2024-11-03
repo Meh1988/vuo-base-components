@@ -59,17 +59,17 @@ const ProfilePage = function () {
             <p className={styles.profilePage__avatarInfo__role}>Umami Master</p>
           </div>
         </div>
-
-        <Button
-          variant="small"
-          color="primary"
-          onClick={() => {
-            navigateWithState("/onboarding");
-          }}
-        >
-          Edit Profile
-        </Button>
       </div>
+      <Button
+        variant="small"
+        color="primary"
+        onClick={() => {
+          navigateWithState("/onboarding");
+        }}
+        className="w-100"
+      >
+        Edit Profile
+      </Button>
       <Tabs
         tabs={[
           {

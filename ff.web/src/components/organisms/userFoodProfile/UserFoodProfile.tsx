@@ -9,79 +9,82 @@ import Day2KetoImage from "../../../../public/images/2.webp";
 export const UserFoodProfile = () => {
   return (
     <div className={styles.userFoodProfile}>
-      <Section className={styles.userFoodProfile__section}>
-        <img
-          className={styles.userFoodProfile__img}
-          src={Day1BaconImage}
-          alt="Image profile"
-        />
-        <div className={styles.userFoodProfile__info}>
-          <p className={styles.userFoodProfile__title}>
-            Grill chicken avocado salad
-          </p>
-          <div className={styles.userFoodProfile__icons}>
-            <HeartFilled />
-            <ShoppingCartOutlined />
+      <p>Recent meals</p>
+      <div className={styles.userFoodProfile__content}>
+        <Section className={styles.userFoodProfile__content__section}>
+          <img
+            className={styles.userFoodProfile__content__img}
+            src={Day1BaconImage}
+            alt="Image profile"
+          />
+          <div className={styles.userFoodProfile__content__info}>
+            <p className={styles.userFoodProfile__content__title}>
+              Grill chicken avocado salad
+            </p>
+            <div className={styles.userFoodProfile__content__icons}>
+              <HeartFilled />
+              <ShoppingCartOutlined />
+            </div>
+            <p className={styles.userFoodProfile__content__rating}>Very Good</p>
+            <StarRating />
           </div>
-          <p className={styles.userFoodProfile__rating}>Very Good</p>
-          <StarRating />
-        </div>
-      </Section>
-      <Section className={styles.userFoodProfile__section}>
-        <img
-          className={styles.userFoodProfile__img}
-          src={Day2KetoImage}
-          alt="Image profile"
-        />
-        <div className={styles.userFoodProfile__info}>
-          <p className={styles.userFoodProfile__title}>
-            Mexican cauliflower rice
-          </p>
-          <div className={styles.userFoodProfile__icons}>
-            <HeartFilled />
-            <ShoppingCartOutlined />
+        </Section>
+        <Section className={styles.userFoodProfile__content__section}>
+          <img
+            className={styles.userFoodProfile__content__img}
+            src={Day2KetoImage}
+            alt="Image profile"
+          />
+          <div className={styles.userFoodProfile__content__info}>
+            <p className={styles.userFoodProfile__content__title}>
+              Mexican cauliflower rice
+            </p>
+            <div className={styles.userFoodProfile__content__icons}>
+              <HeartFilled />
+              <ShoppingCartOutlined />
+            </div>
+            <p className={styles.userFoodProfile__content__rating}>Very Good</p>
+            <StarRating />
           </div>
-          <p className={styles.userFoodProfile__rating}>Very Good</p>
-          <StarRating />
-        </div>
-      </Section>
-      <Section className={styles.userFoodProfile__section}>
-        <img
-          className={styles.userFoodProfile__img}
-          src={Day2KetoImage}
-          alt="Image profile"
-        />
-        <div className={styles.userFoodProfile__info}>
-          <p className={styles.userFoodProfile__title}>
-            Mexican cauliflower rice
-          </p>
-          <div className={styles.userFoodProfile__icons}>
-            <HeartFilled />
-            <ShoppingCartOutlined />
+        </Section>
+        <Section className={styles.userFoodProfile__content__section}>
+          <img
+            className={styles.userFoodProfile__content__img}
+            src={Day2KetoImage}
+            alt="Image profile"
+          />
+          <div className={styles.userFoodProfile__content__info}>
+            <p className={styles.userFoodProfile__content__title}>
+              Mexican cauliflower rice
+            </p>
+            <div className={styles.userFoodProfile__content__icons}>
+              <HeartFilled />
+              <ShoppingCartOutlined />
+            </div>
+            <p className={styles.userFoodProfile__content__rating}>Very Good</p>
+            <StarRating />
           </div>
-          <p className={styles.userFoodProfile__rating}>Very Good</p>
-          <StarRating />
-        </div>
-      </Section>
+        </Section>
 
-      <Section className={styles.userFoodProfile__section}>
-        <img
-          className={styles.userFoodProfile__img}
-          src={Day2KetoImage}
-          alt="Image profile"
-        />
-        <div className={styles.userFoodProfile__info}>
-          <p className={styles.userFoodProfile__title}>
-            Mexican cauliflower rice
-          </p>
-          <div className={styles.userFoodProfile__icons}>
-            <HeartFilled />
-            <ShoppingCartOutlined />
+        <Section className={styles.userFoodProfile__content__section}>
+          <img
+            className={styles.userFoodProfile__content__img}
+            src={Day2KetoImage}
+            alt="Image profile"
+          />
+          <div className={styles.userFoodProfile__content__info}>
+            <p className={styles.userFoodProfile__content__title}>
+              Mexican cauliflower rice
+            </p>
+            <div className={styles.userFoodProfile__content__icons}>
+              <HeartFilled />
+              <ShoppingCartOutlined />
+            </div>
+            <p className={styles.userFoodProfile__content__rating}>Very Good</p>
+            <StarRating />
           </div>
-          <p className={styles.userFoodProfile__rating}>Very Good</p>
-          <StarRating />
-        </div>
-      </Section>
+        </Section>
+      </div>
     </div>
   );
 };
