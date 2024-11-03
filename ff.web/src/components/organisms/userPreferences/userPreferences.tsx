@@ -1,4 +1,9 @@
-import { CloseOutlined, HeartFilled, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  HeartFilled,
+  PlusOutlined,
+} from "@ant-design/icons";
 import Button from "@vuo/components/atoms/Button";
 import Input from "@vuo/components/atoms/Input";
 import Section from "@vuo/components/atoms/Section";
@@ -59,7 +64,10 @@ export const UserPreferences = ({
 
   return (
     <div className={styles.userPreferences}>
-      <p>Your preferences</p>
+      <div className={styles.userPreferences__header__title}>
+        <p>Your preferences</p>
+        <CheckOutlined />
+      </div>
 
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>

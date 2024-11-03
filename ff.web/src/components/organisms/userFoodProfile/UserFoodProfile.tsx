@@ -1,4 +1,8 @@
-import { HeartFilled, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  FilterOutlined,
+  HeartFilled,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
 import Section from "@vuo/components/atoms/Section";
 import { StarRating } from "@vuo/components/molecules/StarRating";
 import styles from "./UserFoodProfile.module.scss";
@@ -9,7 +13,10 @@ import Day2KetoImage from "../../../../public/images/2.webp";
 export const UserFoodProfile = () => {
   return (
     <div className={styles.userFoodProfile}>
-      <p>Recent meals</p>
+      <div className={styles.userFoodProfile__title}>
+        <p>Recent meals</p>
+        <FilterOutlined />
+      </div>
       <div className={styles.userFoodProfile__content}>
         <Section className={styles.userFoodProfile__content__section}>
           <img
