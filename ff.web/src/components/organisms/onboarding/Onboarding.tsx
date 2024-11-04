@@ -169,34 +169,25 @@ const OnboardingFlow = () => {
     </div>
   );
 
-  const RenderStepPage = ({
-    title,
-    description,
-    children,
-  }: PropsRenderStep) => {
-    return (
-      <>
-        <div className={styles.onboardingStepPage}>
-          <h1>{title}</h1>
-          <p className={styles.description}>{description}</p>
-        </div>
-        {children}
-      </>
-    );
-  };
-
   const renderStep = () => {
     const step = steps[currentStep];
 
     switch (step.id) {
       case "intro":
         return (
-          <RenderStepPage title={step.title} description={step.description} />
+          <div className={styles.onboardingStepPage}>
+            <h1>{step.title}</h1>
+            <p className={styles.description}>{step.description}</p>
+          </div>
         );
 
       case "userName":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <input
               type="text"
               name="userName"
@@ -205,29 +196,34 @@ const OnboardingFlow = () => {
               placeholder="Enter your name"
               className={styles.onboardingInput}
             />
-          </RenderStepPage>
+          </>
         );
 
       case "userId":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <input
               type="text"
               name="userId"
               value={formData.userId}
-              onChange={(e) => {
-                console.log("userId", e.target.value);
-                setFormData((prev) => ({ ...prev, userId: e.target.value }));
-              }}
+              onChange={handleInputChange}
               placeholder="Enter your user ID"
               className={styles.onboardingInput}
             />
-          </RenderStepPage>
+          </>
         );
 
       case "goals":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {goals.map((goal) => (
               <button
                 key={goal}
@@ -237,12 +233,16 @@ const OnboardingFlow = () => {
                 {goal}
               </button>
             ))}
-          </RenderStepPage>
+          </>
         );
 
       case "sex":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {renderOption(
               "female",
               "Female",
@@ -257,12 +257,16 @@ const OnboardingFlow = () => {
               formData.sex === "male",
               (value) => setFormData((prev) => ({ ...prev, sex: value })),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "age":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <input
               type="number"
               name="age"
@@ -271,12 +275,16 @@ const OnboardingFlow = () => {
               placeholder="Enter your age"
               className={styles.onboardingInput}
             />
-          </RenderStepPage>
+          </>
         );
 
       case "height":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <input
               type="number"
               name="height"
@@ -285,12 +293,16 @@ const OnboardingFlow = () => {
               placeholder="Enter your height in cm"
               className={styles.onboardingInput}
             />
-          </RenderStepPage>
+          </>
         );
 
       case "current-weight":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <input
               type="number"
               name="currentWeight"
@@ -299,12 +311,16 @@ const OnboardingFlow = () => {
               placeholder="Enter your weight in kg"
               className={styles.onboardingInput}
             />
-          </RenderStepPage>
+          </>
         );
 
       case "goal-weight":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <input
               type="number"
               name="goalWeight"
@@ -313,12 +329,16 @@ const OnboardingFlow = () => {
               placeholder="Enter your goal weight in kg"
               className={styles.onboardingInput}
             />
-          </RenderStepPage>
+          </>
         );
 
       case "motivation":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {renderOption(
               "very-motivated",
               "Very motivated",
@@ -351,12 +371,16 @@ const OnboardingFlow = () => {
               (value) =>
                 setFormData((prev) => ({ ...prev, motivation: value })),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "activity":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {renderOption(
               "sedentary",
               "Sedentary",
@@ -397,12 +421,16 @@ const OnboardingFlow = () => {
               (value) =>
                 setFormData((prev) => ({ ...prev, activityLevel: value })),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "mindset":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {renderOption(
               "agree",
               "Agree",
@@ -424,12 +452,16 @@ const OnboardingFlow = () => {
               formData.mindset === "disagree",
               (value) => setFormData((prev) => ({ ...prev, mindset: value })),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "speed":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <div className={styles.onboardingSlider}>
               <span>🐢</span>
               <Slider
@@ -454,12 +486,16 @@ const OnboardingFlow = () => {
               {formData.speed === "moderate" && "Sustainable and moderate pace"}
               {formData.speed === "fast" && "Ambitious and quick pace"}
             </p>
-          </RenderStepPage>
+          </>
         );
 
       case "diet-plan":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {dietsPlan.map((diet) =>
               renderOption(
                 diet.name.toLowerCase(),
@@ -470,12 +506,16 @@ const OnboardingFlow = () => {
                   setFormData((prev) => ({ ...prev, dietPlan: value })),
               ),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "past-experience":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {renderOption(
               "no-past-experience",
               "No past experience",
@@ -492,12 +532,16 @@ const OnboardingFlow = () => {
               (value) =>
                 setFormData((prev) => ({ ...prev, pastExperience: value })),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "format":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {renderOption(
               "dinners",
               "Dinners",
@@ -526,12 +570,16 @@ const OnboardingFlow = () => {
               formData.format === "custom",
               (value) => setFormData((prev) => ({ ...prev, format: value })),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "allergies":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {allergies.map((allergy) => (
               <div key={allergy} className={styles.onboardingToggleItem}>
                 <label htmlFor={allergy}>{allergy}</label>
@@ -549,12 +597,16 @@ const OnboardingFlow = () => {
               recipes that contain a disliked ingredient will not be recommended
               to you.
             </p>
-          </RenderStepPage>
+          </>
         );
 
       case "dislikes":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             <input
               type="text"
               placeholder="Add a food you dislike"
@@ -576,12 +628,16 @@ const OnboardingFlow = () => {
                 </button>
               ))}
             </div>
-          </RenderStepPage>
+          </>
         );
 
       case "cuisines":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {cuisines.map((cuisine) => (
               <div key={cuisine} className={styles.onboardingCuisineItem}>
                 <span>{cuisine}</span>
@@ -601,12 +657,16 @@ const OnboardingFlow = () => {
                 </div>
               </div>
             ))}
-          </RenderStepPage>
+          </>
         );
 
       case "pantry":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {pantry.map((option) =>
               renderOption(
                 option.value,
@@ -616,12 +676,16 @@ const OnboardingFlow = () => {
                 (value) => setFormData((prev) => ({ ...prev, pantry: value })),
               ),
             )}
-          </RenderStepPage>
+          </>
         );
 
       case "cooking-skills":
         return (
-          <RenderStepPage title={step.title} description={step.description}>
+          <>
+            <div className={styles.onboardingStepPage}>
+              <h1>{step.title}</h1>
+              <p className={styles.description}>{step.description}</p>
+            </div>
             {cookingSkills.map((option) =>
               renderOption(
                 option.value,
@@ -632,7 +696,7 @@ const OnboardingFlow = () => {
                   setFormData((prev) => ({ ...prev, cookingSkills: value })),
               ),
             )}
-          </RenderStepPage>
+          </>
         );
 
       default:
