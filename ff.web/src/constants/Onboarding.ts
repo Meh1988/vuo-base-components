@@ -46,6 +46,8 @@ export const initialOnboardingData = {
   goals: [],
   sex: "",
   age: "",
+  userId: "",
+  userName: "",
   height: "",
   currentWeight: "",
   goalWeight: "",
@@ -72,10 +74,16 @@ export const steps = [
     status: OnboardingStatus.notStarted,
   },
   {
-    id: "goals",
-    title: "Your goals",
+    id: "userName",
+    title: "Your name",
+    description: "What should we call you?",
+    status: OnboardingStatus.notStarted,
+  },
+  {
+    id: "userId",
+    title: "Your user ID",
     description:
-      "What can we help you accomplish? We'll personalize our recommendations based on your goals.",
+      "This is your unique user ID. It will be used to identify you in our system.",
     status: OnboardingStatus.notStarted,
   },
   {
@@ -107,6 +115,13 @@ export const steps = [
     id: "goal-weight",
     title: "Goal weight",
     description: "What is your goal weight?",
+    status: OnboardingStatus.notStarted,
+  },
+  {
+    id: "goals",
+    title: "Your goals",
+    description:
+      "What can we help you accomplish? We'll personalize our recommendations based on your goals.",
     status: OnboardingStatus.notStarted,
   },
   {

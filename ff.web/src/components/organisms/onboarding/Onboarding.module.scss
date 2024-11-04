@@ -134,16 +134,6 @@
   }
 }
 
-.onboardingNumberInput {
-  width: 100%;
-  padding: var(--space-8);
-  font-size: var(--font-size-18);
-  background-color: var(--surface-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-8);
-  color: var(--text-primary);
-}
-
 .onboardingToggleItem {
   display: flex;
   justify-content: space-between;
@@ -157,7 +147,7 @@
   margin-top: var(--space-16);
 }
 
-.onboardingSearchInput {
+.onboardingInput {
   width: 100%;
   padding: var(--space-8);
   font-size: var(--font-size-18);
