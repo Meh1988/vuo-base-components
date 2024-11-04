@@ -194,6 +194,37 @@ const OnboardingFlow = () => {
           <RenderStepPage title={step.title} description={step.description} />
         );
 
+      case "userName":
+        return (
+          <RenderStepPage title={step.title} description={step.description}>
+            <input
+              type="text"
+              name="userName"
+              value={formData.userName}
+              onChange={handleInputChange}
+              placeholder="Enter your name"
+              className={styles.onboardingInput}
+            />
+          </RenderStepPage>
+        );
+
+      case "userId":
+        return (
+          <RenderStepPage title={step.title} description={step.description}>
+            <input
+              type="text"
+              name="userId"
+              value={formData.userId}
+              onChange={(e) => {
+                console.log("userId", e.target.value);
+                setFormData((prev) => ({ ...prev, userId: e.target.value }));
+              }}
+              placeholder="Enter your user ID"
+              className={styles.onboardingInput}
+            />
+          </RenderStepPage>
+        );
+
       case "goals":
         return (
           <RenderStepPage title={step.title} description={step.description}>
@@ -238,7 +269,7 @@ const OnboardingFlow = () => {
               value={formData.age}
               onChange={handleInputChange}
               placeholder="Enter your age"
-              className={styles.onboardingNumberInput}
+              className={styles.onboardingInput}
             />
           </RenderStepPage>
         );
@@ -252,7 +283,7 @@ const OnboardingFlow = () => {
               value={formData.height}
               onChange={handleInputChange}
               placeholder="Enter your height in cm"
-              className={styles.onboardingNumberInput}
+              className={styles.onboardingInput}
             />
           </RenderStepPage>
         );
@@ -266,7 +297,7 @@ const OnboardingFlow = () => {
               value={formData.currentWeight}
               onChange={handleInputChange}
               placeholder="Enter your weight in kg"
-              className={styles.onboardingNumberInput}
+              className={styles.onboardingInput}
             />
           </RenderStepPage>
         );
@@ -280,7 +311,7 @@ const OnboardingFlow = () => {
               value={formData.goalWeight}
               onChange={handleInputChange}
               placeholder="Enter your goal weight in kg"
-              className={styles.onboardingNumberInput}
+              className={styles.onboardingInput}
             />
           </RenderStepPage>
         );
@@ -531,7 +562,7 @@ const OnboardingFlow = () => {
                 const value = e.target.value.toLowerCase();
                 console.log("Searching for:", value);
               }}
-              className={styles.onboardingSearchInput}
+              className={styles.onboardingInput}
             />
             <h4>Common Dislikes</h4>
             <div className={styles.onboardingCommonItems}>

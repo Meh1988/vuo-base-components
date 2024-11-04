@@ -55,8 +55,12 @@ const ProfilePage = function () {
         <div className={styles.profilePage__header__avatar}>
           <Avatar src="https://placehold.co/50x50" alt="Image profile" />
           <div className={styles.profilePage__avatarInfo}>
-            <p className={styles.profilePage__avatarInfo__name}>Shawn</p>
-            <p className={styles.profilePage__avatarInfo__role}>Umami Master</p>
+            <p className={styles.profilePage__avatarInfo__name}>
+              {profileData?.userName || "User Name Profile"}
+            </p>
+            <p className={styles.profilePage__avatarInfo__role}>
+              {profileData?.userId || "User ID Profile"}
+            </p>
           </div>
         </div>
       </div>
