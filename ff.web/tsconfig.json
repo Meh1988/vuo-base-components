@@ -55,6 +55,7 @@
     "src",
     "src/custom.d.ts",
     "../shared-components/src/QuestLineOnboardingHero.tsx",
+
     ".storybook/"
   ],
   "references": [
@@ -63,3 +64,4 @@
     }
   ]
 }
+

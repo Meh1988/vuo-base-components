@@ -1,9 +1,13 @@
 import { observer } from 'mobx-react-lite';
 import { Card, Slider } from 'antd-mobile';
 import Button from '@vuo/atoms/Button';
+import PanSvg from '@vuo/atoms/PanSvg';
 import React, { useEffect, useState } from 'react';
 import Tooltip from '@vuo/atoms/ToolTip';
+// import SteakCrossSection from '@vuo/molecules/SteakCrossSection';
 import styles from './VirtualSear.module.scss';
+import SteakSvg from '../atoms/SteakSvg';
+import FlameSvg from '../atoms/FlameSvg';
 
 interface Doneness {
     min: number;
@@ -64,6 +68,25 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
     const [placedSide, setPlacedSide] = useState<string>("bottom");
     const [isServed, setIsServed] = useState<boolean>(false);
 
+    const [currentFaceColor, setCurrentFaceColor] = useState<string>('hsl(354, 81%, 63%)');
+
+    const useGetFaceColor = () => {
+        const targetColor = `hsl(354, 81%, ${placedSide === 'bottom' ? 63 - topSear * 0.48 : 63 - bottomSear * 0.48}%)`;
+
+        useEffect(() => {
+            const timer = setTimeout(() => {
+                setCurrentFaceColor(targetColor);
+            }, 250);
+
+            return () => clearTimeout(timer);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [placedSide]);
+
+        return currentFaceColor;
+    };
+
+    const faceColor = useGetFaceColor();
+
     function onPlaceOrRetire() {
         setIsPlaced(!isPlaced);
     }
@@ -87,6 +110,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
         setIsPlaced(false);
         setPlacedSide("bottom");
         setIsServed(false);
+        setCurrentFaceColor('hsl(354, 81%, 63%)');
     }
 
     const getCurrentDoneness = (): Doneness => {
@@ -111,20 +135,19 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
                 const { searMultiplier, donenessMultiplier } = getCookingMultiplier(temperature);
 
                 if (placedSide === "bottom") {
-                    setBottomSear(prev => Math.min(100, prev + (baseSearRate * searMultiplier) / 10));
+                    setBottomSear(prev => prev + (baseSearRate * searMultiplier) / 10);
                 } else {
-                    setTopSear(prev => Math.min(100, prev + (baseSearRate * searMultiplier) / 10));
+                    setTopSear(prev => prev + (baseSearRate * searMultiplier) / 10);
                 }
 
                 // The insides cook together
-                setTopDoneness(prev => Math.min(100, prev + (baseDonenessRate * donenessMultiplier) / 10));
-                setBottomDoneness(prev => Math.min(100, prev + (baseDonenessRate * donenessMultiplier) / 10));
+                setTopDoneness(prev => prev + (baseDonenessRate * donenessMultiplier) / 10);
+                setBottomDoneness(prev => prev + (baseDonenessRate * donenessMultiplier) / 10);
             }, 100);
 
             return () => clearInterval(interval);
         }
     }, [isPlaced, temperature, placedSide]);
-
 
     return (
         <Card className={styles.container}>
@@ -143,9 +166,9 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
                             {getResult()}
                         </p>
                         <div className={styles.doneness_result_container}>
-                            <p className={styles.result}>Top Sear: {Math.round(topSear)}%</p>
-                            <p className={styles.result}>Bottom Sear: {Math.round(bottomSear)}%</p>
-                            <p className={styles.result}>Inside Doneness: {Math.round((topDoneness + bottomDoneness) / 2)}%</p>
+                            <p className={styles.result}>Top Sear: {Math.round(topSear) > 100 ? "Burnt" : `${Math.round(topSear)}%`}</p>
+                            <p className={styles.result}>Bottom Sear: {Math.round(bottomSear) > 100 ? "Burnt" : `${Math.round(bottomSear)}%`}</p>
+                            <p className={styles.result}>Inside Doneness: {Math.round((topDoneness + bottomDoneness) / 2) > 100 ? "Burnt" : `${Math.round((topDoneness + bottomDoneness) / 2)}%`}</p>
                         </div>
                     </div>
                     <div className={styles.controls_container}>
@@ -180,7 +203,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
                                     <p>Burnt: 100%+</p>
                                 </div>
                             }
-                            
+
                         >
                             <span style={{ cursor: 'pointer' }}>&#8505;</span>
                         </Tooltip>
@@ -194,32 +217,30 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
                         </span>
                     </div>
                     <div className={styles.content}>
-                        <div className={`${styles.steak_container} ${placedSide !== 'bottom' ? styles.flipped : ''}`}>
-                            {/* Map over an array of two elements to create two halves of the steak */}
-                            {[0, 1].map((index) => (
-                                // Create a div for each half of the steak
-                                <div key={index} className={styles.steak_half}>
-                                    {/* This div represents the raw part of the steak */}
-                                    <div className={styles.steak_half_raw} />
-                                    {/* This div represents the cooked part of the steak */}
-                                    <div
-                                        className={styles.steak_half_cooked}
-                                        style={{
-                                            opacity: index === 0 ? topDoneness / 100 : bottomDoneness / 100
-                                        }}
-                                    />
-                                    {/* This div represents the sear on the steak */}
-                                    <div
-                                        className={index === 0 ? styles.steak_half_sear_top : styles.steak_half_sear_bottom}
-                                        style={{
-                                            opacity: index === 0 ? topSear / 100 : bottomSear / 100
-                                        }}
-                                    />
-                                </div>
-                            ))}
-                        </div>
+
+                        <PanSvg className={styles.pan_svg} />
+
+
+                        {/* <SteakCrossSection
+                            placedSide={placedSide}
+                            isPlaced={isPlaced}
+                            topDoneness={topDoneness}
+                            bottomDoneness={bottomDoneness}
+                            topSear={topSear}
+                            bottomSear={bottomSear}
+                        /> */}
+                        <SteakSvg
+                            className={`${styles.steak_svg} ${isPlaced ? styles.placed : ''} ${placedSide !== 'bottom' ? styles.flipped : ''}`}
+                            sideColor={`hsl(354, 67%, ${56 - ((topDoneness + bottomDoneness) / 2) * 0.48}%)`}
+                            faceColor={faceColor}
+                        />
                     </div>
                     <div className={styles.controls_container}>
+                        <div className={styles.flame_container}>
+                            {[...Array(temperature)].map(() => (
+                                <FlameSvg className={styles.flame} />
+                            ))}
+                        </div>
                         <div className={styles.slider_container}>
                             <div className={styles.text}>Temperature: {getTemperatureLabel(temperature)}</div>
                             <Slider
@@ -237,9 +258,9 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
                         </div>
                     </div>
                     <div className={styles.info_container}>
-                        <span className={styles.text}>Top Sear: {Math.round(topSear)}%</span>
-                        <span className={styles.text}>Bottom Sear: {Math.round(bottomSear)}%</span>
-                        <span className={styles.text}>Inside Doneness: {Math.round((topDoneness + bottomDoneness) / 2)}%</span>
+                        <p className={styles.text}>Top Sear: {Math.round(topSear) > 100 ? "Burnt" : `${Math.round(topSear)}%`}</p>
+                        <p className={styles.text}>Bottom Sear: {Math.round(bottomSear) > 100 ? "Burnt" : `${Math.round(bottomSear)}%`}</p>
+                        <p className={styles.text}>Inside Doneness: {Math.round((topDoneness + bottomDoneness) / 2) > 100 ? "Burnt" : `${Math.round((topDoneness + bottomDoneness) / 2)}%`}</p>
                     </div>
                     <div className={styles.controls_container}>
                         <Button
