@@ -63,7 +63,11 @@ const ProfilePage = function () {
             </p>
           </div>
         </div>
+        <p className={styles.profilePage__header__description}>
+          {profileData?.description || "User Description Profile"}
+        </p>
       </div>
+
       <Button
         variant="small"
         color="primary"
