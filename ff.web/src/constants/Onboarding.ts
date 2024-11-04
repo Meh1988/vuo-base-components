@@ -48,6 +48,7 @@ export const initialOnboardingData = {
   age: "",
   userId: "",
   userName: "",
+  description: "",
   height: "",
   currentWeight: "",
   goalWeight: "",
@@ -84,6 +85,13 @@ export const steps = [
     title: "Your user ID",
     description:
       "This is your unique user ID. It will be used to identify you in our system.",
+    status: OnboardingStatus.notStarted,
+  },
+  {
+    id: "description",
+    title: "Your description",
+    description:
+      "Tell us a bit about yourself. This will help us personalize your meal plan.",
     status: OnboardingStatus.notStarted,
   },
   {
