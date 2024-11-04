@@ -2,7 +2,8 @@ import app from "./app";
 import { connectToDatabase, closeDatabaseConnection } from "./database";
 // import { createWebSocketServer } from './websocketServer';
 
-const PORT = process.env.VITE_FFAPI_PORT || '3001';
+// const PORT = process.env.VITE_FFAPI_PORT || '3001';
+const PORT = process.env.PORT || '8080';
 
 const startServer = async () => {
   try {

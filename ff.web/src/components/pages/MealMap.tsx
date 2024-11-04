@@ -1,54 +1,29 @@
-import { useQuery } from '@tanstack/react-query';
-import Page from "../templates/Page";
 import styles from "./MealMap.module.scss";
-import { fetchRecipes } from '@vuo/api/api';
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import { MealMapViewModel } from '@vuo/viewModels/MealMapViewModel';
+import Page from "../templates/Page";
 
-const organizeMeals = (recipes) => {
-  const mealPlan = [];
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() + 1);
+const MealMap = observer(() => {
+    const [viewModel] = useState<MealMapViewModel>(
+        () => new MealMapViewModel(),
+    );
 
-  for (let day = 0; day < 14; day++) {
-    const currentDate = new Date(startDate);
-    currentDate.setDate(startDate.getDate() + day);
-
-    const meals = recipes.slice(day * 3, day * 3 + 3).map((recipe, index) => ({
-      id: recipe._id,
-      name: recipe.name || `Meal ${index + 1}`,
-      description: recipe.description || `Description for Meal ${index + 1}`,
-      image: recipe?.media?.image,  //TODO media is undefined in many places, need to fix it + contains tasks
-    }));
-
-    mealPlan.push({
-      date: currentDate.toDateString(),
-      meals,
-    });
+  if (viewModel.isLoading) {
+    return <div>Loading...</div>;
   }
 
-  return mealPlan;
-};
-
-export default function MealMap() {
-  // Updated useQuery to use object form as required in React Query v5
-  const { data: recipes, error, isLoading } = useQuery({
-    queryKey: ['recipes'],
-    queryFn: fetchRecipes,
-  });
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching recipes: {error.message}</p>;
-
-  // Organize the meals after fetching
-  const mealPlan = recipes ? organizeMeals(recipes) : [];
+  if (viewModel.error) {
+    return <div>Error: {viewModel.error}</div>;
+  }
 
   return (
     <Page>
-      <div className={styles.mealMap}>
-        {mealPlan.map((dayPlan, index) => (
+       {viewModel.mealPlan.map((dayPlan, index) => (
           <div key={index} className={styles.dayPlan}>
             <h3>{dayPlan.date}</h3>
             <div className={styles.mealsGrid}>
-              {dayPlan.meals.map((meal) => (
+              {dayPlan.meals.map((meal: any) => (
                 <div key={meal.id} className={styles.mealBox}>
                   <strong>{meal.name}</strong>
                   <img src={meal?.image} alt={meal.name} />
@@ -58,7 +33,8 @@ export default function MealMap() {
             </div>
           </div>
         ))}
-      </div>
     </Page>
   );
-}
+});
+
+export default MealMap; 
