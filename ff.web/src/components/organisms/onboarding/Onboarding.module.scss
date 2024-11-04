@@ -25,9 +25,15 @@
   margin: 0 auto;
 }
 
+.onboardingStepPage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
 .onboardingNavigation {
   position: fixed;
-  bottom: 56px;
+  bottom: 0;
   left: 0;
   right: 0;
   background-color: var(--surface-secondary);
@@ -39,14 +45,14 @@
 }
 
 .title {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-24);
   margin-bottom: var(--space-24);
   font-weight: bold;
   line-height: 1.2;
 }
 
 .description {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-16);
   margin-bottom: var(--space-24);
   color: var(--text-secondary);
 }
@@ -59,7 +65,9 @@
   border-radius: var(--radius-16);
   background-color: var(--surface-secondary);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 
   &:hover {
     background-color: var(--surface-tertiary);
@@ -88,7 +96,7 @@
 }
 
 .onboardingLabelDescription {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-16);
   color: var(--text-secondary);
 }
 
@@ -101,7 +109,10 @@
   background-color: var(--surface-secondary);
   color: var(--text-primary);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
   font-weight: bold;
 
   &:hover {
@@ -123,16 +134,6 @@
   }
 }
 
-.onboardingNumberInput {
-  width: 100%;
-  padding: var(--space-8);
-  font-size: var(--font-size-md);
-  background-color: var(--surface-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-8);
-  color: var(--text-primary);
-}
-
 .onboardingToggleItem {
   display: flex;
   justify-content: space-between;
@@ -141,20 +142,25 @@
 }
 
 .onboardingNote {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-16);
   color: var(--text-secondary);
   margin-top: var(--space-16);
 }
 
-.onboardingSearchInput {
+.onboardingInput {
   width: 100%;
   padding: var(--space-8);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-18);
   background-color: var(--surface-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-8);
   color: var(--text-primary);
   margin-bottom: var(--space-16);
+}
+
+.onboardingInputTextarea {
+  height: 150px;
+  resize: none;
 }
 
 .onboardingSelectedItems {
@@ -168,7 +174,7 @@
   padding: var(--space-4) var(--space-8);
   background-color: var(--surface-tertiary);
   border-radius: var(--radius-24);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-16);
 }
 
 .onboardingCommonItems {
@@ -207,11 +213,11 @@
   }
 
   .title {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-24);
   }
 
   .description {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-16);
   }
 
   .onboardingOption {
@@ -219,15 +225,15 @@
   }
 
   .onboardingLabelTitle {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-18);
   }
 
   .onboardingLabelDescription {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-14);
   }
 
   .onboardingButton {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-16);
     padding: var(--space-8) var(--space-16);
   }
 }

@@ -7,6 +7,7 @@ import { Avatar } from "../atoms/Avatar";
 import Button from "../atoms/Button";
 import { Modal } from "../molecules/Modal";
 import { Tabs } from "../molecules/Tabs";
+import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserPreferences } from "../organisms/userPreferences";
 import styles from "./ProfilePage.module.scss";
 
@@ -54,21 +55,29 @@ const ProfilePage = function () {
         <div className={styles.profilePage__header__avatar}>
           <Avatar src="https://placehold.co/50x50" alt="Image profile" />
           <div className={styles.profilePage__avatarInfo}>
-            <p className={styles.profilePage__avatarInfo__name}>Shawn</p>
-            <p className={styles.profilePage__avatarInfo__role}>Umami Master</p>
+            <p className={styles.profilePage__avatarInfo__name}>
+              {profileData?.userName || "User Name Profile"}
+            </p>
+            <p className={styles.profilePage__avatarInfo__role}>
+              {profileData?.userId || "User ID Profile"}
+            </p>
           </div>
         </div>
-
-        <Button
-          variant="small"
-          color="primary"
-          onClick={() => {
-            navigateWithState("/onboarding");
-          }}
-        >
-          Edit Profile
-        </Button>
+        <p className={styles.profilePage__header__description}>
+          {profileData?.description || "User Description Profile"}
+        </p>
       </div>
+
+      <Button
+        variant="small"
+        color="primary"
+        onClick={() => {
+          navigateWithState("/onboarding");
+        }}
+        className="w-100"
+      >
+        Edit Profile
+      </Button>
       <Tabs
         tabs={[
           {
@@ -82,7 +91,7 @@ const ProfilePage = function () {
               />
             ),
           },
-          { id: "tab2", label: "FOOD PROFILE", content: <div>Content 2</div> },
+          { id: "tab2", label: "FOOD PROFILE", content: <UserFoodProfile /> },
         ]}
       />
 

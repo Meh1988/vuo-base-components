@@ -1,0 +1,66 @@
+.userFoodProfile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    justify-content: space-between;
+  }
+
+  &__content {
+    display: flex;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+    justify-content: center;
+
+    &__section {
+      padding: 0;
+      align-items: start;
+      height: 240px;
+      justify-content: space-between;
+      flex: 1 1 170px;
+    }
+
+    &__img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-top-left-radius: var(--radius-16);
+      border-top-right-radius: var(--radius-16);
+    }
+
+    &__info {
+      display: flex;
+      align-items: start;
+      flex-direction: column;
+      gap: var(--space-8);
+      padding: var(--space-8);
+      height: 100%;
+      justify-content: space-around;
+    }
+
+    &__icons {
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    &__title {
+      font-size: var(--font-size-16);
+      line-height: normal;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+
+    &__rating {
+      font-size: var(--font-size-12);
+      color: var(--adm-color-text-secondary);
+    }
+  }
+}
