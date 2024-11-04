@@ -15,15 +15,22 @@ export interface Unit {
     quests: ProgressionPathQuest[];
 }
 
-enum ProgressionPathQuestType {
-    CHALLENGE = 'challenge',
-    QUEST = 'quest',
-}
+export type ProgressionPathQuestType = 
+    | 'recipe' 
+    | 'minigame'
+    | 'minigame-virtual-sear'
+    | 'minigame-cut-guessr'
+    | 'minigame-conversation-starter'
+    | 'minigame-ingredient-match'
+    | 'minigame-quiz';
 
 export interface ProgressionPathQuest {
     id: string;
+    minigameId?: string;
+    animal?: string;
+    quizId?: string;
+    recipeId?: string;
     title: string;
     description: string;
-    color: string;
     type: ProgressionPathQuestType;
 }
