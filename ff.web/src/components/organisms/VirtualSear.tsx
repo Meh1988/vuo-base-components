@@ -54,7 +54,7 @@ const getTemperatureLabel = (temperature: number): string => {
 const baseSearRate = 2;
 const baseDonenessRate = 1;
 
-const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> = observer(({ onClose, allowPlayAgain }) => {
+const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean }> = observer(({ onClose, allowReplay }) => {
     const [targetDoneness, setTargetDoneness] = useState<Doneness>(donenessLevels[Math.floor(Math.random() * donenessLevels.length)]);
 
     const [topSear, setTopSear] = useState<number>(0);
@@ -173,7 +173,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowPlayAgain: boolean }> =
                     </div>
                     <div className={styles.controls_container}>
                         <div className={styles.button_container} style={{ flexDirection: 'column' }}>
-                            {allowPlayAgain && (
+                            {allowReplay && (
                                 <Button variant="large" color="primary" onClick={() => onPlayAgain()}>
                                     Play Again
                                 </Button>
