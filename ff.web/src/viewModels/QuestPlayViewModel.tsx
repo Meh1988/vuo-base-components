@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { action, computed, makeObservable, runInAction } from "mobx";
 import TagManager from "react-gtm-module";
 

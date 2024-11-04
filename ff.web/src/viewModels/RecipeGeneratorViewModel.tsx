@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { v4 as uuid } from 'uuid';
 

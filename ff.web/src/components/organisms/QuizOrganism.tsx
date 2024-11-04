@@ -1,8 +1,10 @@
+
 import { useState } from 'react';
 import QuizResult from '@vuo/components/molecules/QuizResults';
 import QuizQuestion from '@vuo/components/molecules/QuizQuestion';
 import Button from "@vuo/components/atoms/Button";
 import { QuizData, UserAnswer } from '@vuo/models/QuizTypes';
+
 import styles from './Quiz.module.scss';
 
 export default function QuizOrganism({ quiz }: { quiz: QuizData }) {

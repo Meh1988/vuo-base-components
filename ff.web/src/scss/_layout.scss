@@ -3,25 +3,35 @@
   --space-2: #{$space-2}; // xxs
   --space-4: #{$space-4}; // xs
   --space-8: #{$space-8}; // sm
-  --space-16: #{$space-16}; // md
-  --space-24: #{$space-24}; // lg
-  --space-32: #{$space-32}; // xl
-  --space-40: #{$space-40}; // xxl
-  --space-48: #{$space-48}; // 3xl
-  --space-64: #{$space-64}; // 4xl
-  --space-80: #{$space-80}; // 5xl
-  --space-88: #{$space-88}; // 6xl
-  --space-96: #{$space-96}; // 7xl
-  --space-104: #{$space-104}; // 8xl
+  --space-12: #{$space-12}; // md
+  --space-16: #{$space-16}; // lg
+  --space-24: #{$space-24}; // xl
+  --space-32: #{$space-32}; // xxl
+  --space-40: #{$space-40}; // 3xl
+  --space-48: #{$space-48}; // 4xl
+  --space-64: #{$space-64}; // 5xl
+  --space-80: #{$space-80}; // 6xl
+  --space-88: #{$space-88}; // 7xl
+  --space-96: #{$space-96}; // 8xl
+  --space-104: #{$space-104}; // 9xl
 
   // Radius variables
   --radius-2: #{$radius-2}; // xs
   --radius-4: #{$radius-4}; // sm
   --radius-8: #{$radius-8}; // md
-  --radius-16: #{$radius-16}; // lg
-  --radius-24: #{$radius-24}; // xl
-  --radius-32: #{$radius-32}; // xxl
-  --radius-128: #{$radius-128}; // 3xl
+  --radius-12: #{$radius-12}; // lg
+  --radius-16: #{$radius-16}; // xl
+  --radius-24: #{$radius-24}; // xxl
+  --radius-32: #{$radius-32}; // 3xl
+  --radius-128: #{$radius-128}; // 4xl
+
+  // Typography variables
+  --font-size-12: #{$font-size-12}; // xxs
+  --font-size-14: #{$font-size-14}; // xs
+  --font-size-16: #{$font-size-16}; // sm
+  --font-size-18: #{$font-size-18}; // md
+  --font-size-20: #{$font-size-20}; // lg
+  --font-size-24: #{$font-size-24}; // xl
 }
 
 html {
