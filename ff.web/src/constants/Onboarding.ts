@@ -1,4 +1,4 @@
-import { OnboardingStatus } from "@vuo/models/Onboarding";
+import { FormData, OnboardingStatus } from "@models/Onboarding";
 
 export const allergies = [
   "Shellfish",
@@ -42,7 +42,7 @@ export const cuisines = [
   "Indian",
 ];
 
-export const initialOnboardingData = {
+export const initialOnboardingData: FormData = {
   goals: [],
   sex: "",
   age: "",
