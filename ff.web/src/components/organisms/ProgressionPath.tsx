@@ -11,12 +11,11 @@ export default function ProgressionPath({ units, onQuestClick }: ProgressionPath
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     const renderLevel = (unit: Unit, quest: ProgressionPathQuest, index: number) => {
-        const isActive = false;
+        const isActive = true;
         const xOffset = (() => {
-            if (index % 5 < 3) return index % 5 * 60;
-            return index % 5 === 3 ? 120 : 60;
+            if (index % 5 < 3) return (index % 5 * 30);
+            return index % 5 === 3 ? 15 : 0;
         })();
-        const yOffset = index * 80;
 
         const isPlayable = true;
 
@@ -25,42 +24,54 @@ export default function ProgressionPath({ units, onQuestClick }: ProgressionPath
             <button
                 key={quest.id}
                 onClick={() => isPlayable && onQuestClick(quest)}
-                className={`${styles['progression-path__quest-button']} ${isPlayable ? styles['progression-path__quest-button--playable'] : ''
-                    } ${isActive ? styles['progression-path__quest-button--active'] : styles['progression-path__quest-button--inactive']}`}
+                className={`${styles.progressionPathQuestButton} ${
+                    isPlayable ? styles.progressionPathQuestButtonPlayable : ''
+                } ${isActive ? styles.progressionPathQuestButtonActive : styles.progressionPathQuestButtonInactive}`}
                 style={{
-                    left: `calc(50% - 80px + ${xOffset}px)`,
-                    top: `${yOffset}px`,
-                    backgroundColor: isPlayable ? unit.color.replace('bg-', '') : '#E5E7EB',
+                    transform: `translateX(${xOffset}px)`,
+                    backgroundColor: isPlayable ? 'var(--color-grey-systemGrayAccessibleLight)' : '#E5E7EB',
                 }}
             >
-                {/* eslint-disable-next-line no-nested-ternary */}
-                {isActive ? (
-                    <p className={styles.text}>icon</p>
-                ) : index === 1 ? (
-                    <p className={styles.text}>icon</p>
-                ) : (
-                    <p className={styles.text}>icon</p>
-                )}
+            {(() => {
+                switch (quest.type) {
+                    case 'recipe':
+                        return '🍳';
+                    case 'minigame':
+                        return '🎮';
+                    case 'minigame-virtual-sear':
+                        return '🥩';
+                    case 'minigame-cut-guessr':
+                        return '🔪';
+                    case 'minigame-conversation-starter':
+                        return '💭';
+                    case 'minigame-ingredient-match':
+                        return '🎯';
+                    case 'minigame-quiz':
+                        return '❓';
+                    default:
+                        return '📋';
+                }
+            })()}
             </button>
         );
     };
 
     const renderUnit = (unit: Unit) => (
-        <div key={unit.id} className={styles['progression-path__unit']}>
-            <div className={styles['progression-path__unit-header']} style={{ backgroundColor: unit.color.replace('bg-', '') }}>
+        <div key={unit.id} className={styles.progressionPathUnit}>
+            <div className={styles.progressionPathUnitHeader} style={{ backgroundColor: unit.color }}>
                 <div>
-                    <h2 className={styles['progression-path__unit-title']}>{unit.title}</h2>
+                    <h2 className={styles.progressionPathUnitTitle}>{unit.title}</h2>
                     <p>{unit.description}</p>
                 </div>
             </div>
-            <div className={styles['progression-path__unit-content']}>
+            <div className={styles.progressionPathUnitContent}>
                 {unit.quests.map((quest, index) => renderLevel(unit, quest, index))}
             </div>
         </div>
     );
 
     return (
-        <div ref={scrollContainerRef} className={styles['progression-path']}>
+        <div ref={scrollContainerRef} className={styles.progressionPath}>
             {units.map(renderUnit)}
         </div>
     );

@@ -12,7 +12,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                 title: "Introduction to Knife",
                 levels: 3,
                 description: "Learn the basics of cooking",
-                color: "#000000",
+                color: "var(--surface-brand-orange)",
                 quests: [
                     {
                         id: "quest1-1",
@@ -46,7 +46,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                 title: "Mixing and You",
                 levels: 3,
                 description: "Learn the basics of mixing",
-                color: "#000000",
+                color: "var(--surface-brand-blue)",
                 quests: [
                     {
                         id: "quest2-1",
@@ -70,6 +70,134 @@ const mockProgressionPathData: ProgressionPath[] = [
                         minigameId: "ingredient-match",
                         title: "Ingredient Match",
                         description: "Learn the basics of ingredient matching",
+                    }
+                ]
+            },
+            {
+                id: "unit3",
+                title: "Baking Fundamentals",
+                levels: 4,
+                description: "Master the basics of baking",
+                color: "var(--surface-brand-purple)",
+                quests: [
+                    {
+                        id: "quest3-1",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Baking Basics Quiz",
+                        quizId: "baking-basics-001",
+                        description: "Learn the fundamentals of baking",
+                    },
+                    {
+                        id: "quest3-2",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Temperature Control",
+                        quizId: "oven-calibration-001",
+                        description: "Master oven temperature control",
+                    },
+                    {
+                        id: "quest3-3",
+                        type: "minigame-ingredient-match",
+                        minigameId: "ingredient-match",
+                        title: "Interactive Baking Challenge",
+                        description: "Test your baking knowledge interactively",
+                    },
+                    {
+                        id: "quest3-4",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Baking Tools",
+                        quizId: "tool-switch-001",
+                        description: "Learn about essential baking tools",
+                    }
+                ]
+            },
+            {
+                id: "unit4",
+                title: "Beverage Mastery",
+                levels: 4,
+                description: "Explore the art of beverage making",
+                color: "var(--surface-brand-red)",
+                quests: [
+                    {
+                        id: "quest4-1",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Beverage Basics",
+                        quizId: "beverage-basics-001",
+                        description: "Learn the basics of beverage making",
+                    },
+                    {
+                        id: "quest4-2",
+                        type: "minigame-conversation-starter",
+                        minigameId: "conversation-starter",
+                        title: "Interactive Drink Challenge",
+                        description: "Test your drink-making knowledge",
+                    },
+                    {
+                        id: "quest4-3",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Sauce Decoration",
+                        quizId: "make-sauce-decoration-001",
+                        description: "Learn about decorative elements",
+                    },
+                    {
+                        id: "quest4-4",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Herbs to Flavors",
+                        quizId: "herbs-and-spices-001",
+                        description: "Master herbs and spices",
+                    }
+                ]
+            },
+            {
+                id: "unit5",
+                title: "International Cuisine",
+                levels: 5,
+                description: "Explore cuisines from around the world",
+                color: "var(--surface-brand-green)",
+                quests: [
+                    {
+                        id: "quest5-1",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Global Flavors",
+                        quizId: "international-cuisines-001",
+                        description: "Learn about international dishes",
+                    },
+                    {
+                        id: "quest5-2",
+                        type: "minigame-virtual-sear",
+                        minigameId: "virtual-sear",
+                        title: "Searing Mastery",
+                        description: "Master global seasonings",
+                    },
+                    {
+                        id: "quest5-3",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Interactive Cuisine Challenge",
+                        quizId: "international-cuisines-001",
+                        description: "Test your international cuisine knowledge",
+                    },
+                    {
+                        id: "quest5-4",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Food Origins",
+                        quizId: "food-quiz-001",
+                        description: "Learn about food origins",
+                    },
+                    {
+                        id: "quest5-5",
+                        type: "minigame-quiz",
+                        minigameId: "quiz",
+                        title: "Global Flavors 2",
+                        quizId: "international-cuisines-002",
+                        description: "Master various cooking techniques",
                     }
                 ]
             }
