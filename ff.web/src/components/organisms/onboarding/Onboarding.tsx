@@ -34,7 +34,7 @@ interface PropsRenderStep {
 
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = () => {
-  const { navigateWithState } = useStackNavigator();
+  const { navigateWithState, goBack } = useStackNavigator();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -113,19 +113,13 @@ const OnboardingFlow = () => {
     localStorage.setItem("profileData", JSON.stringify(formData));
     localStorage.removeItem("onboardingData");
     setIsOnboardingComplete(true);
-    window.history.back();
+    goBack();
   };
 
   const FooterContent = () => {
     return (
       <>
-        <Button
-          variant="small"
-          color="tertiary"
-          onClick={() => {
-            window.history.back();
-          }}
-        >
+        <Button variant="small" color="tertiary" onClick={() => goBack()}>
           Exit
         </Button>
         <Button
