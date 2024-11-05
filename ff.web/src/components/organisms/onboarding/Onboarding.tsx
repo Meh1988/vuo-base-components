@@ -66,7 +66,7 @@ const OnboardingFlow = () => {
   const handleMultiSelect = (item: string, field: keyof FormData) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].includes(item)
+      [field]: (prev[field] as string).includes(item)
         ? (prev[field] as string[]).filter((i: string) => i !== item)
         : [...(prev[field] as string[]), item],
     }));
