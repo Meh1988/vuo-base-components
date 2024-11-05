@@ -44,6 +44,14 @@ const OnboardingFlow = () => {
   const [formData, setFormData] = useState(initialOnboardingData);
 
   useEffect(() => {
+    const storedProfile = localStorage.getItem("profileData");
+    if (storedProfile) {
+      const parsedProfile = JSON.parse(storedProfile);
+      setFormData(parsedProfile);
+    }
+  }, []);
+
+  useEffect(() => {
     const calculateProgress = () => {
       const completedSteps = steps.filter(
         (step) => step.status === OnboardingStatus.completed,
@@ -51,13 +59,7 @@ const OnboardingFlow = () => {
       return (completedSteps / steps.length) * 100;
     };
 
-    if (localStorage.getItem("onboardingData")) {
-      const data = JSON.parse(localStorage.getItem("onboardingData"));
-      setFormData(data || {});
-      setProgress(calculateProgress());
-    } else {
-      setProgress(calculateProgress());
-    }
+    setProgress(calculateProgress());
   }, [currentStep]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,7 +123,6 @@ const OnboardingFlow = () => {
           variant="small"
           color="tertiary"
           onClick={() => {
-            localStorage.setItem("onboardingData", JSON.stringify(formData));
             navigateWithState("/home");
           }}
         >
