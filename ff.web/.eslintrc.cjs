@@ -12,7 +12,13 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["./tsconfig.json"],
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2020,
+    sourceType: "module",
+    project: ["./tsconfig.json", "./tsconfig.node.json"],
+    tsconfigRootDir: __dirname,
   },
   plugins: ["react-refresh", "@typescript-eslint", "prettier"],
   ignorePatterns: ["dist", ".eslintrc.cjs", "vite.config.ts"],
@@ -27,7 +33,7 @@ module.exports = {
       {
         forbidDefaultForRequired: true,
         classes: "defaultProps",
-        functions: "ignore", //or "defaultArguments",
+        functions: "ignore",
         ignoreFunctionalComponents: true,
       },
     ],
@@ -36,7 +42,23 @@ module.exports = {
     "react/function-component-definition": [
       2,
       {
-        namedComponents: "function-declaration",
+        namedComponents: ["function-declaration", "arrow-function"],
+        unnamedComponents: "arrow-function",
+      },
+    ],
+    "import/prefer-default-export": "off",
+    "react/no-array-index-key": "off",
+    "react/no-unstable-nested-components": "off",
+    "@typescript-eslint/default-param-last": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-props-no-spreading": [
+      "error",
+      {
+        html: "enforce",
+        custom: "ignore",
+        exceptions: ["Image", "img"],
       },
     ],
   },

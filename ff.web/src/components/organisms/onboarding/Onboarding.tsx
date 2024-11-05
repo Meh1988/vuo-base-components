@@ -3,11 +3,11 @@ import {
   commonDislikes,
   cuisines,
   initialOnboardingData,
+  steps,
 } from "@constants/Onboarding";
 
 import { Modal } from "@vuo/molecules/Modal";
 
-import { steps } from "@constants/Onboarding";
 import { FormData, OnboardingStatus } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
 import ProgressBar from "@vuo/atoms/ProgressBar";
@@ -109,22 +109,20 @@ const OnboardingFlow = () => {
     goBack();
   };
 
-  const FooterContent = () => {
-    return (
-      <>
-        <Button variant="small" color="tertiary" onClick={() => goBack()}>
-          Exit
-        </Button>
-        <Button
-          variant="small"
-          color="primary"
-          onClick={() => setIsExitOnboarding(false)}
-        >
-          Cancel
-        </Button>
-      </>
-    );
-  };
+  const FooterContent = () => (
+    <>
+      <Button variant="small" color="tertiary" onClick={() => goBack()}>
+        Exit
+      </Button>
+      <Button
+        variant="small"
+        color="primary"
+        onClick={() => setIsExitOnboarding(false)}
+      >
+        Cancel
+      </Button>
+    </>
+  );
 
   const renderOption = (
     value: string,
@@ -232,6 +230,7 @@ const OnboardingFlow = () => {
             {goals.map((goal) => (
               <button
                 key={goal}
+                type="button"
                 className={`${styles.onboardingButton} ${formData.goals.includes(goal) ? styles.selected : ""}`}
                 onClick={() => handleMultiSelect(goal, "goals")}
               >
@@ -598,10 +597,10 @@ const OnboardingFlow = () => {
               </div>
             ))}
             <p className={styles.onboardingNote}>
-              If you have other allergies or restrictions that aren't listed
-              here, you can add them as a "dislike" on the next page! Any
-              recipes that contain a disliked ingredient will not be recommended
-              to you.
+              If you have other allergies or restrictions that aren&apos;t
+              listed here, you can add them as a &ldquo;dislike&rdquo; on the
+              next page! Any recipes that contain a disliked ingredient will not
+              be recommended to you.
             </p>
           </>
         );
@@ -616,16 +615,13 @@ const OnboardingFlow = () => {
             <input
               type="text"
               placeholder="Add a food you dislike"
-              onChange={(e) => {
-                const value = e.target.value.toLowerCase();
-                console.log("Searching for:", value);
-              }}
               className={styles.onboardingInput}
             />
             <h4>Common Dislikes</h4>
             <div className={styles.onboardingCommonItems}>
               {commonDislikes.map((dislike) => (
                 <button
+                  type="button"
                   key={dislike}
                   className={`${styles.onboardingButton} ${formData.dislikes.includes(dislike) ? styles.selected : ""}`}
                   onClick={() => handleMultiSelect(dislike, "dislikes")}
@@ -649,12 +645,14 @@ const OnboardingFlow = () => {
                 <span>{cuisine}</span>
                 <div className={styles.onboardingCuisineButtons}>
                   <button
+                    type="button"
                     className={`${styles.onboardingButton} ${formData.cuisinePreferences[cuisine] === "dislike" ? styles.selected : ""}`}
                     onClick={() => handleCuisinePreference(cuisine, "dislike")}
                   >
                     👎
                   </button>
                   <button
+                    type="button"
                     className={`${styles.onboardingButton} ${formData.cuisinePreferences[cuisine] === "like" ? styles.selected : ""}`}
                     onClick={() => handleCuisinePreference(cuisine, "like")}
                   >

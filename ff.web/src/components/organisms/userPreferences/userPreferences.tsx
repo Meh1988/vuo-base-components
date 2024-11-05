@@ -53,14 +53,14 @@ export const UserPreferences = ({
       setUserCuisinePreferencesList(
         new Set(
           Object.entries(listOfCuisinePreferences)
-            .filter(([_, preference]) => preference === "like")
+            .filter(([preference]) => preference === "like")
             .map(([cuisine]) => cuisine),
         ),
       );
     } else {
       setUserCuisinePreferencesList(new Set());
     }
-  }, [listOfDiets, listOfAllergies]);
+  }, [listOfDiets, listOfAllergies, listOfCuisinePreferences]);
 
   return (
     <div className={styles.userPreferences}>
@@ -132,7 +132,7 @@ export const UserPreferences = ({
           </p>
         </div>
         <p className={styles.userPreferences__section__description}>
-          Things you ABOSOLUTELY DONT'T WANT TO BE INCLUDED in your
+          Things you ABOSOLUTELY DONT&rsquo;T WANT TO BE INCLUDED in your
           recommendations
         </p>
         <div className={styles.userPreferences__section__buttons}>
