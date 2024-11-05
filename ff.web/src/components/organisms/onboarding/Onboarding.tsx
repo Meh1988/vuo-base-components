@@ -34,7 +34,7 @@ interface PropsRenderStep {
 
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = () => {
-  const { navigateWithState, goBack } = useStackNavigator();
+  const { navigateWithState } = useStackNavigator();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
