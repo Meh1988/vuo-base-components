@@ -99,6 +99,7 @@ function Home() {
                     }
                 </Section>
             }
+            <div style={{ height: '20px' }} />
             <Section>
                 <h2>Progression Path</h2>
                 <ProgressionPath units={mockProgressionPathData[0].units} onQuestClick={onQuestClick} />

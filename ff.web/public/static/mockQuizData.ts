@@ -1017,6 +1017,110 @@ const mockQuizData: QuizData[] = [
     ]
   },
   {
+    id: 'international-cuisines-002',
+    title: 'International Cuisines Quiz Part 2',
+    questions: [
+      {
+        id: 'ic6',
+        type: 'single-choice',
+        question: 'Which country is famous for "Pad Thai"?',
+        options: [
+          'Vietnam',
+          'Thailand',
+          'Malaysia',
+          'Indonesia'
+        ],
+        correctAnswer: 'Thailand',
+        feedbackMessage: [
+          'Pad Thai is not a Vietnamese dish.',
+          'Correct! Pad Thai is a traditional Thai street food.',
+          'Pad Thai is not Malaysian.',
+          'Pad Thai is not Indonesian.'
+        ],
+        feedbackTitle: [
+          'Not Vietnamese',
+          'Thai Classic',
+          'Not Malaysian',
+          'Not Indonesian'
+        ]
+      },
+      {
+        id: 'ic7',
+        type: 'multiple-choice',
+        question: 'Which ingredients are essential in Italian pesto?',
+        options: [
+          'Basil',
+          'Pine nuts',
+          'Parmesan',
+          'Tomatoes'
+        ],
+        correctAnswer: ['Basil', 'Pine nuts', 'Parmesan'],
+        feedbackMessage: 'Basil, pine nuts, and Parmesan are the key components of traditional pesto.',
+      },
+      {
+        id: 'ic8',
+        type: 'single-choice',
+        question: 'What is the main ingredient in Greek "Moussaka"?',
+        options: [
+          'Potato',
+          'Eggplant',
+          'Zucchini',
+          'Carrot'
+        ],
+        correctAnswer: 'Eggplant',
+        feedbackMessage: [
+          'Potato is sometimes used but not the main ingredient.',
+          'Correct! Eggplant is the key ingredient in Moussaka.',
+          'Zucchini is not traditionally used in Moussaka.',
+          'Carrot is not used in traditional Moussaka.'
+        ],
+        feedbackTitle: [
+          'Secondary Ingredient',
+          'Main Component',
+          'Not Traditional',
+          'Not Used'
+        ]
+      },
+      {
+        id: 'ic9',
+        type: 'single-choice',
+        question: 'Which cuisine is known for "Couscous"?',
+        options: [
+          'Greek',
+          'Turkish',
+          'Moroccan',
+          'Lebanese'
+        ],
+        correctAnswer: 'Moroccan',
+        feedbackMessage: [
+          'Couscous is not traditionally Greek.',
+          'While used in Turkish cuisine, it\'s not its origin.',
+          'Correct! Couscous is a staple of Moroccan cuisine.',
+          'While used in Lebanese cuisine, it\'s not its origin.'
+        ],
+        feedbackTitle: [
+          'Not Greek',
+          'Not Original',
+          'North African Staple',
+          'Not Original'
+        ]
+      },
+      {
+        id: 'ic10',
+        type: 'multiple-choice',
+        question: 'Which ingredients are essential in French "Ratatouille"?',
+        options: [
+          'Eggplant',
+          'Zucchini',
+          'Tomatoes',
+          'Carrots'
+        ],
+        correctAnswer: ['Eggplant', 'Zucchini', 'Tomatoes'],
+        feedbackMessage: 'Eggplant, zucchini, and tomatoes are the key vegetables in traditional Ratatouille.',
+      }
+    ]
+  },
+  {
     id: 'beverage-basics-001',
     title: 'Beverage Basics Quiz',
     questions: [
