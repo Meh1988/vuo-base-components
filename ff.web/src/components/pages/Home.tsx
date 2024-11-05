@@ -67,6 +67,12 @@ function Home() {
             case 'minigame-ingredient-match':
                 navigate(`/minigames/play/ingredient-match`)
                 break;
+            case 'minigame-virtual-sear':
+                navigate(`/minigames/play/virtual-sear`)
+                break;
+            case 'minigame-conversation-starter':
+                navigate(`/minigames/play/conversation-starter`)
+                break;
             default:
                 break;
         }

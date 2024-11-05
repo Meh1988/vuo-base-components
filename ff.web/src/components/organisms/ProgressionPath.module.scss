@@ -6,7 +6,7 @@
     padding: 1rem;
     
     &Unit {
-      margin-bottom: 6rem;
+      margin-bottom: 2rem;
   
       &Header {
         border-radius: 0.75rem;
@@ -40,14 +40,14 @@
     &QuestButton {
       width: 5rem;
       height: 5rem;
-      border-radius: 9999px;
+      border-radius: 90px;
       border: 0px solid var(--color-grey-systemGrayAccessibleLight);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 300ms ease-in-out;
       font-size: 2rem;
-      box-shadow: var(--shadow-inner-shadow-x, 0px) var(--shadow-inner-shadow-y, -4px) 0px 0px var(--color-grey-black-25, rgba(0, 0, 0, 0.25)) inset;
+      box-shadow: var(--shadow-inner-shadow-x, 0px) var(--shadow-inner-shadow-y, -8px) 0px 0px var(--color-grey-black-25, rgba(0, 0, 0, 0.25)) inset;
   
       &Playable {
         cursor: pointer;
