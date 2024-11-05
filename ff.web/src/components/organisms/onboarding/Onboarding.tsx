@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   allergies,
   commonDislikes,
@@ -9,7 +8,7 @@ import {
 import { Modal } from "@vuo/molecules/Modal";
 
 import { steps } from "@constants/Onboarding";
-import { OnboardingStatus } from "@models/Onboarding";
+import { FormData, OnboardingStatus } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
 import ProgressBar from "@vuo/atoms/ProgressBar";
 import Slider from "@vuo/atoms/Slider";
@@ -17,6 +16,7 @@ import { useAppContext } from "@vuo/context/AppContext";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import ToggleSwitch from "@vuo/molecules/ToggleSwitch";
 
+// Adjust the import path accordingly
 import { useEffect, useState } from "react";
 import styles from "./Onboarding.module.scss";
 import {
@@ -26,22 +26,16 @@ import {
   pantry,
 } from "./constants/OnboardingSteps";
 
-interface PropsRenderStep {
-  title: string;
-  description: string;
-  children?: React.ReactNode | React.ReactNode[];
-}
-
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = () => {
-  const { navigateWithState, goBack } = useStackNavigator();
+  const { goBack } = useStackNavigator();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isExitOnboarding, setIsExitOnboarding] = useState(false);
   const { setIsOnboardingComplete } = useAppContext();
 
-  const [formData, setFormData] = useState(initialOnboardingData);
+  const [formData, setFormData] = useState<FormData>(initialOnboardingData);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
@@ -62,20 +56,19 @@ const OnboardingFlow = () => {
     setProgress(calculateProgress());
   }, [currentStep]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleMultiSelect = (
-    item: string,
-    field: "goals" | "allergies" | "dislikes",
-  ) => {
+  const handleMultiSelect = (item: string, field: keyof FormData) => {
     setFormData((prev) => ({
       ...prev,
       [field]: prev[field].includes(item)
-        ? prev[field].filter((i: string) => i !== item)
-        : [...prev[field], item],
+        ? (prev[field] as string[]).filter((i: string) => i !== item)
+        : [...(prev[field] as string[]), item],
     }));
   };
 
@@ -134,11 +127,11 @@ const OnboardingFlow = () => {
   };
 
   const renderOption = (
-    value,
-    label,
+    value: string,
+    label: string,
     description = "",
-    isChecked,
-    onChange,
+    isChecked: boolean,
+    onChange: (value: string) => void,
   ) => (
     <div
       key={value}
@@ -477,14 +470,15 @@ const OnboardingFlow = () => {
             <div className={styles.onboardingSlider}>
               <span>🐢</span>
               <Slider
-                defaultValue={[1]}
-                max={3}
+                defaultValue={1}
+                min={0}
+                max={2}
                 step={1}
-                onValueChange={(value) => {
+                onChange={(value: number) => {
                   const speedMap = ["slow", "moderate", "fast"];
                   setFormData((prev) => ({
                     ...prev,
-                    speed: speedMap[value[0] - 1],
+                    speed: speedMap[value],
                   }));
                 }}
               />
