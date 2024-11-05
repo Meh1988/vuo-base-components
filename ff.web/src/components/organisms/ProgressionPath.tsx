@@ -28,8 +28,8 @@ export default function ProgressionPath({ units, onQuestClick }: ProgressionPath
                     isPlayable ? styles.progressionPathQuestButtonPlayable : ''
                 } ${isActive ? styles.progressionPathQuestButtonActive : styles.progressionPathQuestButtonInactive}`}
                 style={{
-                    transform: `translateX(${xOffset}px)`,
-                    backgroundColor: isPlayable ? 'var(--color-grey-systemGrayAccessibleLight)' : '#E5E7EB',
+                    transform: `translateX(${xOffset}px) rotateX(30deg)`,
+                    backgroundColor: isPlayable ? unit.color : '#E5E7EB',
                 }}
             >
             {(() => {
