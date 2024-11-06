@@ -185,41 +185,6 @@ const OnboardingFlow = () => {
           </>
         );
 
-      case "userId":
-        return (
-          <>
-            <div className={styles.onboardingStepPage}>
-              <h1>{step.title}</h1>
-              <p className={styles.description}>{step.description}</p>
-            </div>
-            <input
-              type="text"
-              name="userId"
-              value={formData.userId}
-              onChange={handleInputChange}
-              placeholder="Enter your user ID"
-              className={styles.onboardingInput}
-            />
-          </>
-        );
-
-      case "description":
-        return (
-          <>
-            <div className={styles.onboardingStepPage}>
-              <h1>{step.title}</h1>
-              <p className={styles.description}>{step.description}</p>
-            </div>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Enter your description"
-              className={`${styles.onboardingInput} ${styles.onboardingInputTextarea}`}
-            />
-          </>
-        );
-
       case "goals":
         return (
           <>
