@@ -1,4 +1,4 @@
-import { OnboardingStatus } from "@vuo/models/Onboarding";
+import { FormData, OnboardingStatus } from "@models/Onboarding";
 
 export const allergies = [
   "Shellfish",
@@ -42,11 +42,11 @@ export const cuisines = [
   "Indian",
 ];
 
-export const initialOnboardingData = {
+export const initialOnboardingData: FormData = {
   goals: [],
   sex: "",
   age: "",
-  userId: "",
+  userId: "-",
   userName: "",
   description: "",
   height: "",
@@ -80,20 +80,20 @@ export const steps = [
     description: "What should we call you?",
     status: OnboardingStatus.notStarted,
   },
-  {
-    id: "userId",
-    title: "Your user ID",
-    description:
-      "This is your unique user ID. It will be used to identify you in our system.",
-    status: OnboardingStatus.notStarted,
-  },
-  {
-    id: "description",
-    title: "Your description",
-    description:
-      "Tell us a bit about yourself. This will help us personalize your meal plan.",
-    status: OnboardingStatus.notStarted,
-  },
+  // {
+  //   id: "userId",
+  //   title: "Your user ID",
+  //   description:
+  //     "This is your unique user ID. It will be used to identify you in our system.",
+  //   status: OnboardingStatus.notStarted,
+  // },
+  // {
+  //   id: "description",
+  //   title: "Your description",
+  //   description:
+  //     "Tell us a bit about yourself. This will help us personalize your meal plan.",
+  //   status: OnboardingStatus.notStarted,
+  // },
   {
     id: "sex",
     title: "About you",
