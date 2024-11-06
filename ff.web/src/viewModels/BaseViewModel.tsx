@@ -14,8 +14,9 @@ interface RequestConfig {
   data?: Record<string, unknown>;
 }
 
-// const API_URL = process.env.VITE_FFAPI_BASE_URL
-const API_URL = "https://api-core-app-a2l5n.ondigitalocean.app"
+const API_URL = import.meta.env.VITE_FFAPI_BASE_URL || "http://localhost:8080"
+console.log("apiiiiii", import.meta.env.VITE_FFAPI_BASE_URL)
+// const API_URL = "https://api-core-app-a2l5n.ondigitalocean.app"
 
 export class BaseViewModel {
   loading: boolean = false;
