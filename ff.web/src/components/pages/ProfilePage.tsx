@@ -18,13 +18,17 @@ const ProfilePage = () => {
 
 
   useEffect(() => {
-    const storedProfile = localStorage.getItem("profileData");
-    if (storedProfile) {
-      const parsedProfile = JSON.parse(storedProfile);
-      delete parsedProfile.completedSteps; // Remove the completedSteps key
-      setProfileData(parsedProfile); // Set the modified profile data
-    }
-  }, []);
+    const fetchProfile = async () => {
+      try {
+        const sessionData = JSON.parse(localStorage.getItem("SessionDataStore") || "{}");
+        const userId = sessionData.user?.id;
+        const response = await fetch(import.meta.env.VITE_FFAPI_BASE_URL + "/v1/profile/" + userId);
+        const data = await response.json();
+        setProfileData(data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
 
   return (
     <Page>
