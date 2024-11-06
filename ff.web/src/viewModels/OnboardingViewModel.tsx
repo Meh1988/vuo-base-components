@@ -4,7 +4,7 @@ import { OnboardingStatus } from "@models/Onboarding";
 import { initialOnboardingData } from "@constants/Onboarding";
 import { steps } from "@constants/Onboarding";
 
-export class OnboardingViewModel extends BaseViewModel {
+export default class OnboardingViewModel extends BaseViewModel {
   formData = initialOnboardingData;
   currentStep = 0;
   progress = 0;
@@ -28,7 +28,8 @@ export class OnboardingViewModel extends BaseViewModel {
       setIsExitOnboarding: action,
       calculateProgress: action,
       handleFinish: action,
-      currentStepData: computed
+      currentStepData: computed,
+      hasFormDataChanged: action
     });
 
     this.loadInitialData();
@@ -37,6 +38,10 @@ export class OnboardingViewModel extends BaseViewModel {
   get currentStepData() {
     return steps[this.currentStep];
   }
+
+  private hasFormDataChanged = (): boolean => {
+    return JSON.stringify(this.formData) !== JSON.stringify(initialOnboardingData);
+  };
 
   async loadInitialData() {
     const sessionData = JSON.parse(localStorage.getItem("SessionDataStore") || "{}");
@@ -95,7 +100,7 @@ export class OnboardingViewModel extends BaseViewModel {
     });
   };
 
-  async handleNext() {
+  handleNext = async () => {
     if (this.hasFormDataChanged()) {
       this.loading = true;
       try {
@@ -122,7 +127,7 @@ export class OnboardingViewModel extends BaseViewModel {
     } else {
       this.moveToNextStep();
     }
-  }
+  };
 
   private moveToNextStep() {
     if (this.currentStep < steps.length - 1) {
@@ -149,12 +154,7 @@ export class OnboardingViewModel extends BaseViewModel {
   };
 
   handleFinish = () => {
-    localStorage.setItem("profileData", JSON.stringify(this.formData));
     localStorage.removeItem("onboardingData");
     return true;
   };
-
-  private hasFormDataChanged(): boolean {
-    return JSON.stringify(this.formData) !== JSON.stringify(initialOnboardingData);
-  }
 }
