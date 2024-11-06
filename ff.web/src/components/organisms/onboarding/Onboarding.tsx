@@ -27,27 +27,10 @@ import {
 } from "./constants/OnboardingSteps";
 
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
-const OnboardingFlow = () => {
-  const { goBack } = useStackNavigator();
-
-  const [currentStep, setCurrentStep] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [isExitOnboarding, setIsExitOnboarding] = useState(false);
+const OnboardingFlow = observer(() => {
+  const { navigateWithState } = useStackNavigator();
   const { setIsOnboardingComplete } = useAppContext();
-  // const [userId, setUserId] = useState("")
-
-  const [formData, setFormData] = useState<FormData>(initialOnboardingData);
-
-  useEffect(() => {
-    const storedProfile = localStorage.getItem("profileData");
-    if (storedProfile) {
-      const parsedProfile = JSON.parse(storedProfile);
-      setFormData(parsedProfile);
-    }
-  }, []);
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [viewModel] = useState(() => new OnboardingViewModel());
 
   useEffect(() => {
     const sessionData = JSON.parse(localStorage.getItem("SessionDataStore"))
@@ -56,14 +39,6 @@ const OnboardingFlow = () => {
       setFormData((prev) => ({ ...prev, userId: sessionData.user.id }))
     }
   }, [])
-  
-  useEffect(() => {
-    const calculateProgress = () => {
-      const completedSteps = steps.filter(
-        (step) => step.status === OnboardingStatus.completed,
-      ).length;
-      return (completedSteps / steps.length) * 100;
-    };
 
     setProgress(calculateProgress());
   }, [currentStep]);
@@ -794,6 +769,5 @@ const OnboardingFlow = () => {
       )}
     </>
   );
-};
 
-export default OnboardingFlow;
+export default OnboardingFlow
