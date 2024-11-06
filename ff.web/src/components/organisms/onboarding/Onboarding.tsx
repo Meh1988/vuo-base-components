@@ -34,6 +34,7 @@ const OnboardingFlow = () => {
   const [progress, setProgress] = useState(0);
   const [isExitOnboarding, setIsExitOnboarding] = useState(false);
   const { setIsOnboardingComplete } = useAppContext();
+  // const [userId, setUserId] = useState("")
 
   const [formData, setFormData] = useState<FormData>(initialOnboardingData);
 
@@ -45,6 +46,17 @@ const OnboardingFlow = () => {
     }
   }, []);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const sessionData = JSON.parse(localStorage.getItem("SessionDataStore"))
+    if(sessionData?.user?.id) {
+      // setUserId(sessionData.user.id)
+      setFormData((prev) => ({ ...prev, userId: sessionData.user.id }))
+    }
+  }, [])
+  
   useEffect(() => {
     const calculateProgress = () => {
       const completedSteps = steps.filter(
@@ -86,13 +98,63 @@ const OnboardingFlow = () => {
     }));
   };
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      steps[currentStep].status = OnboardingStatus.completed;
-      setCurrentStep(currentStep + 1);
-      setProgress(((currentStep + 1) / steps.length) * 100);
-    }
+  // const handleNext = () => {
+  //   if (currentStep < steps.length - 1) {
+  //     steps[currentStep].status = OnboardingStatus.completed;
+  //     setCurrentStep(currentStep + 1);
+  //     setProgress(((currentStep + 1) / steps.length) * 100);
+  //   }
+  // };
+//TODO find a good way to compare fotm data
+  const hasFormDataChanged = (currentData: any, initialData: any) => {
+    // Deep comparison of the two objects
+    return JSON.stringify(currentData) !== JSON.stringify(initialData);
   };
+
+  const handleNext = () => {
+    //TODO run this query and add userid of shadow account
+    //TODO refactor
+    //TODO create an onboarding viewmodel
+      // Check if form data has changed from previous state
+      
+      if (!hasFormDataChanged) {
+        // No changes, just move to next step
+        if (currentStep < steps.length - 1) {
+          steps[currentStep].status = OnboardingStatus.completed;
+          setCurrentStep(currentStep + 1);
+          setProgress(((currentStep + 1) / steps.length) * 100);
+        }
+        return;
+      }
+
+      setLoading(true);
+      fetch(`${import.meta.env.VITE_FFAPI_BASE_URL}/v1/profile/update`, {
+        method: 'PATCH',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Profile updated:', data);
+        if (currentStep < steps.length - 1) {
+          steps[currentStep].status = OnboardingStatus.completed;
+          setCurrentStep(currentStep + 1);
+          setProgress(((currentStep + 1) / steps.length) * 100);
+        }
+      })
+      .catch(error => {
+        console.error('Error updating profile:', error);
+        setError(error);
+        alert("failed to update profile")
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    }
+    //no change in form data, just move to the next step
 
   const handleBack = () => {
     if (currentStep > 0) {
@@ -704,6 +766,7 @@ const OnboardingFlow = () => {
                 color="primary"
                 onClick={handleNext}
                 className={styles.navButton}
+                disabled={loading}
               >
                 Next
               </Button>

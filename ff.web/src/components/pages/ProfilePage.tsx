@@ -9,10 +9,13 @@ import { Tabs } from "../molecules/Tabs";
 import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserProfile } from "../organisms/userProfile";
 import styles from "./ProfilePage.module.scss";
+import { signInWithGoogle, signInWithFacebook, logOut } from '../../auth/auth';
+import { authStore } from '../../stores/AuthStore';
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState<FormData>({} as FormData); // Ensure it's typed correctly
   const { navigateWithState } = useStackNavigator();
+
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
@@ -67,6 +70,37 @@ const ProfilePage = () => {
           { id: "tab2", label: "FOOD PROFILE", content: <UserFoodProfile /> },
         ]}
       />
+
+      <div className={styles.profilePage__footer}>
+        <Button
+          variant="large"
+          color="primary"
+          onClick={() => {
+            toggleTheme();
+          }}
+        >
+          Change Theme
+        </Button>
+        <Button
+          variant="small"
+          color="secondary"
+          onClick={() => {
+            setIsDeleteModalOpen(true);
+          }}
+        >
+          Delete account
+        </Button>
+      </div>
+
+      {isDeleteModalOpen && (
+        <Modal
+          title="Delete account"
+          isOpen={isDeleteModalOpen}
+          footerContent={<FooterContent />}
+        >
+          <p>Are you sure you want to delete your account?</p>
+        </Modal>
+      )}
     </Page>
   );
 };

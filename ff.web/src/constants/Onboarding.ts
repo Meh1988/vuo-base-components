@@ -57,7 +57,7 @@ export const initialOnboardingData: FormData = {
   motivation: "",
   activityLevel: "",
   mindset: "",
-  speed: "moderate",
+  speed: "4",
   dietPlan: "",
   pastExperience: "",
   format: "",

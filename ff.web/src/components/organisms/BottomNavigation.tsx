@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { HomeOutlined, ShoppingCartOutlined, UserOutlined, CoffeeOutlined, QuestionOutlined } from '@ant-design/icons';
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import { useAppContext } from "@vuo/context/AppContext";
+import { isAuthenticated } from "@vuo/routeGuards/AuthenticetedRoute";
 
 
 
@@ -51,7 +52,7 @@ const BottomNavigation = () => {
           key: '/flavour-flow',
           title: 'FlavourFlow',
           icon: < QuestionOutlined/>,
-          hidden: false
+          hidden: !isAuthenticated()
         },
         {
           key: '/profile',

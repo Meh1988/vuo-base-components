@@ -21,7 +21,7 @@ const createUserProfile = async (req: Request, res: Response) => {
 // Get user profile
 const getUserProfile = async (req: Request, res: Response) => {
   try {
-    const userId = req.user.id;
+    const userId = req.params.id;
     const userProfile = await Onboarding.findOne({ userId });
 
     if (!userProfile) {
@@ -34,11 +34,16 @@ const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-// Update user profile
+
 const updateUserProfile = async (req: Request, res: Response) => {
+  console.log("updateUserProfile :: req", req.body)
   try {
-    const userId = req.user.id;
+    const userId = req.body.userId;
     const updateData = req.body;
+
+    // Log the input data for debugging
+    console.log('Update attempt for userId:', userId);
+    console.log('Update data:', updateData);
 
     const updatedUserProfile = await Onboarding.findOneAndUpdate(
       { userId },
@@ -52,11 +57,14 @@ const updateUserProfile = async (req: Request, res: Response) => {
 
     res.json(updatedUserProfile);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    // Improved error handling
+    console.error('Error updating user profile:', error);
+    res.status(500).json({ 
+      message: 'Server error', 
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 };
-
-
 // Delete user profile
 const deleteUserProfile = async (req: Request, res: Response) => {
   try {
