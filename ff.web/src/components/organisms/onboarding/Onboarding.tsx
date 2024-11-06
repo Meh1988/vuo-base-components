@@ -116,8 +116,8 @@ const OnboardingFlow = () => {
     //TODO refactor
     //TODO create an onboarding viewmodel
       // Check if form data has changed from previous state
-      
-      if (!hasFormDataChanged) {
+      //TODO this comparison does not really work, fix it
+      if (!hasFormDataChanged(formData, initialOnboardingData)) {
         // No changes, just move to next step
         if (currentStep < steps.length - 1) {
           steps[currentStep].status = OnboardingStatus.completed;
