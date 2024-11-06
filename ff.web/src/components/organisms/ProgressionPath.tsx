@@ -1,6 +1,12 @@
 import { useRef } from 'react';
 import type { Unit, ProgressionPathQuest } from '@vuo/models/ProgressionPathTypes';
+
 import styles from './ProgressionPath.module.scss';
+import CutGuessrIcon from '../atoms/ProgressionPathIcons/CutGuessrIcon';
+import VirtualSearIcon from '../atoms/ProgressionPathIcons/VirtualSearIcon';
+import ConversationStarterIcon from '../atoms/ProgressionPathIcons/ConversationStarterIcon';
+import IngredientMatchIcon from '../atoms/ProgressionPathIcons/IngredientMatchIcon';
+import QuizIcon from '../atoms/ProgressionPathIcons/QuizIcon';
 
 interface ProgressionPathProps {
     units: Unit[];
@@ -28,30 +34,32 @@ export default function ProgressionPath({ units, onQuestClick }: ProgressionPath
                     isPlayable ? styles.progressionPathQuestButtonPlayable : ''
                 } ${isActive ? styles.progressionPathQuestButtonActive : styles.progressionPathQuestButtonInactive}`}
                 style={{
-                    transform: `translateX(${xOffset}px) rotateX(30deg)`,
-                    backgroundColor: isPlayable ? unit.color : '#E5E7EB',
-                }}
+                    transform: `translateX(${xOffset}px)`,
+                    '--unit-color': unit.color
+                } as React.CSSProperties}
             >
-            {(() => {
-                switch (quest.type) {
-                    case 'recipe':
-                        return '🍳';
-                    case 'minigame':
-                        return '🎮';
-                    case 'minigame-virtual-sear':
-                        return '🥩';
-                    case 'minigame-cut-guessr':
-                        return '🔪';
-                    case 'minigame-conversation-starter':
-                        return '💭';
-                    case 'minigame-ingredient-match':
-                        return '🎯';
-                    case 'minigame-quiz':
-                        return '❓';
-                    default:
-                        return '📋';
-                }
-            })()}
+                <span className={styles.progressionPathQuestIcon}>
+                    {(() => {
+                        switch (quest.type) {
+                            case 'recipe':
+                                return '🍳';
+                            case 'minigame':
+                                return '🎮';
+                            case 'minigame-virtual-sear':
+                                return <VirtualSearIcon />;
+                            case 'minigame-cut-guessr':
+                                return <CutGuessrIcon />;
+                            case 'minigame-conversation-starter':
+                                return <ConversationStarterIcon />;
+                            case 'minigame-ingredient-match':
+                                return <IngredientMatchIcon />;
+                            case 'minigame-quiz':
+                                return <QuizIcon />;
+                            default:
+                                return '📋';
+                        }
+                    })()}
+                </span>
             </button>
         );
     };

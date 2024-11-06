@@ -1,72 +1,115 @@
 .progressionPath {
-    width: 100%;
-    max-width: 600px;
-    flex: 1;
-    overflow-y: auto;
-    padding: 1rem;
-    
-    &Unit {
-      margin-bottom: 2rem;
-  
-      &Header {
-        border-radius: 0.75rem;
-        padding: 1rem;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        box-shadow: var(--shadow-inner-shadow-x, 0px) var(--shadow-inner-shadow-y, -4px) 0px 0px var(--color-grey-black-25, rgba(0, 0, 0, 0.25)) inset;
-      }
-  
-      &Title {
-        font-size: 1.25rem;
-        font-weight: 700;
-      }
-  
-      &Content {
-        display: flex;
-        position: relative;
-        width: 100%;
-        padding: 16px;
-        gap: 25px;
-        flex-direction: column;
-        align-content: center;
-        align-items: center;
-        justify-content: center;
-      }
+  width: 100%;
+  max-width: 600px;
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-16);
+
+  &Unit {
+    margin-bottom: var(--space-24);
+
+    &Header {
+      border-radius: var(--radius-8);
+      padding: var(--space-16);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-16);
+      box-shadow: var(--shadow-inner-shadow-x, 0px) var(--shadow-inner-shadow-y, -4px) 0px 0px var(--color-grey-black-25, rgba(0, 0, 0, 0.25)) inset;
     }
-  
-    &QuestButton {
-      width: 5rem;
-      height: 5rem;
-      border-radius: 90px;
-      border: 0px solid var(--color-grey-systemGrayAccessibleLight);
+
+    &Title {
+      font-size: var(--font-size-20);
+      font-weight: 700;
+    }
+
+    &Content {
+      display: flex;
+      position: relative;
+      width: 100%;
+      padding: var(--space-16);
+      gap: var(--space-24);
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &QuestIcon {
+    transform: rotateX(12deg) translateY(-3%) ;
+    padding: 25%;
+  }
+
+  &QuestButton {
+    height: 75px;
+    width: 75px;
+    position: relative;
+    z-index: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: filter 0.2s;
+    cursor: pointer;
+    display: inline-flex;
+    touch-action: manipulation;
+    transform: translateZ(0);
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      top: 35.2px;
+      background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+                  linear-gradient(var(--unit-color), var(--unit-color));
+      z-index: -1;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 68px;
+      top: 0;
+      background: var(--unit-color);
+      border-radius: 50% / 50%;
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2),
+                  0 8px 0 var(--unit-color);
+      z-index: -1;
+    }
+
+    span {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 300ms ease-in-out;
-      font-size: 2rem;
-      box-shadow: var(--shadow-inner-shadow-x, 0px) var(--shadow-inner-shadow-y, -8px) 0px 0px var(--color-grey-black-25, rgba(0, 0, 0, 0.25)) inset;
-  
-      &Playable {
-        cursor: pointer;
-        
-        &:hover {
-          transform: scale(1.1);
-        }
-      }
-  
-      &Active {
-        transform: scale(1.1);
-      }
-  
-      &Inactive {
-        cursor: not-allowed;
+      width: 100%;
+      height: 100%;
+      font-size: var(--font-size-24);
+    }
+
+    &Playable {
+      &:hover {
+        filter: brightness(1.1);
       }
     }
-  } 
+
+    &Active {
+      filter: brightness(1.1);
+    }
+
+    &Inactive {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
+}
 
 .text {
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
