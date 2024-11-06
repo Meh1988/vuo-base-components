@@ -1,15 +1,14 @@
-// @ts-nocheck
 import {
   allergies,
   commonDislikes,
   cuisines,
   initialOnboardingData,
+  steps,
 } from "@constants/Onboarding";
 
 import { Modal } from "@vuo/molecules/Modal";
 
-import { steps } from "@constants/Onboarding";
-import { OnboardingStatus } from "@models/Onboarding";
+import { FormData, OnboardingStatus } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
 import ProgressBar from "@vuo/atoms/ProgressBar";
 import Slider from "@vuo/atoms/Slider";
@@ -17,6 +16,7 @@ import { useAppContext } from "@vuo/context/AppContext";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import ToggleSwitch from "@vuo/molecules/ToggleSwitch";
 
+// Adjust the import path accordingly
 import { useEffect, useState } from "react";
 import styles from "./Onboarding.module.scss";
 import {
@@ -26,22 +26,24 @@ import {
   pantry,
 } from "./constants/OnboardingSteps";
 
-interface PropsRenderStep {
-  title: string;
-  description: string;
-  children?: React.ReactNode | React.ReactNode[];
-}
-
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = () => {
-  const { navigateWithState } = useStackNavigator();
+  const { goBack } = useStackNavigator();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isExitOnboarding, setIsExitOnboarding] = useState(false);
   const { setIsOnboardingComplete } = useAppContext();
 
-  const [formData, setFormData] = useState(initialOnboardingData);
+  const [formData, setFormData] = useState<FormData>(initialOnboardingData);
+
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("profileData");
+    if (storedProfile) {
+      const parsedProfile = JSON.parse(storedProfile);
+      setFormData(parsedProfile);
+    }
+  }, []);
 
   useEffect(() => {
     const calculateProgress = () => {
@@ -51,29 +53,22 @@ const OnboardingFlow = () => {
       return (completedSteps / steps.length) * 100;
     };
 
-    if (localStorage.getItem("onboardingData")) {
-      const data = JSON.parse(localStorage.getItem("onboardingData"));
-      setFormData(data || {});
-      setProgress(calculateProgress());
-    } else {
-      setProgress(calculateProgress());
-    }
+    setProgress(calculateProgress());
   }, [currentStep]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleMultiSelect = (
-    item: string,
-    field: "goals" | "allergies" | "dislikes",
-  ) => {
+  const handleMultiSelect = (item: string, field: keyof FormData) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].includes(item)
-        ? prev[field].filter((i: string) => i !== item)
-        : [...prev[field], item],
+      [field]: (prev[field] as string).includes(item)
+        ? (prev[field] as string[]).filter((i: string) => i !== item)
+        : [...(prev[field] as string[]), item],
     }));
   };
 
@@ -111,39 +106,30 @@ const OnboardingFlow = () => {
     localStorage.setItem("profileData", JSON.stringify(formData));
     localStorage.removeItem("onboardingData");
     setIsOnboardingComplete(true);
-    navigateWithState("/home");
+    goBack();
   };
 
-  const FooterContent = () => {
-    return (
-      <>
-        <Button
-          variant="small"
-          color="tertiary"
-          onClick={() => {
-            localStorage.setItem("onboardingData", JSON.stringify(formData));
-            navigateWithState("/home");
-          }}
-        >
-          Exit
-        </Button>
-        <Button
-          variant="small"
-          color="primary"
-          onClick={() => setIsExitOnboarding(false)}
-        >
-          Cancel
-        </Button>
-      </>
-    );
-  };
+  const FooterContent = () => (
+    <>
+      <Button variant="small" color="tertiary" onClick={() => goBack()}>
+        Exit
+      </Button>
+      <Button
+        variant="small"
+        color="primary"
+        onClick={() => setIsExitOnboarding(false)}
+      >
+        Cancel
+      </Button>
+    </>
+  );
 
   const renderOption = (
-    value,
-    label,
+    value: string,
+    label: string,
     description = "",
-    isChecked,
-    onChange,
+    isChecked: boolean,
+    onChange: (value: string) => void,
   ) => (
     <div
       key={value}
@@ -199,41 +185,6 @@ const OnboardingFlow = () => {
           </>
         );
 
-      case "userId":
-        return (
-          <>
-            <div className={styles.onboardingStepPage}>
-              <h1>{step.title}</h1>
-              <p className={styles.description}>{step.description}</p>
-            </div>
-            <input
-              type="text"
-              name="userId"
-              value={formData.userId}
-              onChange={handleInputChange}
-              placeholder="Enter your user ID"
-              className={styles.onboardingInput}
-            />
-          </>
-        );
-
-      case "description":
-        return (
-          <>
-            <div className={styles.onboardingStepPage}>
-              <h1>{step.title}</h1>
-              <p className={styles.description}>{step.description}</p>
-            </div>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Enter your description"
-              className={`${styles.onboardingInput} ${styles.onboardingInputTextarea}`}
-            />
-          </>
-        );
-
       case "goals":
         return (
           <>
@@ -244,6 +195,7 @@ const OnboardingFlow = () => {
             {goals.map((goal) => (
               <button
                 key={goal}
+                type="button"
                 className={`${styles.onboardingButton} ${formData.goals.includes(goal) ? styles.selected : ""}`}
                 onClick={() => handleMultiSelect(goal, "goals")}
               >
@@ -482,14 +434,15 @@ const OnboardingFlow = () => {
             <div className={styles.onboardingSlider}>
               <span>🐢</span>
               <Slider
-                defaultValue={[1]}
-                max={3}
+                defaultValue={1}
+                min={0}
+                max={2}
                 step={1}
-                onValueChange={(value) => {
+                onChange={(value: number) => {
                   const speedMap = ["slow", "moderate", "fast"];
                   setFormData((prev) => ({
                     ...prev,
-                    speed: speedMap[value[0] - 1],
+                    speed: speedMap[value],
                   }));
                 }}
               />
@@ -609,10 +562,10 @@ const OnboardingFlow = () => {
               </div>
             ))}
             <p className={styles.onboardingNote}>
-              If you have other allergies or restrictions that aren't listed
-              here, you can add them as a "dislike" on the next page! Any
-              recipes that contain a disliked ingredient will not be recommended
-              to you.
+              If you have other allergies or restrictions that aren&apos;t
+              listed here, you can add them as a &ldquo;dislike&rdquo; on the
+              next page! Any recipes that contain a disliked ingredient will not
+              be recommended to you.
             </p>
           </>
         );
@@ -627,16 +580,13 @@ const OnboardingFlow = () => {
             <input
               type="text"
               placeholder="Add a food you dislike"
-              onChange={(e) => {
-                const value = e.target.value.toLowerCase();
-                console.log("Searching for:", value);
-              }}
               className={styles.onboardingInput}
             />
             <h4>Common Dislikes</h4>
             <div className={styles.onboardingCommonItems}>
               {commonDislikes.map((dislike) => (
                 <button
+                  type="button"
                   key={dislike}
                   className={`${styles.onboardingButton} ${formData.dislikes.includes(dislike) ? styles.selected : ""}`}
                   onClick={() => handleMultiSelect(dislike, "dislikes")}
@@ -660,12 +610,14 @@ const OnboardingFlow = () => {
                 <span>{cuisine}</span>
                 <div className={styles.onboardingCuisineButtons}>
                   <button
+                    type="button"
                     className={`${styles.onboardingButton} ${formData.cuisinePreferences[cuisine] === "dislike" ? styles.selected : ""}`}
                     onClick={() => handleCuisinePreference(cuisine, "dislike")}
                   >
                     👎
                   </button>
                   <button
+                    type="button"
                     className={`${styles.onboardingButton} ${formData.cuisinePreferences[cuisine] === "like" ? styles.selected : ""}`}
                     onClick={() => handleCuisinePreference(cuisine, "like")}
                   >

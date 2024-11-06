@@ -1,42 +1,46 @@
-// @ts-nocheck
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const STACK_KEY = "navigationStack";
 
 const useStackNavigator = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //TODO do I need input or can I use just the location?
+  const getStack = useCallback((): string[] => {
+    const stack = sessionStorage.getItem(STACK_KEY);
+    return stack ? JSON.parse(stack) : [location.pathname];
+  }, [location.pathname]);
 
-  const navigateWithState = (to: string) => {
-    let urlArray = to.split('/')
-    urlArray.shift()
+  const saveStack = useCallback((stack: string[]) => {
+    sessionStorage.setItem(STACK_KEY, JSON.stringify(stack));
+  }, []);
 
-    //check if current base has sub route
-    if(sessionStorage.getItem(urlArray[0])){
-      let savedRoutes = JSON.parse(sessionStorage.getItem(urlArray[0]))
-      if(savedRoutes.length > 1) {
-        navigate(savedRoutes.join("/"))
-        return;
+  const navigateWithState = useCallback(
+    (to: string) => {
+      const stack = getStack();
+
+      if (stack[stack.length - 1] !== to) {
+        stack.push(to);
+        saveStack(stack);
+        navigate(to);
       }
-    }
+    },
+    [getStack, saveStack, navigate],
+  );
 
-    //New route is saved to session storage
-    sessionStorage.setItem(urlArray[0], JSON.stringify(urlArray))
-    navigate(to);
-  };
+  const goBack = useCallback(() => {
+    const stack = getStack();
 
-  const goBack = () => {
-    let currentLocaltion = location.pathname
-    let currentBase = currentLocaltion.split('/')[1]
-    if(sessionStorage.getItem(currentBase)){
-      let savedRoutes = JSON.parse(sessionStorage.getItem(currentBase))
-      if(savedRoutes.length > 1) {
-        savedRoutes.pop()
-        sessionStorage.setItem(currentBase, JSON.stringify(savedRoutes))
-        navigate(savedRoutes.join("/"))
-      }
+    if (stack.length > 1) {
+      stack.pop();
+      const previousRoute = stack[stack.length - 1];
+      saveStack(stack);
+      navigate(previousRoute);
+    } else {
+      navigate("/");
     }
-  };
+  }, [getStack, saveStack, navigate]);
 
   return { navigateWithState, goBack };
 };
