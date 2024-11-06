@@ -11,7 +11,7 @@ import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserPreferences } from "../organisms/userPreferences";
 import styles from "./ProfilePage.module.scss";
 
-const ProfilePage = function () {
+const ProfilePage = () => {
   const { toggleTheme } = useContext(ThemeContext);
   const [profileData, setProfileData] = useState<any>(null); // Ensure it's typed correctly
   const { navigateWithState } = useStackNavigator();
@@ -31,23 +31,21 @@ const ProfilePage = function () {
     navigateWithState("/home");
   };
 
-  const FooterContent = () => {
-    return (
-      <>
-        <Button
-          variant="small"
-          color="tertiary"
-          onClick={() => setIsDeleteModalOpen(false)}
-        >
-          Cancel
-        </Button>
+  const FooterContent = () => (
+    <>
+      <Button
+        variant="small"
+        color="tertiary"
+        onClick={() => setIsDeleteModalOpen(false)}
+      >
+        Cancel
+      </Button>
 
-        <Button variant="small" color="primary" onClick={confirmDeleteAccount}>
-          Delete
-        </Button>
-      </>
-    );
-  };
+      <Button variant="small" color="primary" onClick={confirmDeleteAccount}>
+        Delete
+      </Button>
+    </>
+  );
 
   return (
     <Page>
@@ -63,9 +61,11 @@ const ProfilePage = function () {
             </p>
           </div>
         </div>
-        <p className={styles.profilePage__header__description}>
-          {profileData?.description || "User Description Profile"}
-        </p>
+        {profileData?.description !== "" && (
+          <p className={styles.profilePage__header__description}>
+            {profileData?.description || "User Description Profile"}
+          </p>
+        )}
       </div>
 
       <Button
