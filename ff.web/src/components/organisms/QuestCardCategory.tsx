@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useState, useEffect } from 'react';
 import { Quest } from '@vuo/models/Quest';
 import Button from '@vuo/atoms/Button';
@@ -47,8 +45,7 @@ function QuestCardCategory(props: QuestCardCategoryProps) {
         {isWideScreen && visibleCount < quests.length && (
           <Button
             block
-            className={`${styles.show_more_button} btn btn-raised`}
-            size='large'
+            className={`${styles.show_more_button}`}
             onClick={() => { showMore() }}
           >
             <span>Show More</span>
