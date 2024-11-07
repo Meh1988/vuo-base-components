@@ -7,7 +7,7 @@ import { QuizData, UserAnswer } from '@vuo/models/QuizTypes';
 
 import styles from './Quiz.module.scss';
 
-export default function QuizOrganism({ quiz }: { quiz: QuizData }) {
+export default function QuizOrganism({ quiz, onClose }: { quiz: QuizData, onClose: () => void }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -55,7 +55,7 @@ export default function QuizOrganism({ quiz }: { quiz: QuizData }) {
   if (quizCompleted) {
     return (
       <div className={styles.quizOrganism}>
-        <QuizResult quizData={quiz} userAnswers={userAnswers} />
+        <QuizResult quizData={quiz} userAnswers={userAnswers} onClose={onClose} />
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import { useAppContext } from "@vuo/context/AppContext";
 import QuestBrowseViewModel from "@vuo/viewModels/QuestBrowseViewModel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import mockProgressionPathData from "@static/mockProgressionPathData";
 import { ProgressionPathQuest } from "@vuo/models/ProgressionPathTypes";
@@ -15,6 +15,7 @@ function Home() {
     const { navigateWithState } = useStackNavigator();  // Initialize navigateWithState function
     const navigate = useNavigate();
     const { isOnboardingComplete } = useAppContext()
+    const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([])
     const [viewModel] = useState<QuestBrowseViewModel>(
         () => new QuestBrowseViewModel(),
     );
@@ -55,23 +56,30 @@ function Home() {
 
     }
 
+    useEffect(() => {
+        const storedCompletedQuestIds = localStorage.getItem('completedQuestIds');
+        if (storedCompletedQuestIds) {
+            setCompletedQuestIds(JSON.parse(storedCompletedQuestIds));
+        }
+    }, []);
+
     const onQuestClick = (quest: ProgressionPathQuest) => {
         console.log(quest)
         switch (quest.type) {
             case 'minigame-quiz':
-                navigate(`/minigames/play/quiz?quizId=${quest.quizId}`)
+                navigate(`/minigames/play/quiz?quizId=${quest.quizId}&questId=${quest.id}`)
                 break;
             case 'minigame-cut-guessr':
-                navigate(`/minigames/play/cut-guessr?animal=${quest.animal}`)
+                navigate(`/minigames/play/cut-guessr?animal=${quest.animal}&questId=${quest.id}`)
                 break;
             case 'minigame-ingredient-match':
-                navigate(`/minigames/play/ingredient-match`)
+                navigate(`/minigames/play/ingredient-match?questId=${quest.id}`)
                 break;
             case 'minigame-virtual-sear':
-                navigate(`/minigames/play/virtual-sear`)
+                navigate(`/minigames/play/virtual-sear?questId=${quest.id}`)
                 break;
             case 'minigame-conversation-starter':
-                navigate(`/minigames/play/conversation-starter`)
+                navigate(`/minigames/play/conversation-starter?questId=${quest.id}`)
                 break;
             default:
                 break;
@@ -108,7 +116,7 @@ function Home() {
             <div style={{ height: '20px' }} />
             <Section>
                 <h2>Progression Path</h2>
-                <ProgressionPath units={mockProgressionPathData[0].units} onQuestClick={onQuestClick} />
+                <ProgressionPath units={mockProgressionPathData[0].units} onQuestClick={onQuestClick} completedQuestIds={completedQuestIds} />
             </Section>
 
         </Page>
