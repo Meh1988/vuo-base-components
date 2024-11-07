@@ -52,7 +52,7 @@ export const UserPreferences = ({
 
   useEffect(() => {
     setUserDislikesList(new Set(userData.dislikes || []));
-    setUserAllergiesList(new Set(listOfAllergies || []));
+    setUserAllergiesList(new Set(userData.allergies || []));
 
     if (listOfCuisinePreferences) {
       setUserCuisinePreferencesList(
@@ -65,7 +65,7 @@ export const UserPreferences = ({
     } else {
       setUserCuisinePreferencesList(new Set());
     }
-  }, [listOfDiets, listOfAllergies, listOfCuisinePreferences]);
+  }, [userData.dislikes, userData.allergies, listOfCuisinePreferences]);
 
   const Label = ({
     children,
@@ -327,12 +327,13 @@ export const UserPreferences = ({
         <div className={styles.userPreferences__section__header}>
           <HeartFilled />
           <p className={styles.userPreferences__section__header__title}>
-            Diets
+            Dislikes
           </p>
         </div>
 
         <p className={styles.userPreferences__section__description}>
-          Diets you are on
+          Dislikes are things you don&rsquo;t want to be included in your
+          recommendations
         </p>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>

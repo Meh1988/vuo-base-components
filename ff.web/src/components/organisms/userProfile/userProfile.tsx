@@ -1,4 +1,4 @@
-import { CheckOutlined, CloseOutlined, HeartFilled } from "@ant-design/icons";
+import { CheckOutlined, HeartFilled } from "@ant-design/icons";
 import Button from "@vuo/components/atoms/Button";
 import Section from "@vuo/components/atoms/Section";
 import { AnimatePresence, motion } from "framer-motion";
@@ -8,26 +8,22 @@ import styles from "./userProfile.module.scss";
 
 interface UserProfileProps {
   listOfAllergies: string[];
-  listOfDiets: string[];
+  listOfDislikes: string[];
   listOfCuisinePreferences: Record<string, string | null>;
 }
 
 export const UserProfile = ({
   listOfAllergies,
-  listOfDiets,
+  listOfDislikes,
   listOfCuisinePreferences,
 }: UserProfileProps) => {
-  const [userDiets, setUserDiets] = useState<string>("");
-  const [userDietsList, setUserDietsList] = useState<Set<string>>(
-    new Set(listOfDiets || []),
+  const [userDislikesList, setUserDislikesList] = useState<Set<string>>(
+    new Set(listOfDislikes || []),
   );
 
-  const [userAllergies, setUserAllergies] = useState<string>("");
   const [userAllergiesList, setUserAllergiesList] = useState<Set<string>>(
     new Set(listOfAllergies || []),
   );
-  const [userCuisinePreferences, setUserCuisinePreferences] =
-    useState<string>("");
   const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
     Set<string>
   >(new Set());
@@ -40,7 +36,7 @@ export const UserProfile = ({
   };
 
   useEffect(() => {
-    setUserDietsList(new Set(listOfDiets || []));
+    setUserDislikesList(new Set(listOfDislikes || []));
     setUserAllergiesList(new Set(listOfAllergies || []));
 
     if (listOfCuisinePreferences) {
@@ -54,7 +50,7 @@ export const UserProfile = ({
     } else {
       setUserCuisinePreferencesList(new Set());
     }
-  }, [listOfDiets, listOfAllergies, listOfCuisinePreferences]);
+  }, [listOfDislikes, listOfAllergies, listOfCuisinePreferences]);
 
   return (
     <div className={styles.userPreferences}>
@@ -65,30 +61,47 @@ export const UserProfile = ({
 
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>
+          <HeartFilled size={16} />
+          <p className={styles.userPreferences__section__header__title}>
+            Likes
+          </p>
+        </div>
+        <p className={styles.userPreferences__section__description}>
+          Things you like, things you want to be recommended to you!
+        </p>
+        <div className={styles.userPreferences__section__buttons}>
+          <AnimatePresence>
+            {[...userCuisinePreferencesList].map(
+              (like: string, index: number) => (
+                <motion.div key={index} layout {...itemAnimation}>
+                  <Button key={index} variant="medium" color="secondary">
+                    {like}
+                  </Button>
+                </motion.div>
+              ),
+            )}
+          </AnimatePresence>
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div className={styles.userPreferences__section__header}>
           <HeartFilled />
           <p className={styles.userPreferences__section__header__title}>
-            Diets
+            Dislikes
           </p>
         </div>
 
         <p className={styles.userPreferences__section__description}>
-          Diets you are on
+          Dislikes are things you don&rsquo;t want to be included in your
+          recommendations
         </p>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {[...userDietsList].map((diet: string, index: number) => (
+            {[...userDislikesList].map((dislike: string, index: number) => (
               <motion.div key={index} layout {...itemAnimation}>
-                <Button
-                  variant="medium"
-                  color="secondary"
-                  onClick={() => {
-                    setUserDietsList(
-                      (prev) =>
-                        new Set([...prev].filter((item) => item !== diet)),
-                    );
-                  }}
-                >
-                  {diet} <CloseOutlined />
+                <Button variant="medium" color="secondary">
+                  {dislike}
                 </Button>
               </motion.div>
             ))}
@@ -111,55 +124,11 @@ export const UserProfile = ({
           <AnimatePresence>
             {[...userAllergiesList].map((allergy: string, index: number) => (
               <motion.div key={index} layout {...itemAnimation}>
-                <Button
-                  variant="medium"
-                  color="secondary"
-                  onClick={() => {
-                    setUserAllergiesList(
-                      (prev) =>
-                        new Set([...prev].filter((item) => item !== allergy)),
-                    );
-                  }}
-                >
-                  {allergy} <CloseOutlined />
+                <Button variant="medium" color="secondary">
+                  {allergy}
                 </Button>
               </motion.div>
             ))}
-          </AnimatePresence>
-        </div>
-      </Section>
-
-      <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled size={16} />
-          <p className={styles.userPreferences__section__header__title}>
-            Likes
-          </p>
-        </div>
-        <p className={styles.userPreferences__section__description}>
-          Things you like, things you want to be recommended to you!
-        </p>
-        <div className={styles.userPreferences__section__buttons}>
-          <AnimatePresence>
-            {[...userCuisinePreferencesList].map(
-              (like: string, index: number) => (
-                <motion.div key={index} layout {...itemAnimation}>
-                  <Button
-                    key={index}
-                    variant="medium"
-                    color="secondary"
-                    onClick={() => {
-                      setUserCuisinePreferencesList(
-                        (prev) =>
-                          new Set([...prev].filter((item) => item !== like)),
-                      );
-                    }}
-                  >
-                    {like} <CloseOutlined />
-                  </Button>
-                </motion.div>
-              ),
-            )}
           </AnimatePresence>
         </div>
       </Section>
