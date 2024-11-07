@@ -64,22 +64,31 @@ function Home() {
     }, []);
 
     const onQuestClick = (quest: ProgressionPathQuest) => {
-        console.log(quest)
         switch (quest.type) {
             case 'minigame-quiz':
-                navigate(`/minigames/play/quiz?quizId=${quest.quizId}&questId=${quest.id}`)
+                navigate(`/minigames/play/quiz`, { 
+                    state: { questId: quest.id, quizId: quest.quizId, allowClose: true }
+                });
                 break;
             case 'minigame-cut-guessr':
-                navigate(`/minigames/play/cut-guessr?animal=${quest.animal}&questId=${quest.id}`)
+                navigate(`/minigames/play/cut-guessr`, {
+                    state: { questId: quest.id, animal: quest.animal, allowClose: true }
+                });
                 break;
             case 'minigame-ingredient-match':
-                navigate(`/minigames/play/ingredient-match?questId=${quest.id}`)
+                navigate(`/minigames/play/ingredient-match`, {
+                    state: { questId: quest.id, allowClose: true }
+                });
                 break;
             case 'minigame-virtual-sear':
-                navigate(`/minigames/play/virtual-sear?questId=${quest.id}`)
+                navigate(`/minigames/play/virtual-sear`, {
+                    state: { questId: quest.id, allowClose: true }
+                });
                 break;
             case 'minigame-conversation-starter':
-                navigate(`/minigames/play/conversation-starter?questId=${quest.id}`)
+                navigate(`/minigames/play/conversation-starter`, {
+                    state: { questId: quest.id, allowClose: true }
+                });
                 break;
             default:
                 break;

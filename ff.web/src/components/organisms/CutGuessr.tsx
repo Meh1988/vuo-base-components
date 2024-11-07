@@ -176,7 +176,8 @@ const CutGuessr: React.FC<{
     presetAnimal?: 'Cow' | 'Chicken' | 'Pig';
     onClose?: () => void;
     allowReplay: boolean;
-}> = observer(({ presetAnimal, onClose, allowReplay }) => {
+    allowClose: boolean;
+}> = observer(({ presetAnimal, onClose, allowReplay, allowClose }) => {
     const [animal, setAnimal] = useState<Animal>(presetAnimal ? animals.find(a => a.name === presetAnimal)! : animals[Math.floor(Math.random() * animals.length)]);
     const [cut, setCut] = useState<Cut>(getRandomCut(animal));
     const [userGuess, setUserGuess] = useState<{ x: number; y: number } | null>(null);
@@ -263,7 +264,7 @@ const CutGuessr: React.FC<{
                             </Button>
                         )}
                         <div style={{ height: '20px' }} />
-                        {onClose && (
+                        {allowClose && onClose && (
                             <Button
                                 variant="large"
                                 color="primary"

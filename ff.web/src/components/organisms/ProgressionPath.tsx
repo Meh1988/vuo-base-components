@@ -66,8 +66,6 @@ export default function ProgressionPath({ units, onQuestClick, completedQuestIds
                             switch (quest.type) {
                                 case 'recipe':
                                     return '🍳';
-                                case 'minigame':
-                                    return '🎮';
                                 case 'minigame-virtual-sear':
                                     return <VirtualSearIcon />;
                                 case 'minigame-cut-guessr':
