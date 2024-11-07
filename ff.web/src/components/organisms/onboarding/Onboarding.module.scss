@@ -64,6 +64,7 @@
   padding: var(--space-20);
   border-radius: var(--radius-16);
   background-color: var(--surface-secondary);
+  padding: var(--space-16);
   cursor: pointer;
   transition:
     background-color 0.3s ease,
@@ -103,7 +104,6 @@
 .onboardingButton {
   display: inline-block;
   margin: var(--space-8);
-  padding: var(--space-12) var(--space-20);
   border: none;
   border-radius: var(--radius-24);
   background-color: var(--surface-secondary);
@@ -114,6 +114,8 @@
     transform 0.2s ease,
     box-shadow 0.3s ease;
   font-weight: bold;
+  font-size: var(--font-size-16);
+  padding: var(--space-8) var(--space-16);
 
   &:hover {
     background-color: var(--surface-tertiary);
@@ -220,20 +222,11 @@
     font-size: var(--font-size-16);
   }
 
-  .onboardingOption {
-    padding: var(--space-16);
-  }
-
   .onboardingLabelTitle {
     font-size: var(--font-size-18);
   }
 
   .onboardingLabelDescription {
     font-size: var(--font-size-14);
-  }
-
-  .onboardingButton {
-    font-size: var(--font-size-16);
-    padding: var(--space-8) var(--space-16);
   }
 }
