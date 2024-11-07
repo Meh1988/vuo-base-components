@@ -28,10 +28,7 @@ export const UserPreferences = ({
   listOfDiets,
   listOfCuisinePreferences,
 }: UserPreferencesProps) => {
-  const [userDiets, setUserDiets] = useState<string>("");
-  const [userDietsList, setUserDietsList] = useState<Set<string>>(
-    new Set(listOfDiets || []),
-  );
+  const [userDislikes, setUserDislikes] = useState<string>("");
 
   const [userAllergies, setUserAllergies] = useState<string>("");
   const [userAllergiesList, setUserAllergiesList] = useState<Set<string>>(
@@ -42,6 +39,9 @@ export const UserPreferences = ({
   const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
     Set<string>
   >(new Set());
+  const [userDislikesList, setUserDislikesList] = useState<Set<string>>(
+    new Set(userData.dislikes || []),
+  );
 
   const itemAnimation = {
     initial: { opacity: 0, scale: 0.8 },
@@ -51,7 +51,7 @@ export const UserPreferences = ({
   };
 
   useEffect(() => {
-    setUserDietsList(new Set(listOfDiets || []));
+    setUserDislikesList(new Set(userData.dislikes || []));
     setUserAllergiesList(new Set(listOfAllergies || []));
 
     if (listOfCuisinePreferences) {
@@ -88,10 +88,10 @@ export const UserPreferences = ({
         <Label>Name</Label>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={userDiets}
-            placeholder="What should we call you?"
+            value={userData.userName}
+            placeholder="What's your name?"
             onChange={(e) => {
-              setUserDiets(e.target.value);
+              setUserData((prev) => ({ ...prev, userName: e.target.value }));
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -102,10 +102,10 @@ export const UserPreferences = ({
         <Label>User Name</Label>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={userDiets}
-            placeholder="Update Name"
+            value={userData.userId}
+            placeholder="What should we call you?"
             onChange={(e) => {
-              setUserDiets(e.target.value);
+              setUserData((prev) => ({ ...prev, userId: e.target.value }));
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -117,12 +117,32 @@ export const UserPreferences = ({
         <div className={styles.userPreferences__section__input}>
           <textarea
             name="description"
-            value={userDiets}
+            value={userData.description}
             onChange={(e) => {
-              setUserDiets(e.target.value);
+              setUserData((prev: FormData) => ({
+                ...prev,
+                description: e.target.value,
+              }));
             }}
             placeholder="Enter your description"
             className={`${styles.onboardingInput} ${styles.onboardingInputTextarea}`}
+          />
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <Label>Goal weight</Label>
+        <div className={styles.userPreferences__section__input}>
+          <Input
+            value={userData.goalWeight}
+            placeholder="What's your goal weight?"
+            onChange={(e) => {
+              setUserData((prev: FormData) => ({
+                ...prev,
+                goalWeight: e.target.value,
+              }));
+            }}
+            className={styles.userPreferences__section__input__text}
           />
         </div>
       </Section>
@@ -316,19 +336,19 @@ export const UserPreferences = ({
         </p>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {[...userDietsList].map((diet: string, index: number) => (
+            {[...userDislikesList].map((dislikes: string, index: number) => (
               <motion.div key={index} layout {...itemAnimation}>
                 <Button
                   variant="medium"
                   color="secondary"
                   onClick={() => {
-                    setUserDietsList(
+                    setUserDislikesList(
                       (prev) =>
-                        new Set([...prev].filter((item) => item !== diet)),
+                        new Set([...prev].filter((item) => item !== dislikes)),
                     );
                   }}
                 >
-                  {diet} <CloseOutlined />
+                  {dislikes} <CloseOutlined />
                 </Button>
               </motion.div>
             ))}
@@ -336,10 +356,10 @@ export const UserPreferences = ({
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={userDiets}
+            value={userDislikes}
             placeholder="Add a dislike"
             onChange={(e) => {
-              setUserDiets(e.target.value);
+              setUserDislikes(e.target.value);
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -348,10 +368,12 @@ export const UserPreferences = ({
             variant="medium"
             color="primary"
             onClick={() => {
-              setUserDietsList((prev) => new Set([...prev, userDiets.trim()]));
-              setUserDiets("");
+              setUserDislikesList(
+                (prev) => new Set([...prev, userDislikes.trim()]),
+              );
+              setUserDislikes("");
             }}
-            disabled={userDiets.trim() === ""}
+            disabled={userDislikes.trim() === ""}
           >
             Add <PlusOutlined />
           </Button>
@@ -451,7 +473,7 @@ export const UserPreferences = ({
         <div className={styles.userPreferences__section__input}>
           <Input
             value={userCuisinePreferences}
-            placeholder="Add a diet"
+            placeholder="Add a like food"
             onChange={(e) => {
               setUserCuisinePreferences(e.target.value);
             }}
