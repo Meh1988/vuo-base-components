@@ -7,6 +7,7 @@ export interface FormData {
   goals: string[];
   allergies: string[];
   dislikes: string[];
+  diets: string[];
   userName: string;
   userId: string;
   description: string;
