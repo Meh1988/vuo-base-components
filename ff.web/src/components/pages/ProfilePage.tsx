@@ -62,7 +62,7 @@ const ProfilePage = () => {
             content: (
               <UserProfile
                 listOfAllergies={profileData?.allergies}
-                listOfDiets={profileData?.diets}
+                listOfDislikes={profileData?.dislikes}
                 listOfCuisinePreferences={profileData?.cuisinePreferences}
               />
             ),
