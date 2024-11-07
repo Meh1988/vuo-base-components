@@ -17,6 +17,7 @@ function GamePlayerPage() {
         return null;
     }
 
+    const questId = searchParams.get('questId');
     const quizId = searchParams.get('quizId');
     const animal = searchParams.get('animal') as 'Cow' | 'Chicken' | 'Pig' | undefined;
     const allowReplayParam = searchParams.get('allowReplay');
@@ -26,6 +27,11 @@ function GamePlayerPage() {
         : mockQuizData[Math.floor(Math.random() * mockQuizData.length)];
 
     const onClose = () => {
+        if (questId) {
+            const completedQuestIds = JSON.parse(localStorage.getItem('completedQuestIds') || '[]')
+            localStorage.setItem('completedQuestIds', JSON.stringify([...completedQuestIds, questId]))
+        }
+        console.log(`${questId  } closed and completed`)
         navigate(-1);
     };
 
@@ -33,8 +39,8 @@ function GamePlayerPage() {
     
     return (
         <div className={styles.minigames_container}>
-            <Button onClick={onClose} className={styles.back_button}>
-                Back to Games
+            <Button onClick={() => navigate(-1)} className={styles.back_button}>
+                Exit
             </Button>
             <GameComponent 
                 allowReplay={allowReplayParam === 'true'}

@@ -15,7 +15,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                 color: "var(--surface-brand-orange)",
                 quests: [
                     {
-                        id: "quest1-1",
+                        id: "quest1-1-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Knife Basics",
@@ -24,7 +24,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                     },
 
                     {
-                        id: "quest1-2",
+                        id: "quest1-2-basicooking",
                         type: "minigame-cut-guessr",
                         minigameId: "cut-guessr",
                         title: "How the Cow inside out",
@@ -32,7 +32,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn where cow cuts come from",
                     },
                     {
-                        id: "quest1-3",
+                        id: "quest1-3-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         quizId: "slice-evaluation-quiz-001",
@@ -49,7 +49,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                 color: "var(--surface-brand-blue)",
                 quests: [
                     {
-                        id: "quest2-1",
+                        id: "quest2-1-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         quizId: "whisk-evaluation-quiz-001",
@@ -57,7 +57,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn the basics of whisking",
                     },
                     {
-                        id: "quest2-2",
+                        id: "quest2-2-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         quizId: "bag-mixing-001",
@@ -65,7 +65,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn the basics of bag mixing",
                     },
                     {
-                        id: "quest2-3",
+                        id: "quest2-3-basicooking",
                         type: "minigame-ingredient-match",
                         minigameId: "ingredient-match",
                         title: "Ingredient Match",
@@ -81,7 +81,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                 color: "var(--surface-brand-purple)",
                 quests: [
                     {
-                        id: "quest3-1",
+                        id: "quest3-1-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Baking Basics Quiz",
@@ -89,7 +89,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn the fundamentals of baking",
                     },
                     {
-                        id: "quest3-2",
+                        id: "quest3-2-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Temperature Control",
@@ -97,14 +97,14 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Master oven temperature control",
                     },
                     {
-                        id: "quest3-3",
+                        id: "quest3-3-basicooking",
                         type: "minigame-ingredient-match",
                         minigameId: "ingredient-match",
                         title: "Interactive Baking Challenge",
                         description: "Test your baking knowledge interactively",
                     },
                     {
-                        id: "quest3-4",
+                        id: "quest3-4-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Baking Tools",
@@ -121,7 +121,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                 color: "var(--surface-brand-red)",
                 quests: [
                     {
-                        id: "quest4-1",
+                        id: "quest4-1-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Beverage Basics",
@@ -129,14 +129,14 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn the basics of beverage making",
                     },
                     {
-                        id: "quest4-2",
+                        id: "quest4-2-basicooking",
                         type: "minigame-conversation-starter",
                         minigameId: "conversation-starter",
                         title: "Interactive Drink Challenge",
                         description: "Test your drink-making knowledge",
                     },
                     {
-                        id: "quest4-3",
+                        id: "quest4-3-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Sauce Decoration",
@@ -144,7 +144,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn about decorative elements",
                     },
                     {
-                        id: "quest4-4",
+                        id: "quest4-4-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Herbs to Flavors",
@@ -161,7 +161,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                 color: "var(--surface-brand-green)",
                 quests: [
                     {
-                        id: "quest5-1",
+                        id: "quest5-1-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Global Flavors",
@@ -169,14 +169,14 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn about international dishes",
                     },
                     {
-                        id: "quest5-2",
+                        id: "quest5-2-basicooking",
                         type: "minigame-virtual-sear",
                         minigameId: "virtual-sear",
                         title: "Searing Mastery",
                         description: "Master global seasonings",
                     },
                     {
-                        id: "quest5-3",
+                        id: "quest5-3-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Interactive Cuisine Challenge",
@@ -184,7 +184,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Test your international cuisine knowledge",
                     },
                     {
-                        id: "quest5-4",
+                        id: "quest5-4-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Food Origins",
@@ -192,7 +192,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         description: "Learn about food origins",
                     },
                     {
-                        id: "quest5-5",
+                        id: "quest5-5-basicooking",
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Global Flavors 2",
