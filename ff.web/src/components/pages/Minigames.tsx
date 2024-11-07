@@ -19,7 +19,9 @@ function Minigames() {
     const onSelectGame = (selectedGameId: string) => {
         const game = games.find((g: { id: string }) => g.id === selectedGameId);
         if (game) {
-            navigate(`/minigames/play/${game.id}`);
+            navigate(`/minigames/play/${game.id}`, {
+                state: { allowReplay: true }
+            });
         }
     }
 

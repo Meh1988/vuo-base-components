@@ -5,10 +5,11 @@ import Button from '@vuo/components/atoms/Button';
 interface QuizResultProps {
   quizData: QuizData;
   userAnswers: UserAnswer[];
+  allowClose: boolean;
   onClose: () => void;
 }
 
-export default function QuizResult({ quizData, userAnswers, onClose }: QuizResultProps) {
+export default function QuizResult({ quizData, userAnswers, allowClose, onClose }: QuizResultProps) {
   const calculateScore = () => {
     let score = 0;
     quizData.questions.forEach((question, index) => {
@@ -34,7 +35,7 @@ export default function QuizResult({ quizData, userAnswers, onClose }: QuizResul
       <h2>Quiz Results</h2>
       <p>You scored {score} out of {totalQuestions}</p>
       <p>Percentage: {((score / totalQuestions) * 100).toFixed(2)}%</p>
-      {onClose && (
+      {allowClose && onClose && (
         <Button
           variant="large"
           color="primary"
