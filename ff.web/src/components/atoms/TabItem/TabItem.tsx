@@ -6,13 +6,11 @@ interface TabItemProps {
   onClick: () => void;
 }
 
-export const TabItem = ({ label, isActive, onClick }: TabItemProps) => {
-  return (
-    <div
-      className={`${styles.tabItem} ${isActive ? styles["tabItem--active"] : ""}`}
-      onClick={onClick}
-    >
-      <p>{label}</p>
-    </div>
-  );
-};
+export const TabItem = ({ label, isActive, onClick }: TabItemProps) => (
+  <div
+    className={`${styles.tabItem} ${isActive ? styles["tabItem--active"] : ""}`}
+    onClick={onClick}
+  >
+    <p>{label}</p>
+  </div>
+);

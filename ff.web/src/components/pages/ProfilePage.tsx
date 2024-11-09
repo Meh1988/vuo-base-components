@@ -59,12 +59,7 @@ const ProfilePage = () => {
           {
             id: "tab1",
             label: "YOUR PROFILE",
-            content: (
-              <UserProfile
-                profileData={profileData}
-                listOfCuisinePreferences={profileData?.cuisinePreferences}
-              />
-            ),
+            content: <UserProfile profileData={profileData} />,
           },
           { id: "tab2", label: "FOOD PROFILE", content: <UserFoodProfile /> },
         ]}
