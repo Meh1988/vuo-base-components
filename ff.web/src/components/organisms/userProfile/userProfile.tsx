@@ -15,7 +15,6 @@ interface UserProfileProps {
 interface SectionPreferencesProps {
   label: string;
   value: string;
-  description?: string;
 }
 
 export const UserProfile = ({ profileData }: UserProfileProps) => {
@@ -32,65 +31,65 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
     setUserAllergiesList(profileData?.allergies || []);
   }, [profileData.dislikes, profileData.allergies]);
 
-  const SectionPreference = ({
-    label,
-    value,
-    description,
-  }: SectionPreferencesProps) => (
+  const SectionPreference = ({ label, value }: SectionPreferencesProps) => (
     <Section className={styles.userPreferences__section}>
       <div className={styles.userPreferences__section__header}>
-        <HeartFilled size={16} />
         <p className={styles.userPreferences__section__header__title}>
           {label}
         </p>
       </div>
-      <p className={styles.userPreferences__section__description}>
-        {description}
-      </p>
-      <div className={styles.userPreferences__section__buttons}>
-        <Button variant="medium" color="secondary">
-          {value}
-        </Button>
-      </div>
+      <p className={styles.userPreferences__section__description}>{value}</p>
     </Section>
   );
 
   return (
     <div className={styles.userPreferences}>
       <div className={styles.userPreferences__header__title}>
-        <p>Your preferences</p>
+        <p>Profile Details</p>
         <CheckOutlined />
       </div>
 
-      <SectionPreference
-        label="Age"
-        value={profileData?.age}
-        description="Your age"
-      />
-      <SectionPreference label="Height" value={profileData?.height} />
-      <SectionPreference
-        label="Current weight"
-        value={profileData?.currentWeight}
-      />
-      <SectionPreference label="Goal weight" value={profileData?.goalWeight} />
-      <SectionPreference label="Motivation" value={profileData?.motivation} />
-      <SectionPreference
-        label="Activity level"
-        value={profileData?.activityLevel}
-      />
-      <SectionPreference label="Your mindset" value={profileData?.mindset} />
-      <SectionPreference label="Speed" value={profileData?.speed} />
-      <SectionPreference label="Diet Plan" value={profileData?.dietPlan} />
-      <SectionPreference
-        label="Past Experience"
-        value={profileData?.pastExperience}
-      />
-      <SectionPreference label="Format" value={profileData?.format} />
-      <SectionPreference label="Your pantry" value={profileData?.pantry} />
-      <SectionPreference
-        label="Cooking skills"
-        value={profileData?.cookingSkills}
-      />
+      <div className={styles.userPreferences__row}>
+        <SectionPreference label="Age" value={profileData?.age} />
+        <SectionPreference label="Height" value={profileData?.height} />
+      </div>
+
+      <div className={styles.userPreferences__row}>
+        <SectionPreference
+          label="Current weight"
+          value={profileData?.currentWeight}
+        />
+        <SectionPreference
+          label="Goal weight"
+          value={profileData?.goalWeight}
+        />
+      </div>
+      <div className={styles.userPreferences__row}>
+        <SectionPreference label="Your mindset" value={profileData?.mindset} />
+        <SectionPreference label="Speed" value={profileData?.speed} />
+      </div>
+      <div className={styles.userPreferences__row}>
+        <SectionPreference label="Diet Plan" value={profileData?.dietPlan} />
+        <SectionPreference
+          label="Past Experience"
+          value={profileData?.pastExperience}
+        />
+      </div>
+      <div className={styles.userPreferences__row}>
+        <SectionPreference label="Format" value={profileData?.format} />
+        <SectionPreference label="Your pantry" value={profileData?.pantry} />
+      </div>
+      <div className={styles.userPreferences__row}>
+        <SectionPreference
+          label="Cooking skills"
+          value={profileData?.cookingSkills}
+        />
+      </div>
+
+      <div className={styles.userPreferences__header__title}>
+        <p>Your preferences</p>
+        <CheckOutlined />
+      </div>
 
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>
