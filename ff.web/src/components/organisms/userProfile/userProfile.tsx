@@ -17,7 +17,6 @@ export const UserProfile = ({
   profileData,
   listOfCuisinePreferences,
 }: UserProfileProps) => {
-  console.log(profileData);
   const [userDislikesList, setUserDislikesList] = useState<string[]>(
     profileData?.dislikes || [],
   );
