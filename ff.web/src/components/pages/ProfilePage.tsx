@@ -61,8 +61,7 @@ const ProfilePage = () => {
             label: "YOUR PROFILE",
             content: (
               <UserProfile
-                listOfAllergies={profileData?.allergies}
-                listOfDislikes={profileData?.dislikes}
+                profileData={profileData}
                 listOfCuisinePreferences={profileData?.cuisinePreferences}
               />
             ),
