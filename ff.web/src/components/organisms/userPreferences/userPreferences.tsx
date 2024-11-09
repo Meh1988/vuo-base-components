@@ -6,6 +6,7 @@ import Section from "@vuo/components/atoms/Section";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+import { allergies, cuisines } from "@vuo/constants/Onboarding";
 import {
   cookingSkills,
   goals,
@@ -14,31 +15,19 @@ import {
 import styles from "./userPreferences.module.scss";
 
 interface UserPreferencesProps {
-  listOfAllergies: string[];
   listOfDiets: string[];
-  listOfCuisinePreferences: Record<string, string | null>;
   userData: FormData;
-  setUserData: (data: FormData) => void;
+  setUserData: React.Dispatch<React.SetStateAction<FormData>>;
 }
 
 export const UserPreferences = ({
   userData,
   setUserData,
-  listOfAllergies,
-  listOfDiets,
-  listOfCuisinePreferences,
 }: UserPreferencesProps) => {
   const [userDislikes, setUserDislikes] = useState<string>("");
 
-  const [userAllergies, setUserAllergies] = useState<string>("");
-  const [userAllergiesList, setUserAllergiesList] = useState<Set<string>>(
-    new Set(listOfAllergies || []),
-  );
-  const [userCuisinePreferences, setUserCuisinePreferences] =
-    useState<string>("");
-  const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
-    Set<string>
-  >(new Set());
+  const [userLikes, setUserLikes] = useState<string>("");
+  const [userLikesList, setUserLikesList] = useState<Set<string>>(new Set());
   const [userDislikesList, setUserDislikesList] = useState<Set<string>>(
     new Set(userData.dislikes || []),
   );
@@ -52,20 +41,19 @@ export const UserPreferences = ({
 
   useEffect(() => {
     setUserDislikesList(new Set(userData.dislikes || []));
-    setUserAllergiesList(new Set(userData.allergies || []));
 
-    if (listOfCuisinePreferences) {
-      setUserCuisinePreferencesList(
+    if (userData.cuisinePreferences) {
+      setUserLikesList(
         new Set(
-          Object.entries(listOfCuisinePreferences)
+          Object.entries(userData.cuisinePreferences)
             .filter(([preference]) => preference === "like")
             .map(([cuisine]) => cuisine),
         ),
       );
     } else {
-      setUserCuisinePreferencesList(new Set());
+      setUserLikesList(new Set());
     }
-  }, [userData.dislikes, userData.allergies, listOfCuisinePreferences]);
+  }, [userData.dislikes, userData.allergies, userData.cuisinePreferences]);
 
   const Label = ({
     children,
@@ -73,13 +61,32 @@ export const UserPreferences = ({
     children: React.ReactNode | React.ReactNode[];
   }) => <p className={styles.userPreferences__section__label}>{children}</p>;
 
-  const handleMultiSelect = (item: string, field: keyof FormData) => {
+  const handleCuisinePreference = (
+    cuisine: string,
+    preference: "like" | "dislike",
+  ) => {
     setUserData((prev: FormData) => ({
       ...prev,
-      [field]: (prev[field] as string[]).includes(item)
-        ? (prev[field] as string[]).filter((i: string) => i !== item)
-        : [...(prev[field] as string[]), item],
+      cuisinePreferences: {
+        ...prev.cuisinePreferences,
+        [cuisine]: preference !== "like" ? "like" : "dislike",
+      },
     }));
+  };
+
+  const handleToggle = <K extends keyof FormData>(field: K, value: string) => {
+    setUserData((prev: FormData) => {
+      if (!Array.isArray(prev[field])) {
+        return { ...prev, [field]: [value] };
+      }
+
+      const currentArray = prev[field] as string[];
+      const newArray = currentArray.includes(value)
+        ? currentArray.filter((item) => item !== value)
+        : [...currentArray, value];
+
+      return { ...prev, [field]: newArray };
+    });
   };
 
   return (
@@ -91,7 +98,10 @@ export const UserPreferences = ({
             value={userData.userName}
             placeholder="What's your name?"
             onChange={(e) => {
-              setUserData((prev) => ({ ...prev, userName: e.target.value }));
+              setUserData((prev: FormData) => ({
+                ...prev,
+                userName: e.target.value,
+              }));
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -105,7 +115,10 @@ export const UserPreferences = ({
             value={userData.userId}
             placeholder="What should we call you?"
             onChange={(e) => {
-              setUserData((prev) => ({ ...prev, userId: e.target.value }));
+              setUserData((prev: FormData) => ({
+                ...prev,
+                userId: e.target.value,
+              }));
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -157,7 +170,7 @@ export const UserPreferences = ({
               variant="medium"
               color={userData.goals.includes(goal) ? "primary" : "secondary"}
               className={styles.onboardingButton}
-              onClick={() => handleMultiSelect(goal, "goals")}
+              onClick={() => handleToggle("goals", goal)}
             >
               {goal}
             </Button>
@@ -382,59 +395,51 @@ export const UserPreferences = ({
       </Section>
 
       <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled />
-          <p className={styles.userPreferences__section__header__title}>
-            Allergies
-          </p>
-        </div>
-        <p className={styles.userPreferences__section__description}>
-          Things you ABOSOLUTELY DONT&rsquo;T WANT TO BE INCLUDED in your
-          recommendations
-        </p>
-        <div className={styles.userPreferences__section__buttons}>
-          <AnimatePresence>
-            {[...userAllergiesList].map((allergy: string, index: number) => (
-              <motion.div key={index} layout {...itemAnimation}>
-                <Button
-                  variant="medium"
-                  color="secondary"
-                  onClick={() => {
-                    setUserAllergiesList(
-                      (prev) =>
-                        new Set([...prev].filter((item) => item !== allergy)),
-                    );
-                  }}
-                >
-                  {allergy} <CloseOutlined />
-                </Button>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-        <div className={styles.userPreferences__section__input}>
-          <Input
-            value={userAllergies}
-            placeholder="Add a like"
-            onChange={(e) => {
-              setUserAllergies(e.target.value);
-            }}
-            className={styles.userPreferences__section__input__text}
-          />
+        <Label>Allergies</Label>
 
-          <Button
-            variant="medium"
-            color="primary"
-            onClick={() => {
-              setUserAllergies("");
-              setUserAllergiesList(
-                (prev) => new Set([...prev, userAllergies.trim()]),
-              );
-            }}
-            disabled={userAllergies.trim() === ""}
-          >
-            Add <PlusOutlined />
-          </Button>
+        <div className={styles.userPreferences__section__buttons}>
+          {allergies.map((allergy) => (
+            <Button
+              key={allergy}
+              variant="medium"
+              color={
+                userData.allergies.includes(allergy) ? "primary" : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() => handleToggle("allergies", allergy)}
+            >
+              {allergy}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <Label>Cuisines</Label>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {cuisines.map((cuisinesItem) => (
+            <Button
+              key={cuisinesItem}
+              variant="medium"
+              color={
+                userData.cuisinePreferences[cuisinesItem] === "like"
+                  ? "primary"
+                  : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                handleCuisinePreference(
+                  cuisinesItem,
+                  userData.cuisinePreferences[cuisinesItem] === "like"
+                    ? "like"
+                    : "dislike",
+                )
+              }
+            >
+              {cuisinesItem}
+            </Button>
+          ))}
         </div>
       </Section>
 
@@ -450,33 +455,31 @@ export const UserPreferences = ({
         </p>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {[...userCuisinePreferencesList].map(
-              (like: string, index: number) => (
-                <motion.div key={index} layout {...itemAnimation}>
-                  <Button
-                    key={index}
-                    variant="medium"
-                    color="secondary"
-                    onClick={() => {
-                      setUserCuisinePreferencesList(
-                        (prev) =>
-                          new Set([...prev].filter((item) => item !== like)),
-                      );
-                    }}
-                  >
-                    {like} <CloseOutlined />
-                  </Button>
-                </motion.div>
-              ),
-            )}
+            {[...userLikesList].map((like: string, index: number) => (
+              <motion.div key={index} layout {...itemAnimation}>
+                <Button
+                  key={index}
+                  variant="medium"
+                  color="secondary"
+                  onClick={() => {
+                    setUserLikesList(
+                      (prev) =>
+                        new Set([...prev].filter((item) => item !== like)),
+                    );
+                  }}
+                >
+                  {like} <CloseOutlined />
+                </Button>
+              </motion.div>
+            ))}
           </AnimatePresence>
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={userCuisinePreferences}
+            value={userLikes}
             placeholder="Add a like food"
             onChange={(e) => {
-              setUserCuisinePreferences(e.target.value);
+              setUserLikes(e.target.value);
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -485,12 +488,10 @@ export const UserPreferences = ({
             variant="medium"
             color="primary"
             onClick={() => {
-              setUserCuisinePreferences("");
-              setUserCuisinePreferencesList(
-                (prev) => new Set([...prev, userCuisinePreferences.trim()]),
-              );
+              setUserLikes("");
+              setUserLikesList((prev) => new Set([...prev, userLikes.trim()]));
             }}
-            disabled={userCuisinePreferences.trim() === ""}
+            disabled={userLikes.trim() === ""}
           >
             Add <PlusOutlined />
           </Button>

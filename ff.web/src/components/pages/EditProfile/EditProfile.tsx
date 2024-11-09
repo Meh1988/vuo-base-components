@@ -15,7 +15,7 @@ export const EditProfile = () => {
   const { toggleTheme } = useContext(ThemeContext);
   const [profileData, setProfileData] = useState<FormData>(
     initialOnboardingData,
-  ); // Ensure it's typed correctly
+  );
   const { navigateWithState } = useStackNavigator();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -56,9 +56,7 @@ export const EditProfile = () => {
       </div>
 
       <UserPreferences
-        listOfAllergies={profileData?.allergies}
         listOfDiets={profileData?.diets}
-        listOfCuisinePreferences={profileData?.cuisinePreferences}
         userData={profileData}
         setUserData={setProfileData}
       />
