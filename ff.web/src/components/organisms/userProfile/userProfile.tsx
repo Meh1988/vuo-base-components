@@ -10,13 +10,15 @@ import styles from "./userProfile.module.scss";
 
 interface UserProfileProps {
   profileData: FormData;
-  listOfCuisinePreferences: Record<string, string | null>;
 }
 
-export const UserProfile = ({
-  profileData,
-  listOfCuisinePreferences,
-}: UserProfileProps) => {
+interface SectionPreferencesProps {
+  label: string;
+  value: string;
+  description?: string;
+}
+
+export const UserProfile = ({ profileData }: UserProfileProps) => {
   const [userDislikesList, setUserDislikesList] = useState<string[]>(
     profileData?.dislikes || [],
   );
@@ -24,26 +26,34 @@ export const UserProfile = ({
   const [userAllergiesList, setUserAllergiesList] = useState<string[]>(
     profileData?.allergies || [],
   );
-  const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
-    Set<string>
-  >(new Set());
 
   useEffect(() => {
     setUserDislikesList(profileData?.dislikes || []);
     setUserAllergiesList(profileData?.allergies || []);
+  }, [profileData.dislikes, profileData.allergies]);
 
-    if (listOfCuisinePreferences) {
-      setUserCuisinePreferencesList(
-        new Set(
-          Object.entries(listOfCuisinePreferences)
-            .filter(([preference]) => preference === "like")
-            .map(([cuisine]) => cuisine),
-        ),
-      );
-    } else {
-      setUserCuisinePreferencesList(new Set());
-    }
-  }, [profileData.dislikes, profileData.allergies, listOfCuisinePreferences]);
+  const SectionPreference = ({
+    label,
+    value,
+    description,
+  }: SectionPreferencesProps) => (
+    <Section className={styles.userPreferences__section}>
+      <div className={styles.userPreferences__section__header}>
+        <HeartFilled size={16} />
+        <p className={styles.userPreferences__section__header__title}>
+          {label}
+        </p>
+      </div>
+      <p className={styles.userPreferences__section__description}>
+        {description}
+      </p>
+      <div className={styles.userPreferences__section__buttons}>
+        <Button variant="medium" color="secondary">
+          {value}
+        </Button>
+      </div>
+    </Section>
+  );
 
   return (
     <div className={styles.userPreferences}>
@@ -52,24 +62,54 @@ export const UserProfile = ({
         <CheckOutlined />
       </div>
 
+      <SectionPreference
+        label="Age"
+        value={profileData?.age}
+        description="Your age"
+      />
+      <SectionPreference label="Height" value={profileData?.height} />
+      <SectionPreference
+        label="Current weight"
+        value={profileData?.currentWeight}
+      />
+      <SectionPreference label="Goal weight" value={profileData?.goalWeight} />
+      <SectionPreference label="Motivation" value={profileData?.motivation} />
+      <SectionPreference
+        label="Activity level"
+        value={profileData?.activityLevel}
+      />
+      <SectionPreference label="Your mindset" value={profileData?.mindset} />
+      <SectionPreference label="Speed" value={profileData?.speed} />
+      <SectionPreference label="Diet Plan" value={profileData?.dietPlan} />
+      <SectionPreference
+        label="Past Experience"
+        value={profileData?.pastExperience}
+      />
+      <SectionPreference label="Format" value={profileData?.format} />
+      <SectionPreference label="Your pantry" value={profileData?.pantry} />
+      <SectionPreference
+        label="Cooking skills"
+        value={profileData?.cookingSkills}
+      />
+
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>
           <HeartFilled size={16} />
           <p className={styles.userPreferences__section__header__title}>
-            Likes
+            Your goals
           </p>
         </div>
-        <p className={styles.userPreferences__section__description}>
-          Things you like, things you want to be recommended to you!
-        </p>
         <div className={styles.userPreferences__section__buttons}>
-          {[...userCuisinePreferencesList].map(
-            (like: string, index: number) => (
-              <Button key={index} variant="medium" color="secondary">
-                {like}
-              </Button>
-            ),
-          )}
+          {profileData?.goals?.map((goal) => (
+            <Button
+              key={goal}
+              variant="medium"
+              color="secondary"
+              className={styles.onboardingButton}
+            >
+              {goal}
+            </Button>
+          ))}
         </div>
       </Section>
 
