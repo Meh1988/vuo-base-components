@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { FormData } from "@models/Onboarding";
 
 import { cuisines } from "@vuo/constants/Onboarding";
+import { AnimatePresence, motion } from "framer-motion";
 import styles from "./userProfile.module.scss";
 
 interface UserProfileProps {
@@ -18,6 +19,7 @@ interface SectionPreferencesProps {
 }
 
 export const UserProfile = ({ profileData }: UserProfileProps) => {
+  const [showProfileDetails, setShowProfileDetails] = useState(false);
   const [userDislikesList, setUserDislikesList] = useState<string[]>(
     profileData?.dislikes || [],
   );
@@ -25,6 +27,19 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
   const [userAllergiesList, setUserAllergiesList] = useState<string[]>(
     profileData?.allergies || [],
   );
+
+  const detailsVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      height: 0,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      height: "auto",
+    },
+  };
 
   useEffect(() => {
     setUserDislikesList(profileData?.dislikes || []);
@@ -44,53 +59,84 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
 
   return (
     <div className={styles.userPreferences}>
-      <div className={styles.userPreferences__header__title}>
+      <div
+        className={styles.userPreferences__header__title}
+        onClick={() => setShowProfileDetails(!showProfileDetails)}
+      >
         <p>Profile Details</p>
         <CheckOutlined />
       </div>
+      <AnimatePresence mode="wait">
+        {showProfileDetails && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={detailsVariants}
+            transition={{
+              duration: 0.3,
+              ease: [0.4, 0, 0.2, 1],
+            }}
+          >
+            <div className={styles.userPreferences__details}>
+              <div className={styles.userPreferences__details__row}>
+                <SectionPreference label="Age" value={profileData?.age} />
+                <SectionPreference label="Height" value={profileData?.height} />
+              </div>
 
-      <div className={styles.userPreferences__row}>
-        <SectionPreference label="Age" value={profileData?.age} />
-        <SectionPreference label="Height" value={profileData?.height} />
-      </div>
+              <div className={styles.userPreferences__details__row}>
+                <SectionPreference
+                  label="Current weight"
+                  value={profileData?.currentWeight}
+                />
+                <SectionPreference
+                  label="Goal weight"
+                  value={profileData?.goalWeight}
+                />
+              </div>
 
-      <div className={styles.userPreferences__row}>
-        <SectionPreference
-          label="Current weight"
-          value={profileData?.currentWeight}
-        />
-        <SectionPreference
-          label="Goal weight"
-          value={profileData?.goalWeight}
-        />
-      </div>
-      <div className={styles.userPreferences__row}>
-        <SectionPreference label="Your mindset" value={profileData?.mindset} />
-        <SectionPreference label="Speed" value={profileData?.speed} />
-      </div>
-      <div className={styles.userPreferences__row}>
-        <SectionPreference label="Diet Plan" value={profileData?.dietPlan} />
-        <SectionPreference
-          label="Past Experience"
-          value={profileData?.pastExperience}
-        />
-      </div>
-      <div className={styles.userPreferences__row}>
-        <SectionPreference label="Format" value={profileData?.format} />
-        <SectionPreference label="Your pantry" value={profileData?.pantry} />
-      </div>
-      <div className={styles.userPreferences__row}>
-        <SectionPreference
-          label="Cooking skills"
-          value={profileData?.cookingSkills}
-        />
-      </div>
+              <div className={styles.userPreferences__details__row}>
+                <SectionPreference
+                  label="Your mindset"
+                  value={profileData?.mindset}
+                />
+                <SectionPreference label="Speed" value={profileData?.speed} />
+              </div>
+
+              <div className={styles.userPreferences__details__row}>
+                <SectionPreference
+                  label="Diet Plan"
+                  value={profileData?.dietPlan}
+                />
+                <SectionPreference
+                  label="Past Experience"
+                  value={profileData?.pastExperience}
+                />
+              </div>
+
+              <div className={styles.userPreferences__details__row}>
+                <SectionPreference label="Format" value={profileData?.format} />
+                <SectionPreference
+                  label="Your pantry"
+                  value={profileData?.pantry}
+                />
+              </div>
+
+              <div className={styles.userPreferences__details__row}>
+                <SectionPreference
+                  label="Cooking skills"
+                  value={profileData?.cookingSkills}
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className={styles.userPreferences__header__title}>
         <p>Your preferences</p>
         <CheckOutlined />
       </div>
-
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>
           <HeartFilled size={16} />
@@ -111,7 +157,6 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
           ))}
         </div>
       </Section>
-
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>
           <HeartFilled />
@@ -132,7 +177,6 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
           ))}
         </div>
       </Section>
-
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>
           <HeartFilled />
@@ -152,7 +196,6 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
           ))}
         </div>
       </Section>
-
       <Section className={styles.userPreferences__section}>
         <div className={styles.userPreferences__section__header}>
           <HeartFilled />
