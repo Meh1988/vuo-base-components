@@ -1,8 +1,7 @@
 import { Avatar } from "@vuo/atoms/Avatar";
-import { ThemeContext } from "@vuo/context/ThemeContext";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import Page from "@vuo/templates/Page";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FormData } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
@@ -12,19 +11,18 @@ import { UserPreferences } from "@vuo/organisms/userPreferences";
 import styles from "./EditProfile.module.scss";
 
 export const EditProfile = () => {
-  const { toggleTheme } = useContext(ThemeContext);
   const [profileData, setProfileData] = useState<FormData>(
     initialOnboardingData,
   );
-  const { navigateWithState } = useStackNavigator();
+  const { navigateWithState, goBack } = useStackNavigator();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
     if (storedProfile) {
       const parsedProfile = JSON.parse(storedProfile);
-      delete parsedProfile.completedSteps; // Remove the completedSteps key
-      setProfileData(parsedProfile); // Set the modified profile data
+      delete parsedProfile.completedSteps;
+      setProfileData(parsedProfile);
     }
   }, []);
 
@@ -66,10 +64,11 @@ export const EditProfile = () => {
           variant="large"
           color="primary"
           onClick={() => {
-            toggleTheme();
+            localStorage.setItem("profileData", JSON.stringify(profileData));
+            goBack();
           }}
         >
-          Change Theme
+          Save Changes
         </Button>
         <Button
           variant="small"

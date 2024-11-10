@@ -6,6 +6,7 @@ export enum OnboardingStatus {
 export interface FormData {
   goals: string[];
   allergies: string[];
+  likes: string[];
   dislikes: string[];
   diets: string[];
   userName: string;
