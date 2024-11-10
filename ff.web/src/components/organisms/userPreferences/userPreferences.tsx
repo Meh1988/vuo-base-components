@@ -385,6 +385,7 @@ export const UserPreferences = ({
               setUserDislikesList(
                 (prev) => new Set([...prev, userDislikes.trim()]),
               );
+              handleToggle("dislikes", userDislikes.trim());
               setUserDislikes("");
             }}
             disabled={userDislikes.trim() === ""}
@@ -490,6 +491,7 @@ export const UserPreferences = ({
             onClick={() => {
               setUserLikes("");
               setUserLikesList((prev) => new Set([...prev, userLikes.trim()]));
+              handleToggle("likes", userLikes.trim());
             }}
             disabled={userLikes.trim() === ""}
           >
