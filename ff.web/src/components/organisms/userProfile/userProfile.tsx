@@ -1,4 +1,9 @@
-import { CheckOutlined, HeartFilled } from "@ant-design/icons";
+import {
+  CaretDownFilled,
+  CaretUpFilled,
+  CheckOutlined,
+  HeartFilled,
+} from "@ant-design/icons";
 import Button from "@vuo/components/atoms/Button";
 import Section from "@vuo/components/atoms/Section";
 import { useEffect, useState } from "react";
@@ -49,23 +54,23 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
   const SectionPreference = ({ label, value }: SectionPreferencesProps) => (
     <Section className={styles.userPreferences__section}>
       <div className={styles.userPreferences__section__header}>
-        <p className={styles.userPreferences__section__header__title}>
-          {label}
-        </p>
+        <p className={styles.userPreferences__details__title}>{label}</p>
       </div>
-      <p className={styles.userPreferences__section__description}>{value}</p>
+      <p className={styles.userPreferences__details__description}>{value}</p>
     </Section>
   );
 
   return (
     <div className={styles.userPreferences}>
-      <div
-        className={styles.userPreferences__header__title}
+      <Button
+        variant="medium"
+        color="secondary"
+        className={styles.userPreferences__buttonDetails}
         onClick={() => setShowProfileDetails(!showProfileDetails)}
       >
         <p>Profile Details</p>
-        <CheckOutlined />
-      </div>
+        {showProfileDetails ? <CaretUpFilled /> : <CaretDownFilled />}
+      </Button>
       <AnimatePresence mode="wait">
         {showProfileDetails && (
           <motion.div
