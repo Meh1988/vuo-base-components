@@ -298,7 +298,7 @@ const OnboardingFlow = observer(() => {
               "Male",
               "",
               viewModel.formData.sex === "male",
-              (value) => setFormData((prev) => ({ ...prev, sex: value })),
+              (value) => viewModel.setFormData((prev) => ({ ...prev, sex: value })),
             )}
           </>
         );
@@ -396,7 +396,7 @@ const OnboardingFlow = observer(() => {
               "Prefer moderate changes",
               viewModel.formData.motivation === "willing-to-give-it-a-go",
               (value) =>
-                setFormData((prev) => ({ ...prev, motivation: value })),
+                viewModel.setFormData((prev) => ({ ...prev, motivation: value })),
             )}
             {renderOption(
               "small-changes-are-best",

@@ -9,13 +9,22 @@ import { Tabs } from "../molecules/Tabs";
 import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserProfile } from "../organisms/userProfile";
 import styles from "./ProfilePage.module.scss";
-import { signInWithGoogle, signInWithFacebook, logOut } from '../../auth/auth';
+// import { signInWithGoogle, signInWithFacebook, logOut } from '../../auth/auth';
 import { authStore } from '../../stores/AuthStore';
+import LoginComponent from "../organisms/LoginComponent";
+import LoginViewModel from "../..//viewModels/LoginViewModel";
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState<FormData>({} as FormData); // Ensure it's typed correctly
   const { navigateWithState } = useStackNavigator();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const loginViewModel = new LoginViewModel();
+
+  const handleLogout = async () => {
+    await loginViewModel.logout();
+    navigateWithState("/home");
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -30,14 +39,49 @@ const ProfilePage = () => {
       }
     };
 
+    fetchProfile();
+  }, []);
+
+  const confirmDeleteAccount = () => {
+    loginViewModel.deleteAccount();
+    localStorage.removeItem("profileData");
+    navigateWithState("/home");
+  };
+
+  const FooterContent = () => {
+    return (
+      <>
+        <Button
+          variant="small"
+          color="tertiary"
+          onClick={() => setIsDeleteModalOpen(false)}
+        >
+          Cancel
+        </Button>
+
+        <Button variant="small" color="primary" onClick={confirmDeleteAccount}>
+          Delete
+        </Button>
+      </>
+    );
+  };
+  
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const user = await signInWithGoogle();
+  //     console.log('Logged in user:', user);
+  //   } catch (error) {
+  //     console.error('Login failed:', error);
+  //   }
+  // };
+
+  //TODO fix this creappy UI
+
   return (
     <Page>
       <div className={styles.profilePage__header}>
         <div className={styles.profilePage__header__avatar}>
-          <Avatar
-            src={profileData?.image || "https://placehold.co/50x50"}
-            alt="Image profile"
-          />
+          <Avatar src={loginViewModel.sessionDataStore.user?.photoURL || "https://placehold.co/50x50"} alt="Image profile" />
           <div className={styles.profilePage__avatarInfo}>
             <p className={styles.profilePage__avatarInfo__name}>
               {profileData?.userName || "User Name Profile"}
@@ -64,6 +108,7 @@ const ProfilePage = () => {
       >
         Edit Profile
       </Button>
+      <LoginComponent/>
       <Tabs
         tabs={[
           {
@@ -94,6 +139,15 @@ const ProfilePage = () => {
         >
           Delete account
         </Button>
+        {
+          loginViewModel.sessionDataStore.user && (
+            <Button variant="small" color="primary" onClick={handleLogout}>
+              Logout
+            </Button>
+
+          )
+
+        }
       </div>
 
       {isDeleteModalOpen && (

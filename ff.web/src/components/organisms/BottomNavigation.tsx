@@ -7,10 +7,10 @@ import { HomeOutlined, ShoppingCartOutlined, UserOutlined, CoffeeOutlined, Quest
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import { useAppContext } from "@vuo/context/AppContext";
 import { isAuthenticated } from "@vuo/routeGuards/AuthenticetedRoute";
+import { observer } from 'mobx-react-lite';
 
 
-
-const BottomNavigation = () => {
+const BottomNavigation = observer(() => {
     const location = useLocation();
     const { navigateWithState } = useStackNavigator(); 
     const { pathname } = location;
@@ -58,7 +58,7 @@ const BottomNavigation = () => {
           key: '/profile',
           title: 'Profile',
           icon: <UserOutlined />,
-          hidden: !isOnboardingComplete
+          hidden: !isAuthenticated()
         }
       ];
     };
@@ -74,6 +74,6 @@ const BottomNavigation = () => {
     );
 
     return null
-  };
+  });
 
   export default BottomNavigation;

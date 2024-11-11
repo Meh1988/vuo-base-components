@@ -10,7 +10,11 @@ import {
 import dotenv from "dotenv";
 
 import User from "../models/userModel";
+import { IUser } from '../models/userModel';
 import ChallengeModel from "../models/challengeModel";
+import { getAuth } from 'firebase-admin/auth';
+import { Document } from 'mongoose';
+type UserDocument = Document & IUser;
 
 dotenv.config();
 
@@ -124,4 +128,81 @@ const logoutUser = (req: Request, res: Response) => {
   }
 };
 
-export { authenticateVerify, generateOptions, logoutUser };
+const verifyFirebaseToken = async (req: Request, res: Response) => {
+  const { token, shadowAccountId } = req.body;
+
+  try {
+    const decodedToken = await getAuth().verifyIdToken(token);
+    
+    if (shadowAccountId) {
+      // Find shadow account
+      let shadowUser = await User.findOne({ 
+        _id: shadowAccountId, 
+        shadowAccount: true 
+      });
+      
+      if (shadowUser) {
+        // Update shadow account with Firebase info
+        shadowUser.firebaseUid = decodedToken.uid;
+        shadowUser.email = decodedToken.email;
+        shadowUser.displayName = decodedToken.name;
+        shadowUser.photoURL = decodedToken.picture;
+        shadowUser.authProvider = 'firebase';
+        shadowUser.shadowAccount = false;
+        await shadowUser.save();
+        
+        // Return updated user info
+        const appToken = jwt.sign(
+          { id: shadowUser._id, username: shadowUser.username },
+          process.env.VITE_JWT_SECRET!,
+          { expiresIn: "4d" }
+        );
+
+        return res.json({ 
+          status: "ok", 
+          token: appToken, 
+          user: shadowUser 
+        });
+      }
+    }
+
+    // Find or create user for normal Firebase auth flow
+    let user = await User.findOne({ firebaseUid: decodedToken.uid });
+    
+    if (!user) {
+      // Create new user if not found
+      user = await User.create({
+        username: decodedToken.email || decodedToken.uid,
+        firebaseUid: decodedToken.uid,
+        email: decodedToken.email,
+        displayName: decodedToken.name,
+        photoURL: decodedToken.picture,
+        authProvider: 'firebase',
+        shadowAccount: false
+      });
+    }
+
+    const appToken = jwt.sign(
+      { id: user._id, username: user.username },
+      process.env.VITE_JWT_SECRET!,
+      { expiresIn: "4d" }
+    );
+
+    res.json({ 
+      status: "ok", 
+      token: appToken, 
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      }
+    });
+  } catch (error) {
+    console.error('Firebase token verification failed:', error);
+    res.status(401).json({ error: "Invalid token" });
+  }
+};
+
+export { authenticateVerify, generateOptions, logoutUser, verifyFirebaseToken };

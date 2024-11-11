@@ -1,3 +1,9 @@
+// @ts-nocheck
+
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import Button from "../atoms/Button";
+import Page from "../templates/Page";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import { useAppContext } from "@vuo/context/AppContext";
 import QuestBrowseViewModel from "@vuo/viewModels/QuestBrowseViewModel";
@@ -9,28 +15,29 @@ import Button from "../atoms/Button";
 import Page from "../templates/Page";
 import Section from "../atoms/Section";
 import ProgressionPath from "../organisms/ProgressionPath";
+import LoginViewModel from "../../viewModels/LoginViewModel";
+import LoginModal from "../organisms/LoginModal";
 
-function Home() {
-
-    const { navigateWithState } = useStackNavigator();  // Initialize navigateWithState function
+    
+    
+const Home = observer(() => {
     const navigate = useNavigate();
-    const { isOnboardingComplete } = useAppContext()
-    const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([])
-    const [viewModel] = useState<QuestBrowseViewModel>(
-        () => new QuestBrowseViewModel(),
-    );
-
-    const userAccount = JSON.parse(localStorage.getItem('SessionDataStore')).user
+    const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([])     
+    const { navigateWithState } = useStackNavigator();
+    const [viewModel] = useState<QuestBrowseViewModel>(() => new QuestBrowseViewModel());
+    const [loginViewModel] = useState<LoginViewModel>(() => new LoginViewModel());
 
     const goToQuest = () => {
-        // Save the target route to session storage before navigating
         navigateWithState('/home/quests');
     };
 
+    const userAccount = loginViewModel.sessionDataStore?.user;
+
     const goToOnboading = () => {
-        // creating shadow account
-        // check if sessiondatastore has shadowuser account 
-        // if yes then navigate to onboarding
+        // Add conditional navigation logic
+        //creating shadow account
+        //check if sessiondatastore has shadowuser account 
+        //if yes then navigate to onboarding
         // Save the target route to session storage before navigating
         if (
             userAccount?.shadowAccount === true
@@ -119,8 +126,12 @@ function Home() {
                 <ProgressionPath units={mockProgressionPathData[0].units} onQuestClick={onQuestClick} completedQuestIds={completedQuestIds} />
             </Section>
 
+            <LoginModal
+                isOpen={loginViewModel.isLoginModalOpen}
+                onClose={() => loginViewModel.toggleLoginModal()}
+            />
         </Page>
     );
-}
+})
 
 export default Home;

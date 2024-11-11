@@ -1,34 +1,43 @@
 import { observer } from 'mobx-react-lite';
-import { authStore } from '../../stores/AuthStore';
+import { useState } from 'react';
+import LoginViewModel from '../../viewModels/LoginViewModel';
+import Button from "@vuo/atoms/Button";
 
-const LoginComponent = observer(() => {
+const Login = observer(() => {
+  const [viewModel] = useState(() => new LoginViewModel());
+  console.log(JSON.stringify(viewModel.sessionDataStore.user) );
+
+  if(viewModel.sessionDataStore.user && !viewModel.sessionDataStore.shadowAccount) {
+    return <h2>Welcome {viewModel.sessionDataStore.user.username}</h2>;
+  }
+
   return (
-    <div>
-      {authStore.loading ? (
-        <div>Loading...</div>
-      ) : authStore.user ? (
-        <div>
-          <p>Welcome, {authStore.user.email}</p>
-          <button 
-            onClick={authStore.signOut}
-            disabled={authStore.loading}
-          >
-            Sign Out
-          </button>
-        </div>
-      ) : (
-        <button 
-          onClick={authStore.signIn}
-          disabled={authStore.loading}
+    <div className="login-container">
+      <div className="auth-buttons">
+        <Button
+          color="secondary"
+          onClick={() => viewModel.signInWithGoogle()}
+          disabled={viewModel.loading}
         >
           Sign in with Google
-        </button>
-      )}
-      {authStore.error && (
-        <div style={{ color: 'red' }}>{authStore.error}</div>
-      )}
+        </Button>
+
+        <Button
+          color="secondary"
+          onClick={() => viewModel.signInWithFacebook()}
+          disabled={viewModel.loading}
+        >
+          Sign in with Facebook
+        </Button>
+
+        {viewModel.errors && (
+          <div className="error-message">
+            {viewModel.errors.message}
+          </div>
+        )}
+      </div>
     </div>
   );
 });
 
-export default LoginComponent; 
+export default Login;

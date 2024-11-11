@@ -206,7 +206,7 @@ const QuestOutro = observer(() => {
             {viewModel.shadowAccount && (
               <>
                 <h1 style={{width: "100%", textAlign: "center"}}>or</h1>
-                <Button block className='btn btn-large btn-raised' color='primary' size='large' onClick={() => setPopupVisible(true)}>Save your progress!</Button>
+                <Button block className='btn btn-large btn-raised' color='primary' size='large' onClick={() => {setPopupVisible(true)}}>Save your progress!</Button>
               </>
             )}
           </div>

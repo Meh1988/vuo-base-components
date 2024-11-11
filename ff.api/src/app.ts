@@ -19,6 +19,8 @@ import "./workers/extractStepSkillsWorker";
 import "./workers/extractStepResourcesWorker";
 import "./workers/extractStepToolsWorker";
 
+import './config/firebase-admin';
+
 // console.log(myQueue)
 
 // Initialize dotenv to use .env file variables

@@ -5,6 +5,7 @@ import {
   authenticateVerify,
   generateOptions,
   logoutUser,
+  verifyFirebaseToken,
 } from "../controllers/authenticationController";
 import {
   registerGenerateOptions,
@@ -80,6 +81,9 @@ router.post("/register/verify-shadow-account", registerVerifyShadowAccount);
 router.get("/authenticate/generate-options", generateOptions);
 router.post("/authenticate/verify", authenticateVerify);
 router.post("/logout", authMiddleware, logoutUser);
+
+//Firebase routes
+router.post('/authenticate/verify-firebase', verifyFirebaseToken);
 
 // Landing page quests routes
 router.get("/landing-page-questlines/:url", getQuestLinesForLandingPage);
@@ -168,8 +172,8 @@ router.get("/mealmap/recipes", getMealMapRecipes);
 
 router.get("/profile/:id", getUserProfile);
 router.post("/profile/create", createUserProfile);
-router.patch("/profile/update", updateUserProfile);
-router.delete("/profile/delete", deleteUserProfile);
+router.patch("/profile/update/:id", updateUserProfile);
+router.delete("/profile/delete/:id", deleteUserProfile);
 
 //PrepPal routes
 router.post("/prepPal/stepBreakdown", getStepBreakdown);
