@@ -47,6 +47,7 @@ export const initialOnboardingData: FormData = {
   sex: "",
   age: "",
   userId: "-",
+  likes: [],
   userName: "",
   diets: [],
   description: "",

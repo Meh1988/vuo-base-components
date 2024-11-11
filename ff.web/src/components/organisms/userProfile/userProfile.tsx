@@ -143,10 +143,16 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
         <CheckOutlined />
       </div>
       <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled size={16} />
-          <p className={styles.userPreferences__section__header__title}>
-            Your goals
+        <div>
+          <div className={styles.userPreferences__section__header}>
+            <HeartFilled size={16} />
+            <p className={styles.userPreferences__section__header__title}>
+              Your goals
+            </p>
+          </div>
+
+          <p className={styles.userPreferences__section__description}>
+            What are your goals?
           </p>
         </div>
         <div className={styles.userPreferences__section__buttons}>
@@ -163,17 +169,19 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
         </div>
       </Section>
       <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled />
-          <p className={styles.userPreferences__section__header__title}>
-            Dislikes
+        <div>
+          <div className={styles.userPreferences__section__header}>
+            <HeartFilled />
+            <p className={styles.userPreferences__section__header__title}>
+              Dislikes
+            </p>
+          </div>
+
+          <p className={styles.userPreferences__section__description}>
+            Dislikes are things you don&rsquo;t want to be included in your
+            recommendations
           </p>
         </div>
-
-        <p className={styles.userPreferences__section__description}>
-          Dislikes are things you don&rsquo;t want to be included in your
-          recommendations
-        </p>
         <div className={styles.userPreferences__section__buttons}>
           {userDislikesList.map((dislike: string, index: number) => (
             <Button variant="medium" color="secondary" key={index}>
@@ -183,16 +191,18 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
         </div>
       </Section>
       <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled />
-          <p className={styles.userPreferences__section__header__title}>
-            Allergies
+        <div>
+          <div className={styles.userPreferences__section__header}>
+            <HeartFilled />
+            <p className={styles.userPreferences__section__header__title}>
+              Allergies
+            </p>
+          </div>
+          <p className={styles.userPreferences__section__description}>
+            Things you ABOSOLUTELY DONT&rsquo;T WANT TO BE INCLUDED in your
+            recommendations
           </p>
         </div>
-        <p className={styles.userPreferences__section__description}>
-          Things you ABOSOLUTELY DONT&rsquo;T WANT TO BE INCLUDED in your
-          recommendations
-        </p>
         <div className={styles.userPreferences__section__buttons}>
           {userAllergiesList.map((allergy: string, index: number) => (
             <Button variant="medium" color="secondary" key={index}>
@@ -202,15 +212,17 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
         </div>
       </Section>
       <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled />
-          <p className={styles.userPreferences__section__header__title}>
-            Cuisines
+        <div>
+          <div className={styles.userPreferences__section__header}>
+            <HeartFilled />
+            <p className={styles.userPreferences__section__header__title}>
+              Cuisines
+            </p>
+          </div>
+          <p className={styles.userPreferences__section__description}>
+            Things you like, things you want to be recommended to you!
           </p>
         </div>
-        <p className={styles.userPreferences__section__description}>
-          Things you like, things you want to be recommended to you!
-        </p>
         <div className={styles.userPreferences__section__buttons}>
           {profileData.cuisinePreferences &&
             cuisines.map(
