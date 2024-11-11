@@ -8,7 +8,11 @@ type Props = {
 };
 
 export const isAuthenticated = () => {
-  return sessionDataStore.token && sessionDataStore.user?.id && sessionDataStore.shadowAccount === false;
+  return sessionDataStore.token && sessionDataStore.user?.id;
+}
+
+export const isShadowAccount = () => {
+  return sessionDataStore.shadowAccount;
 }
 
 const AuthenticatedRoute: React.FC<Props> = observer((props: Props) => {

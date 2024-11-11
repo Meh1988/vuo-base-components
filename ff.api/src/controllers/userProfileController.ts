@@ -38,7 +38,7 @@ const getUserProfile = async (req: Request, res: Response) => {
 const updateUserProfile = async (req: Request, res: Response) => {
   console.log("updateUserProfile :: req", req.body)
   try {
-    const userId = req.body.userId;
+    const userId = req.params.id;
     const updateData = req.body;
 
     // Log the input data for debugging

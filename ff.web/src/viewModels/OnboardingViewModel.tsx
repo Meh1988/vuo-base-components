@@ -102,10 +102,11 @@ export default class OnboardingViewModel extends BaseViewModel {
 
   handleNext = async () => {
     if (this.hasFormDataChanged()) {
+      const userId = this.formData.userId;
       this.loading = true;
       try {
         await this.fetchData({
-          url: 'v1/profile/update',
+          url: `v1/profile/update/${userId}`,
           method: 'PATCH',
           data: this.formData
         });
@@ -120,7 +121,7 @@ export default class OnboardingViewModel extends BaseViewModel {
       } catch (error) {
         this.setErrors(error instanceof Error ? error : new Error('Failed to update profile'));
       } finally {
-        runInAction(() => {
+        runInAction(() => { 
           this.loading = false;
         });
       }

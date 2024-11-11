@@ -18,7 +18,7 @@ const Login = function (props: any) {
             </Button>
           </div>
         </div>
-        <LoginComponent/>
+        {/* <LoginComponent/> */}
       {/* </Page> */}
     </Page>
   );

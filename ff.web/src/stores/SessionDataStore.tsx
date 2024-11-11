@@ -21,6 +21,14 @@ class SessionDataStore {
       storage: window.localStorage,
     });
   }
+
+  clearStore() {
+    this.token = undefined;
+    this.shadowAccount = false;
+    this.username = "";
+    this.user = undefined;
+    this.profile = undefined;
+  }
 }
 
 const sessionDataStore = new SessionDataStore()

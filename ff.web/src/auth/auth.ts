@@ -3,7 +3,11 @@ import {
   GoogleAuthProvider, 
   signInWithPopup,
   FacebookAuthProvider,
-  signOut
+  signOut,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  createUserWithEmailAndPassword,
+  updateProfile
 } from 'firebase/auth';
 
 export const signInWithGoogle = async () => {
@@ -34,5 +38,73 @@ export const logOut = async () => {
   } catch (error) {
     console.error('Error signing out:', error);
     throw error;
+  }
+};
+
+export const signUpWithEmail = async (email: string, password: string, displayName: string) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, { displayName });
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error signing up with email:', error);
+    throw error;
+  }
+};
+
+export const signInWithEmail = async (email: string, password: string) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error signing in with email:', error);
+    throw error;
+  }
+};
+
+export const resetPassword = async (email: string) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    throw error;
+  }
+};
+
+export const linkShadowAccountWithGoogle = async (shadowAccountId: string) => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const idToken = await result.user.getIdToken();
+    
+    const response = await fetch('/v1/authenticate/verify-firebase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: idToken,
+        shadowAccountId: shadowAccountId
+      })
+    });
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error linking account:', error);
+    throw error;
+  }
+};
+
+const linkAccount = async () => {
+  try {
+    const result = await linkShadowAccountWithGoogle(sessionDataStore.user.id);
+    if (result.status === "ok") {
+      sessionDataStore.token = result.token;
+      sessionDataStore.user = result.user;
+      sessionDataStore.shadowAccount = false;
+    }
+  } catch (error) {
+    console.error('Failed to link account:', error);
   }
 };
