@@ -17,6 +17,7 @@ export const dietsPlan = [
     name: "Vegetarian",
     description: "Clean eating, complex carbs",
   },
+  { name: "Vegan", description: "No animal products, plant-based" },
   { name: "Low carb", description: "Reduced carbohydrate intake" },
   { name: "Keto", description: "High fat, very low carb" },
 ];
