@@ -9,6 +9,10 @@
   gap: var(--space-16);
 }
 
+.barContainer {
+  width: 100%;
+}
+
 .barHeader {
   display: flex;
   flex-direction: row;

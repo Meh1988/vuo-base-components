@@ -59,7 +59,7 @@ function QuestTask(props: QuestTaskProps) {
       </Chip>
 
       {step.claimedBy?.username && (
-        <Chip backgroundColor="blue" className={styles.player_chip}>
+        <Chip className={styles.player_chip}>
           {step.claimedBy?.username}
         </Chip>
       )}
@@ -118,7 +118,7 @@ function QuestTask(props: QuestTaskProps) {
             direction="vertical"
             style={{ width: "100%", "--gap-vertical": "18px" }}
           >
-            <div className="flex gap-16">
+            <div className="flex gap-16" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
               {step.tools && step.tools.length > 0 && (
                 <InfoCard
                   title="Tools"
@@ -140,10 +140,9 @@ function QuestTask(props: QuestTaskProps) {
             </div>
             {showButton && (
               step.highlight === HighlightType.Challenge ? (
-                <div className="flex gap-small">
+                <div className={styles.challenge_buttons}>
                   <Button
                     className="btn btn-large btn-raised flex-one"
-                    size="large"
                     onClick={() => onStepDone?.(step)}
                   >
                     Skip...
@@ -151,8 +150,6 @@ function QuestTask(props: QuestTaskProps) {
                   <Button
                     className="btn btn-blue btn-large btn-raised flex-one"
                     color="primary"
-                    fill="solid"
-                    size="large"
                     onClick={() => onChallengeAccepted?.(step)}
                   >
                     Yes!
@@ -161,10 +158,8 @@ function QuestTask(props: QuestTaskProps) {
               ) : (
                 <Button
                   block
-                  className="btn btn-blue btn-large btn-raised"
+                  style={{ width: '100%' }}
                   color="primary"
-                  fill="solid"
-                  size="large"
                   onClick={() => onStepDone?.(step)}
                 >
                   Done!
@@ -177,7 +172,6 @@ function QuestTask(props: QuestTaskProps) {
           <Button
             block
             className="btn btn-large btn-raised"
-            size="large"
             onClick={() => onStepClaimed?.(step)}
           >
             Claim!

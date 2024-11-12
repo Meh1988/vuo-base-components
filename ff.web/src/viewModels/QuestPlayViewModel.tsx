@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { action, computed, makeObservable, runInAction } from "mobx";
 import TagManager from "react-gtm-module";
 
@@ -129,7 +127,7 @@ class QuestPlayViewModel extends BaseViewModel {
     updatedSteps[currentIndex] = {
       ...updatedSteps[currentIndex],
       state: StepState.challengeAccepted,
-      subSteps: updatedSteps[currentIndex].subSteps?.map(ss => ({...ss, claimedBy: this.sessionDataStore.user }))
+      subSteps: updatedSteps[currentIndex].subSteps?.map(ss => ({ ...ss, claimedBy: this.sessionDataStore.user }))
     };
 
     const updatedPlayerQuest: PlayerQuest = {
@@ -148,8 +146,15 @@ class QuestPlayViewModel extends BaseViewModel {
   }
 
   async updateSubStepState(stepId: string) {
-    if (!this.playerQuest) { return }
+    if (!this.playerQuest) {
+      console.error("No player quest")
+      return
+    }
     const { steps } = this.playerQuest.recipe;
+
+    console.log("stepId", stepId)
+
+    console.log("steps", steps)
 
     let foundSubStep: PlayerQuestStep | undefined;
     let mainStepIndex: number = -1;
@@ -168,15 +173,31 @@ class QuestPlayViewModel extends BaseViewModel {
         foundSubStep = subStep;
         mainStepIndex = index;
         return true;
+
       }
       return false;
     });
 
-    if (!foundStep || !foundSubStep) { return; }
+    if (!foundStep || !foundSubStep) {
+      console.error("No foundStep or foundSubStep")
+      return;
+    }
 
     // Update the sub-step's state
     const updatedSubSteps = [...(foundStep.subSteps || [])];
     updatedSubSteps[subStepIndex] = { ...updatedSubSteps[subStepIndex], state: StepState.completed };
+
+    // Find and claim the next uncompleted subStep if one exists
+    const nextSubStepIndex = updatedSubSteps.findIndex((ss, index) => 
+      index > subStepIndex && ss.state === StepState.notStarted
+    );
+    
+    if (nextSubStepIndex !== -1) {
+      updatedSubSteps[nextSubStepIndex] = {
+        ...updatedSubSteps[nextSubStepIndex],
+        claimedBy: this.sessionDataStore.user
+      };
+    }
 
     // Create updated main step with the updated sub-steps
     const updatedSteps = [...steps];
@@ -228,7 +249,7 @@ class QuestPlayViewModel extends BaseViewModel {
       },
     });
     EventBus.emit("stepCompleted", { step: steps[currentIndex], playerQuest: this.playerQuest });
-    steps[currentIndex].skills.forEach(skill => {
+    steps[currentIndex].skills?.forEach(skill => {
       TagManager.dataLayer({
         dataLayer: {
           event: "skill_xp_gainer",

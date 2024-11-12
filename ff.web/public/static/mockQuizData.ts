@@ -537,7 +537,7 @@ const mockQuizData: QuizData[] = [
         ],
         feedbackTitle: [
           'High Heat is Key',
-          'Correct!', 
+          'Correct!',
           'Speed vs Quality',
           'Important Distinction'
         ]
@@ -3095,6 +3095,77 @@ const mockQuizData: QuizData[] = [
         feedbackMessage: ['The type, amount, and size of the pot can affect oil temperature.'],
       }
     ]
+  },
+
+  {
+    id: "67334bb63711d8e7d6350dff",
+    title: "Grilling Techniques Quiz",
+    questions: [
+      {
+        "type": "slider",
+        "question": "How many minutes per side should you grill a 1-inch thick beefsteak for medium-rare?",
+        "options": [],
+        "min": 1,
+        "max": 10,
+        "correctAnswer": [
+          "4"
+        ],
+        "feedbackTitle": [],
+        "feedbackMessage": [],
+        id: "67334bb63711d8e7d6350e01"
+      },
+      {
+        "type": "single-choice",
+        "question": "What is the ideal internal temperature for a medium-rare beefsteak?",
+        "options": [
+          "120°F",
+          "130°F",
+          "140°F",
+          "150°F"
+        ],
+        "min": 0,
+        "max": 0,
+        "correctAnswer": [
+          "130°F"
+        ],
+        "feedbackTitle": [],
+        feedbackMessage: [],
+        id: "67334bb63711d8e7d6350e02"
+      },
+      {
+        "type": "multiple-choice",
+        "question": "Which of the following are important steps in grilling a beefsteak?",
+        "options": [
+          "Preheat the grill",
+          "Season the steak",
+          "Use a meat thermometer",
+          "Boil the steak"
+        ],
+        "min": 0,
+        "max": 0,
+        "correctAnswer": [
+          "Preheat the grill",
+          "Season the steak",
+          "Use a meat thermometer"
+        ],
+        "feedbackTitle": [],
+        feedbackMessage: [],
+        id: "67334bb63711d8e7d6350e03"
+      },
+      {
+        "type": "text-input",
+        "question": "What is the term for the dark, flavorful crust that forms on a steak when grilled?",
+        "options": [],
+        "min": 0,
+        "max": 0,
+        "correctAnswer": [
+          "sear"
+        ],
+        "feedbackTitle": [],
+        "feedbackMessage": [],
+        id: "67334bb63711d8e7d6350e04"
+      }
+    ],
   }
 ];
 
