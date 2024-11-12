@@ -6,6 +6,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: row;
+  gap: var(--space-16);
 }
 
 .barHeader {
@@ -15,14 +16,18 @@
   padding: 10px 0;
   font-size: 1.5em;
   word-wrap: break-word;
-  color: var(--white);
+  color: var(--text-primary);
 }
 
 .closeButton {
   // align-self: flex-start;
-  background-color: var(--gray-500);
+  background-color: var(--color-grey-systemGrayAccessibleLight);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: var(--font-size-16);
   border: none;
   width: 24px;
   height: 24px;
+  border-radius: var(--radius-8);
   cursor: pointer;
 }

@@ -22,7 +22,7 @@ function SkewedTitleList(props: SkewedTitleListProps) {
         return (
           <div
             className={`
-            ${item.title.length <= 11 ? 'font-h1' : 'font-h2'}
+            ${item.title.length <= 11 ? `${style.title_short}` : `${style.title_long}`}
             ${index % 2 === 0 ? style.title_odd : style.title_even}
           `}
             key={`${item.title}_index`}
