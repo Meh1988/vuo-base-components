@@ -134,14 +134,37 @@ const verifyFirebaseToken = async (req: Request, res: Response) => {
 
   try {
     const decodedToken = await getAuth().verifyIdToken(token);
-    
+    let user = null;
+    let profile = null;
+
+    // First check if a Firebase user already exists
+    user = await User.findOne({ firebaseUid: decodedToken.uid });
+    if (user) {
+      profile = await Onboarding.findOne({ userId: user._id });
+    }
+
     if (shadowAccountId) {
-      // Find shadow account
-      let shadowUser = await User.findOne({ 
+      // If we have a shadowAccountId but already have a Firebase user, return existing user
+      if (user) {
+        const appToken = jwt.sign(
+          { id: user._id, username: user.username },
+          process.env.VITE_JWT_SECRET!,
+          { expiresIn: "4d" }
+        );
+        return res.json({ 
+          status: "ok", 
+          token: appToken, 
+          user,
+          profile 
+        });
+      }
+
+      // No Firebase user exists, so merge with shadow account
+      const shadowUser = await User.findOne({ 
         _id: shadowAccountId, 
         shadowAccount: true 
       });
-      
+
       if (shadowUser) {
         // Update shadow account with Firebase info
         shadowUser.firebaseUid = decodedToken.uid;
@@ -150,28 +173,13 @@ const verifyFirebaseToken = async (req: Request, res: Response) => {
         shadowUser.photoURL = decodedToken.picture;
         shadowUser.authProvider = 'firebase';
         shadowUser.shadowAccount = false;
-        await shadowUser.save();
-        
-        // Return updated user info
-        const appToken = jwt.sign(
-          { id: shadowUser._id, username: shadowUser.username },
-          process.env.VITE_JWT_SECRET!,
-          { expiresIn: "4d" }
-        );
-
-        return res.json({ 
-          status: "ok", 
-          token: appToken, 
-          user: shadowUser 
-        });
+        user = await shadowUser.save();
+        profile = await Onboarding.findOne({ userId: user._id });
       }
     }
 
-    // Find or create user for normal Firebase auth flow
-    let user = await User.findOne({ firebaseUid: decodedToken.uid });
-    
+    // If we still don't have a user, create a new one
     if (!user) {
-      // Create new user if not found
       user = await User.create({
         username: decodedToken.email || decodedToken.uid,
         firebaseUid: decodedToken.uid,
@@ -180,6 +188,13 @@ const verifyFirebaseToken = async (req: Request, res: Response) => {
         photoURL: decodedToken.picture,
         authProvider: 'firebase',
         shadowAccount: false
+      });
+
+      // Create default profile for new user
+      profile = await Onboarding.create({
+        userId: user._id,
+        userName: decodedToken.name || decodedToken.email,
+        onboardingStatus: 'notStarted'
       });
     }
 
@@ -198,7 +213,8 @@ const verifyFirebaseToken = async (req: Request, res: Response) => {
         email: user.email,
         displayName: user.displayName,
         photoURL: user.photoURL
-      }
+      },
+      profile
     });
   } catch (error) {
     console.error('Firebase token verification failed:', error);

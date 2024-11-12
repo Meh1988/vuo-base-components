@@ -176,7 +176,7 @@ export default class LoginViewModel extends BaseViewModel {
           sessionDataStore.token = response.token;
           sessionDataStore.user = response.user;
           sessionDataStore.shadowAccount = false;
-          this.isLoginModalOpen = false;
+          this.toggleLoginModal()
         });
   
         if (shadowAccountId) {
