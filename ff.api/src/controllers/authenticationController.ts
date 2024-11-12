@@ -14,6 +14,7 @@ import { IUser } from '../models/userModel';
 import ChallengeModel from "../models/challengeModel";
 import { getAuth } from 'firebase-admin/auth';
 import { Document } from 'mongoose';
+import Onboarding from "../models/userProfile";
 type UserDocument = Document & IUser;
 
 dotenv.config();
@@ -205,4 +206,31 @@ const verifyFirebaseToken = async (req: Request, res: Response) => {
   }
 };
 
-export { authenticateVerify, generateOptions, logoutUser, verifyFirebaseToken };
+const deleteUserAndProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.id;
+
+    // Update profile to mark as deleted user
+    await Onboarding.findOneAndUpdate(
+      { userId },
+      { 
+        $set: { 
+          userName: "Deleted User", 
+        }
+      }
+    );
+
+    // Delete the user account
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error('Error deleting user account:', error);
+    res.status(500).json({ 
+      message: 'Failed to delete account', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
+  }
+};
+
+export { authenticateVerify, generateOptions, logoutUser, verifyFirebaseToken, deleteUserAndProfile };

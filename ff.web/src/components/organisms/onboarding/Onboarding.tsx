@@ -31,7 +31,6 @@ import OnboardingViewModel from "../../../viewModels/OnboardingViewModel";
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = observer(() => {
   const { navigateWithState } = useStackNavigator();
-  const { setIsOnboardingComplete } = useAppContext();
   const [viewModel] = useState(() => new OnboardingViewModel());
 
   useEffect(() => {
@@ -789,7 +788,6 @@ const OnboardingFlow = observer(() => {
                 color="primary"
                 onClick={() => {
                   viewModel.handleFinish();
-                  setIsOnboardingComplete(true);
                   navigateWithState("/home");
                 }}
                 className={styles.navButton}

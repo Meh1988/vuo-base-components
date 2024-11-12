@@ -34,18 +34,18 @@ interface AuthenticationVerifiedJSON {
 
 export default class LoginViewModel extends BaseViewModel {
   private sessionDataStore = sessionDataStore;
-  onboardingComplete: boolean;
+  // onboardingComplete: boolean;
   isLoginModalOpen = false;
 
   constructor() {
     super();
-    this.onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
+    // this.onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
 
     makeObservable(this, {
       ...BaseViewModelProps,
-      onboardingComplete: observable,
-      setIsOnboardingComplete: action,
-      isOnboardingComplete: computed,
+      // onboardingComplete: observable,
+      // setIsOnboardingComplete: action,
+      // isOnboardingComplete: computed,
       session: computed,
       startAuthentication: action,
       registerUser: action,
@@ -56,14 +56,14 @@ export default class LoginViewModel extends BaseViewModel {
     });
   }
 
-  setIsOnboardingComplete(value: boolean): void {
-    this.onboardingComplete = value;
-    localStorage.setItem("onboardingComplete", String(value));
-  }
+  // setIsOnboardingComplete(value: boolean): void {
+  //   this.onboardingComplete = value;
+  //   localStorage.setItem("onboardingComplete", String(value));
+  // }
 
-  get isOnboardingComplete(): boolean {
-    return this.onboardingComplete;
-  }
+  // get isOnboardingComplete(): boolean {
+  //   return this.onboardingComplete;
+  // }
 
   get session(): boolean {
     return !!this.sessionDataStore.token;
@@ -153,24 +153,21 @@ export default class LoginViewModel extends BaseViewModel {
   }
 
   async signInWithGoogle(): Promise<void> {
-    //TODO handle the situation when no need to merge anything
     try {
       const account = JSON.parse(localStorage.getItem('SessionDataStore') || '{}');
       const shadowAccountId = account?.shadowAccount ? account?.user._id : null;
-      console.log('signInWithGoogle for first time :: shadowAccountId', shadowAccountId);
-      if (!shadowAccountId) {
-        throw new Error('No shadow account found to merge');
-      }
-  
+      
       const user = await signInWithGoogle();
       if (!user) return;
   
+      const idToken = await user.getIdToken();
+      
       const response = await this.fetchData<AuthenticationVerifiedJSON>({
         url: "v1/authenticate/verify-firebase",
         method: "POST",
         data: { 
-          token: await user.getIdToken(),
-          shadowAccountId
+          token: idToken,
+          ...(shadowAccountId && { shadowAccountId })
         }
       });
   
@@ -182,8 +179,9 @@ export default class LoginViewModel extends BaseViewModel {
           this.isLoginModalOpen = false;
         });
   
-        // Clear shadow account after successful merging
-        localStorage.removeItem('shadowAccountId');
+        if (shadowAccountId) {
+          localStorage.removeItem('shadowAccountId');
+        }
       }
     } catch (error) {
       if (error.message === 'Sign-in cancelled by user') {
@@ -327,9 +325,32 @@ export default class LoginViewModel extends BaseViewModel {
     }
   }
 
+  async deleteAccount(): Promise<void> {
+    await this.fetchData({
+      url: "v1/users/delete/me",
+      method: "DELETE"
+    });
+
+    localStorage.removeItem("SessionDataStore");
+    localStorage.removeItem("onboardingComplete");
+    localStorage.removeItem("profileData");
+    runInAction(() => {
+      sessionDataStore.token = undefined;
+      sessionDataStore.user = undefined;
+      sessionDataStore.shadowAccount = false;
+      sessionDataStore.username = "";
+      sessionDataStore.profile = undefined;
+    });
+  }
+
   toggleLoginModal() {
     runInAction(() => {
       this.isLoginModalOpen = !this.isLoginModalOpen;
+      // sessionDataStore.token = undefined;
+      // sessionDataStore.user = undefined;
+      // sessionDataStore.shadowAccount = false;
+      // sessionDataStore.username = "";
+      // sessionDataStore.profile = undefined;
     });
   }
 }

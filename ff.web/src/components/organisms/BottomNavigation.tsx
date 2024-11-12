@@ -15,8 +15,6 @@ const BottomNavigation = observer(() => {
     const { navigateWithState } = useStackNavigator(); 
     const { pathname } = location;
 
-    const {isOnboardingComplete} = useAppContext()
-
     const hideOnRoutes = ['/'];
     const isVisible = !hideOnRoutes.includes(location.pathname);
   

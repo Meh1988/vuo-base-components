@@ -120,4 +120,4 @@ const linkAccount = async () => {
   } catch (error) {
     console.error('Failed to link account:', error);
   }
-};
+}
