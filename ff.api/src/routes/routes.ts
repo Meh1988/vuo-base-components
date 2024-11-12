@@ -1,3 +1,4 @@
+// @ts-ignore
 import express from "express";
 import multer from "multer";
 
@@ -63,6 +64,19 @@ import {
 } from "../controllers/userProfileController";
 
 import { getStepBreakdown } from "../controllers/stepBreakDownController";
+
+import {
+  createChallenge,
+  generateChallenge,
+  getChallengeById,
+} from "../controllers/challengesController";
+
+import {
+  createProgressionPath,
+  generateProgressionPath,
+  getAllProgressionPaths,
+} from "../controllers/progressionPathController";
+
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
@@ -173,5 +187,15 @@ router.delete("/profile/delete", deleteUserProfile);
 
 //PrepPal routes
 router.post("/prepPal/stepBreakdown", getStepBreakdown);
+
+//Challenge routes
+router.post("/challenges/create", createChallenge);
+router.get("/challenges/challenge/:id", getChallengeById);
+router.post("/challenges/generate", generateChallenge);
+
+//Progression Path routes
+router.post("/progressionPaths/create", createProgressionPath);
+router.post("/progressionPaths/generate", generateProgressionPath);
+router.get("/progressionPaths", getAllProgressionPaths);
 
 export default router;
