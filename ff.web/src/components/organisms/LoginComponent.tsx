@@ -21,14 +21,14 @@ const Login = observer(() => {
         >
           Sign in with Google
         </Button>
-
+{/* 
         <Button
           color="secondary"
           onClick={() => viewModel.signInWithFacebook()}
           disabled={viewModel.loading}
         >
           Sign in with Facebook
-        </Button>
+        </Button> */}
 
         {viewModel.errors && (
           <div className="error-message">

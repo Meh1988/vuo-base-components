@@ -18,7 +18,7 @@ import {
 import sessionDataStore from "@vuo/stores/SessionDataStore";
 import TagManager from "react-gtm-module";
 import { ChannelUser } from "@vuo/stores/WebSocketStore";
-import { signInWithGoogle, signInWithFacebook } from "../auth/auth";
+import { signInWithGoogle } from "../auth/auth";
 import { authStore } from '../stores/AuthStore';
 
 interface AuthenticationOptions {
@@ -50,7 +50,7 @@ export default class LoginViewModel extends BaseViewModel {
       startAuthentication: action,
       registerUser: action,
       signInWithGoogle: action,
-      signInWithFacebook: action,
+      // signInWithFacebook: action,
       isLoginModalOpen: observable,
       toggleLoginModal: action,
     });
@@ -152,42 +152,47 @@ export default class LoginViewModel extends BaseViewModel {
     sessionDataStore.user = verificationResponse?.user;
   }
 
-  async signInWithGoogle(shadowAccountId?: string): Promise<void> {
+  async signInWithGoogle(): Promise<void> {
+    //TODO handle the situation when no need to merge anything
     try {
-      const user = await signInWithGoogle();
-
-      const shadowAccountId = localStorage.getItem('SessionDataStore')?.user.id;
-      
+      const account = JSON.parse(localStorage.getItem('SessionDataStore') || '{}');
+      const shadowAccountId = account?.shadowAccount ? account?.user._id : null;
       console.log('signInWithGoogle for first time :: shadowAccountId', shadowAccountId);
-      if (user) {
-        const response = await this.fetchData<AuthenticationVerifiedJSON>({
-          url: "v1/authenticate/verify-firebase",
-          method: "POST",
-          data: { 
-            token: await user.getIdToken(),
-            shadowAccountId 
-          }
-        });
-
-        if (response) {
-          runInAction(() => {
-            sessionDataStore.token = response.token;
-            sessionDataStore.user = response.user;
-            sessionDataStore.shadowAccount = false;
-            //TODO fix the logic of closing the login modal
-            this.isLoginModalOpen = false;
-          });
-          //TODO refine the logic of claiming the shadow account
-          // Update the profile with the real account ID
-          if (sessionDataStore.user && sessionDataStore.user.id) {
-            await this.updateUserProfile(sessionDataStore.user.id);
-          }
+      if (!shadowAccountId) {
+        throw new Error('No shadow account found to merge');
+      }
+  
+      const user = await signInWithGoogle();
+      if (!user) return;
+  
+      const response = await this.fetchData<AuthenticationVerifiedJSON>({
+        url: "v1/authenticate/verify-firebase",
+        method: "POST",
+        data: { 
+          token: await user.getIdToken(),
+          shadowAccountId
         }
+      });
+  
+      if (response) {
+        runInAction(() => {
+          sessionDataStore.token = response.token;
+          sessionDataStore.user = response.user;
+          sessionDataStore.shadowAccount = false;
+          this.isLoginModalOpen = false;
+        });
+  
+        // Clear shadow account after successful merging
+        localStorage.removeItem('shadowAccountId');
       }
     } catch (error) {
+      if (error.message === 'Sign-in cancelled by user') {
+        console.log('User cancelled the sign-in process');
+        return;
+      }
       this.setErrors(error instanceof Error ? error : new Error("Failed to sign in with Google"));
     }
-  };
+  }
 
   async updateUserProfile(userId: string): Promise<void> {
     try {
@@ -207,27 +212,27 @@ export default class LoginViewModel extends BaseViewModel {
     }
   }
 
-  async signInWithFacebook(): Promise<void> {
-    try {
-      const user = await signInWithFacebook();
-      if (user) {
-        const response = await this.fetchData<AuthenticationVerifiedJSON>({
-          url: "v1/authenticate/verify-firebase",
-          method: "POST",
-          data: { token: await user.getIdToken() }
-        });
+  // async signInWithFacebook(): Promise<void> {
+  //   try {
+  //     const user = await signInWithFacebook();
+  //     if (user) {
+  //       const response = await this.fetchData<AuthenticationVerifiedJSON>({
+  //         url: "v1/authenticate/verify-firebase",
+  //         method: "POST",
+  //         data: { token: await user.getIdToken() }
+  //       });
 
-        if (response) {
-          runInAction(() => {
-            sessionDataStore.token = response.token;
-            sessionDataStore.user = response.user;
-          });
-        }
-      }
-    } catch (error) {
-      this.setErrors(error instanceof Error ? error : new Error("Failed to sign in with Facebook"));
-    }
-  };
+  //       if (response) {
+  //         runInAction(() => {
+  //           sessionDataStore.token = response.token;
+  //           sessionDataStore.user = response.user;
+  //         });
+  //       }
+  //     }
+  //   } catch (error) {
+  //     this.setErrors(error instanceof Error ? error : new Error("Failed to sign in with Facebook"));
+  //   }
+  // };
 
   async signUpWithEmail(email: string, password: string, displayName: string): Promise<void> {
     try {

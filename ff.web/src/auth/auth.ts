@@ -13,7 +13,19 @@ import {
 export const signInWithGoogle = async () => {
   try {
     const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
+    // Add these settings to the provider
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
+    
+    const result = await signInWithPopup(auth, provider)
+      .catch((error) => {
+        if (error.code === 'auth/popup-closed-by-user') {
+          throw new Error('Sign-in cancelled by user');
+        }
+        throw error;
+      });
+      
     return result.user;
   } catch (error) {
     console.error('Error signing in with Google:', error);
@@ -21,16 +33,17 @@ export const signInWithGoogle = async () => {
   }
 };
 
-export const signInWithFacebook = async () => {
-  try {
-    const provider = new FacebookAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    return result.user;
-  } catch (error) {
-    console.error('Error signing in with Facebook:', error);
-    throw error;
-  }
-};
+//TODO enable facebook login, fix the conflict with google sign in
+// export const signInWithFacebook = async () => {
+//   try {
+//     const provider = new FacebookAuthProvider();
+//     const result = await signInWithPopup(auth, provider);
+//     return result.user;
+//   } catch (error) {
+//     console.error('Error signing in with Facebook:', error);
+//     throw error;
+//   }
+// };
 
 export const logOut = async () => {
   try {
