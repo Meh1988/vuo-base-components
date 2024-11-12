@@ -153,7 +153,7 @@ const QuestIntro = observer(() => {
       )}
       {/* {viewModel.loading && <Loading />} */}
       {!showCountdown && viewModel.quest && (
-        <div style={{ color: 'var(--text-primary)' }}>
+        <div style={{ color: 'var(--text-primary)', maxWidth: '400px' }}>
           {currentBanner && (
             <Banner
               title={currentBanner.title}
