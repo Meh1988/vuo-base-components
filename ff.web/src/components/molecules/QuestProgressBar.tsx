@@ -16,11 +16,13 @@ interface QuestProgressBarProps {
 function QuestProgressBar({ onClose, questName, recipeAuthor, percent }: QuestProgressBarProps) {
   return (
     <div className={`${styles.container} gap-small`}>
-      <Button
+      <button
+        type="button"
         onClick={() => onClose()}
-        className={`${styles.closeButton} btn btn-small`}>
+        className={`${styles.closeButton}`}>
         {/* <Icon name={IconNames.Close} size={14} /> */}
-      </Button>
+        X
+      </button>
       <div>
         <div className={styles.barHeader}>
           <div className={styles.questName}>{questName}</div>

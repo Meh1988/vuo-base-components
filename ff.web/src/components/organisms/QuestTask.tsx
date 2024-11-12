@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useState } from "react";
 import DOMPurify from 'dompurify';
 import { PlayerQuestStep, StepState } from "@vuo/models/PlayerQuest";
@@ -25,7 +23,7 @@ function QuestTask(props: QuestTaskProps) {
 
   const expand = isOpen || currentStep;
   const showButton = step.state !== StepState.completed;
-  const hasXp = step.skills.length && step.skills[0].challenge_rating
+  const hasXp = step?.skills?.length && step?.skills[0]?.challenge_rating
 
   function handleExpand() {
     if (step.state === StepState.completed) {
@@ -56,9 +54,8 @@ function QuestTask(props: QuestTaskProps) {
       tabIndex={0}
     >
       <Chip
-        backgroundColor="blue"
         className={styles.skill_chip}>
-        {step.state === StepState.completed ? "Done" : (step.skills[0]?.name || "")}
+        {step.state === StepState.completed ? "Done" : (step?.skills?.[0]?.name || "")}
       </Chip>
 
       {step.claimedBy?.username && (
