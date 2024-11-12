@@ -185,17 +185,17 @@ export const UserPreferences = ({
 
         <div className={styles.userPreferences__section__buttons}>
           {[
-            "sedentary",
-            "light-exercise",
-            "moderate-exercise",
-            "heavy-exercise",
-            "athlete",
+            { value: "sedentary", label: "Sedentary" },
+            { value: "light-exercise", label: "Light Exercise" },
+            { value: "moderate-exercise", label: "Moderate Exercise" },
+            { value: "heavy-exercise", label: "Heavy Exercise" },
+            { value: "athlete", label: "Athlete" },
           ].map((activityLevel) => (
             <Button
-              key={activityLevel}
+              key={activityLevel.value}
               variant="medium"
               color={
-                userData.activityLevel === activityLevel
+                userData.activityLevel === activityLevel.value
                   ? "primary"
                   : "secondary"
               }
@@ -203,11 +203,11 @@ export const UserPreferences = ({
               onClick={() =>
                 setUserData((prev: FormData) => ({
                   ...prev,
-                  activityLevel,
+                  activityLevel: activityLevel.value,
                 }))
               }
             >
-              {activityLevel}
+              {activityLevel.label}
             </Button>
           ))}
         </div>
@@ -223,20 +223,26 @@ export const UserPreferences = ({
         </div>
 
         <div className={styles.userPreferences__section__buttons}>
-          {["agree", "neutral", "disagree"].map((mindset) => (
+          {[
+            { value: "agree", label: "Agree" },
+            { value: "neutral", label: "Neutral" },
+            { value: "disagree", label: "Disagree" },
+          ].map((mindset) => (
             <Button
-              key={mindset}
+              key={mindset.value}
               variant="medium"
-              color={userData.mindset === mindset ? "primary" : "secondary"}
+              color={
+                userData.mindset === mindset.value ? "primary" : "secondary"
+              }
               className={styles.onboardingButton}
               onClick={() =>
                 setUserData((prev: FormData) => ({
                   ...prev,
-                  mindset,
+                  mindset: mindset.value,
                 }))
               }
             >
-              {mindset}
+              {mindset.label}
             </Button>
           ))}
         </div>
@@ -252,20 +258,24 @@ export const UserPreferences = ({
         </div>
 
         <div className={styles.userPreferences__section__buttons}>
-          {["slow", "moderate", "fast"].map((speed) => (
+          {[
+            { value: "slow", label: "Slow" },
+            { value: "moderate", label: "Moderate" },
+            { value: "fast", label: "Fast" },
+          ].map((speed) => (
             <Button
-              key={speed}
+              key={speed.value}
               variant="medium"
-              color={userData.speed === speed ? "primary" : "secondary"}
+              color={userData.speed === speed.value ? "primary" : "secondary"}
               className={styles.onboardingButton}
               onClick={() =>
                 setUserData((prev: FormData) => ({
                   ...prev,
-                  speed,
+                  speed: speed.value,
                 }))
               }
             >
-              {speed}
+              {speed.label}
             </Button>
           ))}
         </div>
@@ -314,12 +324,15 @@ export const UserPreferences = ({
         </div>
 
         <div className={styles.userPreferences__section__buttons}>
-          {["no-past-experience", "tried-before"].map((pastExperience) => (
+          {[
+            { value: "no-past-experience", label: "No Past Experience" },
+            { value: "tried-before", label: "Tried Before" },
+          ].map((pastExperience) => (
             <Button
-              key={pastExperience}
+              key={pastExperience.value}
               variant="medium"
               color={
-                userData.pastExperience === pastExperience
+                userData.pastExperience === pastExperience.value
                   ? "primary"
                   : "secondary"
               }
@@ -327,11 +340,11 @@ export const UserPreferences = ({
               onClick={() =>
                 setUserData((prev: FormData) => ({
                   ...prev,
-                  pastExperience,
+                  pastExperience: pastExperience.value,
                 }))
               }
             >
-              {pastExperience}
+              {pastExperience.label}
             </Button>
           ))}
         </div>
