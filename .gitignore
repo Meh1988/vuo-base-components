@@ -16,6 +16,7 @@ dist-ssr
 dev-dist
 build
 *.local
+*.tar
 
 # Editor directories and files
 .vscode/*
