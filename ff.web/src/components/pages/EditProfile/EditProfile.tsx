@@ -16,9 +16,6 @@ export const EditProfile = () => {
   );
   const { navigateWithState, goBack } = useStackNavigator();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [profileImage, setProfileImage] = useState<string>(
-    "https://placehold.co/50x50",
-  );
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
@@ -54,7 +51,10 @@ export const EditProfile = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+      setProfileData((prevData) => ({
+        ...prevData,
+        image: imageUrl,
+      }));
     }
   };
 
@@ -72,7 +72,7 @@ export const EditProfile = () => {
             style={{ display: "none" }}
             id="profile-image-input"
           />
-          <Avatar src={profileImage} alt="Image profile" />
+          <Avatar src={profileData.image} alt="Image profile" />
           <div>
             <p className={styles.editProfilePage__header__name}>Choose Image</p>
             <p className={styles.editProfilePage__header__description}>
@@ -85,12 +85,7 @@ export const EditProfile = () => {
       <UserPreferences
         listOfDiets={profileData?.diets}
         userData={profileData}
-        setUserData={(data: FormData | ((prevData: FormData) => FormData)) =>
-          setProfileData((prevData) => ({
-            ...(typeof data === "function" ? data(prevData) : data),
-            image: profileImage,
-          }))
-        }
+        setUserData={setProfileData}
       />
 
       <div className={styles.editProfilePage__footer}>
