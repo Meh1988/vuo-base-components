@@ -10,9 +10,11 @@ export default class OnboardingViewModel extends BaseViewModel {
   progress = 0;
   isExitOnboarding = false;
   loading = false;
-
+  onboardingComplete: boolean;
+  
   constructor() {
     super();
+    this.onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
     makeObservable(this, {
       ...BaseViewModelProps,
       formData: observable,
@@ -29,10 +31,23 @@ export default class OnboardingViewModel extends BaseViewModel {
       calculateProgress: action,
       handleFinish: action,
       currentStepData: computed,
-      hasFormDataChanged: action
+      hasFormDataChanged: action,
+
+      onboardingComplete: observable,
+      setIsOnboardingComplete: action,
+      isOnboardingComplete: computed,
     });
 
     this.loadInitialData();
+  }
+
+  setIsOnboardingComplete(value: boolean): void {
+    this.onboardingComplete = value;
+    localStorage.setItem("onboardingComplete", String(value));
+  }
+
+  get isOnboardingComplete(): boolean {
+    return this.onboardingComplete;
   }
 
   get currentStepData() {
@@ -103,7 +118,6 @@ export default class OnboardingViewModel extends BaseViewModel {
   handleNext = async () => {
     if (this.hasFormDataChanged()) {
       const userId = this.formData.userId;
-      this.loading = true;
       try {
         await this.fetchData({
           url: `v1/profile/update/${userId}`,
@@ -122,7 +136,7 @@ export default class OnboardingViewModel extends BaseViewModel {
         this.setErrors(error instanceof Error ? error : new Error('Failed to update profile'));
       } finally {
         runInAction(() => { 
-          this.loading = false;
+
         });
       }
     } else {
@@ -154,8 +168,19 @@ export default class OnboardingViewModel extends BaseViewModel {
     this.isExitOnboarding = value;
   };
 
-  handleFinish = () => {
-    localStorage.removeItem("onboardingData");
-    return true;
+  handleFinish = async () => {
+    const userId = this.formData.userId;
+    const data = { ...this.formData, onboardingComplete: true };
+    try {
+      await this.patchData("v1/profile/update/" + userId, data);
+      localStorage.removeItem("onboardingData");
+      runInAction(() => {
+        this.setIsOnboardingComplete(true);
+      });
+      return true;
+    } catch (error) {
+      this.setErrors(error instanceof Error ? error : new Error('Failed to update profile'));
+      return false;
+    }
   };
 }

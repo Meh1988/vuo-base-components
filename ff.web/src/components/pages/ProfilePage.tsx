@@ -144,7 +144,6 @@ const ProfilePage = () => {
             <Button variant="small" color="primary" onClick={handleLogout}>
               Logout
             </Button>
-
           )
 
         }
@@ -154,6 +153,7 @@ const ProfilePage = () => {
         <Modal
           title="Delete account"
           isOpen={isDeleteModalOpen}
+          
           footerContent={<FooterContent />}
         >
           <p>Are you sure you want to delete your account?</p>

@@ -1,12 +1,9 @@
 // @ts-nocheck
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
 import Button from "../atoms/Button";
 import Page from "../templates/Page";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
-import { useAppContext } from "@vuo/context/AppContext";
-import QuestBrowseViewModel from "@vuo/viewModels/QuestBrowseViewModel";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import mockProgressionPathData from "@static/mockProgressionPathData";
@@ -15,6 +12,9 @@ import Button from "../atoms/Button";
 import Page from "../templates/Page";
 import Section from "../atoms/Section";
 import ProgressionPath from "../organisms/ProgressionPath";
+import Section from "../atoms/Section";
+import QuestBrowseViewModel from "@vuo/viewModels/QuestBrowseViewModel";
+import OnboardingViewModel from "@vuo/viewModels/OnboardingViewModel";
 import LoginViewModel from "../../viewModels/LoginViewModel";
 import LoginModal from "../organisms/LoginModal";
 
@@ -26,7 +26,7 @@ const Home = observer(() => {
     const { navigateWithState } = useStackNavigator();
     const [viewModel] = useState<QuestBrowseViewModel>(() => new QuestBrowseViewModel());
     const [loginViewModel] = useState<LoginViewModel>(() => new LoginViewModel());
-
+    const [onboardingViewModel] = useState<OnboardingViewModel>(() => new OnboardingViewModel());
     const goToQuest = () => {
         navigateWithState('/home/quests');
     };
@@ -121,15 +121,24 @@ const Home = observer(() => {
                 </Section>
             }
             <div style={{ height: '20px' }} />
-            <Section>
-                <h2>Progression Path</h2>
-                <ProgressionPath units={mockProgressionPathData[0].units} onQuestClick={onQuestClick} completedQuestIds={completedQuestIds} />
-            </Section>
-
+            {!viewModel.sessionDataStore.user && (
+                <Section>
+                    <Button onClick={() => {
+                        loginViewModel.toggleLoginModal();
+                        console.log("Modal state:", loginViewModel.isLoginModalOpen);
+                    }}>
+                        Login / Register
+                    </Button>
+                </Section>
+            )}
             <LoginModal
                 isOpen={loginViewModel.isLoginModalOpen}
                 onClose={() => loginViewModel.toggleLoginModal()}
             />
+            <Section>
+                <h2>Progression Path</h2>
+                <ProgressionPath units={mockProgressionPathData[0].units} onQuestClick={onQuestClick} completedQuestIds={completedQuestIds} />
+            </Section>
         </Page>
     );
 })

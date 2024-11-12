@@ -3,6 +3,7 @@ import multer from "multer";
 
 import {
   authenticateVerify,
+  deleteUserAndProfile,
   generateOptions,
   logoutUser,
   verifyFirebaseToken,
@@ -67,6 +68,8 @@ import { getStepBreakdown } from "../controllers/stepBreakDownController";
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
+//TODO rename and group authentication related routes: eg AUTH routes, PROFILE routes, USER routes
+
 // Registration routes
 router.post("/register/generate-options", registerGenerateOptions);
 router.post(
@@ -81,7 +84,7 @@ router.post("/register/verify-shadow-account", registerVerifyShadowAccount);
 router.get("/authenticate/generate-options", generateOptions);
 router.post("/authenticate/verify", authenticateVerify);
 router.post("/logout", authMiddleware, logoutUser);
-
+router.delete("/users/delete/me", authMiddleware, deleteUserAndProfile); //DELETES user account and profile TODO: implement full clean up
 //Firebase routes
 router.post('/authenticate/verify-firebase', verifyFirebaseToken);
 
@@ -173,7 +176,6 @@ router.get("/mealmap/recipes", getMealMapRecipes);
 router.get("/profile/:id", getUserProfile);
 router.post("/profile/create", createUserProfile);
 router.patch("/profile/update/:id", updateUserProfile);
-router.delete("/profile/delete/:id", deleteUserProfile);
 
 //PrepPal routes
 router.post("/prepPal/stepBreakdown", getStepBreakdown);
