@@ -29,4 +29,5 @@ export interface FormData {
   cuisinePreferences: {
     [key: string]: "like" | "dislike" | null;
   };
+  image: string;
 }

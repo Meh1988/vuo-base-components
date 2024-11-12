@@ -16,6 +16,9 @@ export const EditProfile = () => {
   );
   const { navigateWithState, goBack } = useStackNavigator();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState<string>(
+    "https://placehold.co/50x50",
+  );
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profileData");
@@ -47,16 +50,47 @@ export const EditProfile = () => {
     </>
   );
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
+    }
+  };
+
   return (
     <Page className={styles.editProfilePage}>
       <div className={styles.editProfilePage__header}>
-        <Avatar src="https://placehold.co/50x50" alt="Image profile" />
+        <label
+          htmlFor="profile-image-input"
+          className={styles.editProfilePage__header__uploadButton}
+        >
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+            id="profile-image-input"
+          />
+          <Avatar src={profileImage} alt="Image profile" />
+          <div>
+            <p className={styles.editProfilePage__header__name}>Choose Image</p>
+            <p className={styles.editProfilePage__header__description}>
+              Please select a new profile picture
+            </p>
+          </div>
+        </label>
       </div>
 
       <UserPreferences
         listOfDiets={profileData?.diets}
         userData={profileData}
-        setUserData={setProfileData}
+        setUserData={(data: FormData | ((prevData: FormData) => FormData)) =>
+          setProfileData((prevData) => ({
+            ...(typeof data === "function" ? data(prevData) : data),
+            image: profileImage,
+          }))
+        }
       />
 
       <div className={styles.editProfilePage__footer}>

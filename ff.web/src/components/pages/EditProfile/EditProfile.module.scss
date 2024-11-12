@@ -4,7 +4,24 @@
     margin-bottom: var(--space-16);
     gap: var(--space-16);
     display: flex;
-    flex-direction: column;
+    align-items: center;
+
+    &__uploadButton {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+    }
+
+    &__name {
+      font-size: var(--font-size-16);
+      color: var(--adm-color-yellow);
+    }
+
+    &__description {
+      font-size: var(--font-size-14);
+      color: var(--adm-color-text-secondary);
+    }
   }
 
   &__footer {

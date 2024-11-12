@@ -66,6 +66,7 @@ export const initialOnboardingData: FormData = {
   cuisinePreferences: {},
   pantry: "",
   cookingSkills: "",
+  image: "",
 };
 
 export const steps = [

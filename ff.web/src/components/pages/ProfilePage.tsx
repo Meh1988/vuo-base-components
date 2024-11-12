@@ -27,7 +27,10 @@ const ProfilePage = () => {
     <Page>
       <div className={styles.profilePage__header}>
         <div className={styles.profilePage__header__avatar}>
-          <Avatar src="https://placehold.co/50x50" alt="Image profile" />
+          <Avatar
+            src={profileData?.image || "https://placehold.co/50x50"}
+            alt="Image profile"
+          />
           <div className={styles.profilePage__avatarInfo}>
             <p className={styles.profilePage__avatarInfo__name}>
               {profileData?.userName || "User Name Profile"}
