@@ -17,6 +17,7 @@ import questDoneSoundFile from '@assets/sounds/mission_completed.mp3'
 
 import QuestTask from "../organisms/QuestTask";
 import QuestProgressBar from "../molecules/QuestProgressBar";
+import QuestChallenge from "../organisms/QuestChallenge";
 // import QuestChallenge from "../organisms/QuestChallenge";
 
 import { analytics } from '../../config/firebase';
@@ -48,7 +49,7 @@ const QuestPlay = observer(() => {
     });
 
     if (viewModel.playerQuest?.state === PlayerQuestState.completed) {
-      questDoneSound.play()
+      // questDoneSound.play()
       navigate(`/home/quests/${viewModel.playerQuest!.id}/outro`);
     }
 
@@ -89,7 +90,7 @@ const QuestPlay = observer(() => {
 
   const onStepDone = (step: PlayerQuestStep) => {
     viewModel.updateStepState(step.id, StepState.completed);
-    doneSounds.play();
+    // doneSounds.play();
   };
 
   const onStepClaimed = (step: PlayerQuestStep) => {
@@ -142,7 +143,7 @@ const QuestPlay = observer(() => {
       <div ref={scrollableContainerRef} style={{ flex: 1, overflowY: 'auto' }}>
         <Page>
           {/* {id} */}
-          <div className="mt48">
+          <div style={{ marginTop: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {viewModel.playerQuest?.recipe.steps.map((step, index) => {
               const isLastStep = !viewModel.playerQuest?.recipe.steps[index + 1];
               const isCurrentStep = viewModel.currentStep?.id === step.id;
@@ -160,10 +161,10 @@ const QuestPlay = observer(() => {
                 >
                   {step.claimedBy && step.claimedBy?.id === viewModel.currentUser?.id && step.state === StepState.challengeAccepted ? (
                     <div>
-                      {/* <QuestChallenge
+                      <QuestChallenge
                         steps={step.subSteps || []}
                         onStepDone={onSubStepDone}
-                      /> */}
+                      />
                     </div>
                   ) : (
                     <QuestTask

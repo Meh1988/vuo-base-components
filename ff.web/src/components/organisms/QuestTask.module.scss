@@ -9,10 +9,18 @@
 }
 
 .player_chip {
-  font-size: 1.5em;
+  font-size: var(--font-size-16);
   position: fixed;
   right: 0px;
-  top: -12px;
+  top: -24px;
+  background-color: var(--surface-brand-gold);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-8);
+  width: 80px;
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .xp_chip {
@@ -52,6 +60,8 @@
   /* Space between steps */
   background-color: var(--surface-primary);
   /* Default background color, uncommented */
+  width: 80vw;
+  max-width: 600px;
 
   &.notCurrent {
     transform: scale(0.9);
@@ -94,4 +104,9 @@
 .highlight {
   background-color: #3634a330 !important;
   box-shadow: inset 0 -4px 0 0 #3634a3;
+}
+
+.challenge_buttons {
+  display: flex;
+  gap: var(--space-4);
 }
