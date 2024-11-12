@@ -38,7 +38,7 @@ const authenticateVerify = async (req: Request, res: Response) => {
 
   const user = await User.findOne(
     { "credentials.credentialID": req.body.auth.id },
-    { "credentials.$": 1 },
+    { "credentials.$": 1 }
   );
   if (!user) {
     res.status(404).send("User not found");
@@ -62,7 +62,7 @@ const authenticateVerify = async (req: Request, res: Response) => {
   try {
     const opts: VerifyAuthenticationResponseOpts = {
       response: req.body.auth,
-      expectedChallenge: `${challengeDoc.challenge}`,
+      expectedChallenge: `${challengeDoc.challengeType}`,
       expectedOrigin: origin,
       expectedRPID: rpID,
       authenticator: {
@@ -70,7 +70,7 @@ const authenticateVerify = async (req: Request, res: Response) => {
         credentialPublicKey: new Uint8Array(
           credential.credentialPublicKey.buffer,
           credential.credentialPublicKey.byteOffset,
-          credential.credentialPublicKey.byteLength,
+          credential.credentialPublicKey.byteLength
         ),
         counter: credential.counter,
       },
@@ -85,13 +85,13 @@ const authenticateVerify = async (req: Request, res: Response) => {
   const newCounter = verification.authenticationInfo.newCounter;
   await User.updateOne(
     { _id: user._id, "credentials.credentialID": credential.credentialID },
-    { $set: { "credentials.$.counter": newCounter } },
+    { $set: { "credentials.$.counter": newCounter } }
   );
 
   const token = jwt.sign(
     { id: user._id, username: user.username },
     process.env.VITE_JWT_SECRET!,
-    { expiresIn: "4d" },
+    { expiresIn: "4d" }
   );
 
   res.json({ status: "ok", token, user });

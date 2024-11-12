@@ -14,6 +14,7 @@ export const sendOpenAIRequest = async (
   response_format: any
 ) => {
   try {
+    console.log(response_format);
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages,

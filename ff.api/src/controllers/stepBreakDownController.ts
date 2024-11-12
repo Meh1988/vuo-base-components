@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Recipe from "../models/recipeModel";
-import { sendOpenAIRequest } from "../externalAPI/openAI"
+import { sendOpenAIRequest } from "../externalAPI/openAI";
 import mongoose from "mongoose";
 import OpenAI from "openai";
 
@@ -32,6 +32,7 @@ export async function getStepBreakdown(req: Request, res: Response) {
   };
   try {
     const recipe = await Recipe.findById(recipeId);
+    console.log("FINDING:", recipeId);
     if (!recipe) {
       console.log("Recipe not found");
       return res.status(404).send({ message: "Recipe not found" });

@@ -1,4 +1,4 @@
-import './models'
+import "./models";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -10,11 +10,15 @@ const connectToDatabase = async () => {
     const db = mongoose.connection.db;
     const collections = await db.listCollections().toArray();
     console.log("Connected to database:", db.databaseName);
-    console.log("Collections in the database:", collections.map(col => col.name));
+    console.log("Database URI:", process.env.VITE_MONGODB_URI);
+    console.log(
+      "Collections in the database:",
+      collections.map((col) => col.name)
+    );
   } catch (error) {
     console.error(
       "Error connecting to MongoDB:",
-      error instanceof Error ? error.message : error,
+      error instanceof Error ? error.message : error
     );
   }
 };
@@ -26,7 +30,7 @@ const closeDatabaseConnection = async () => {
   } catch (error) {
     console.error(
       "Error disconnecting from MongoDB:",
-      error instanceof Error ? error.message : error,
+      error instanceof Error ? error.message : error
     );
   }
 };
