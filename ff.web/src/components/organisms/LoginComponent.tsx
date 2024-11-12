@@ -8,7 +8,7 @@ const Login = observer(() => {
   console.log(JSON.stringify(viewModel.sessionDataStore.user) );
 
   if(viewModel.sessionDataStore.user && !viewModel.sessionDataStore.shadowAccount) {
-    return <h2>Welcome {viewModel.sessionDataStore.user.username}</h2>;
+    return null
   }
 
   return (
