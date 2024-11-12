@@ -16,7 +16,7 @@ function SkewedTitleList(props: SkewedTitleListProps) {
   const { items, sequential = false } = props
 
   return (
-    <Space className={`${style.container} text-center`} direction='vertical'>
+    <Space className={`${style.container}`} direction='vertical'>
       {items.map((item, index) => {
         const delay = sequential ? `${index * 0.3}s` : '0s';
         return (
