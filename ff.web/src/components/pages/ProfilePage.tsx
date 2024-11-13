@@ -11,6 +11,7 @@ import { UserProfile } from "../organisms/userProfile";
 import styles from "./ProfilePage.module.scss";
 import LoginComponent from "../organisms/LoginComponent";
 import LoginViewModel from "../..//viewModels/LoginViewModel";
+import { Modal } from "../molecules/Modal";
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState<FormData>({} as FormData); // Ensure it's typed correctly
@@ -62,6 +63,7 @@ const ProfilePage = () => {
         </Button>
       </>
     )
+  }
 
   return (
     <Page>
