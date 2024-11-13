@@ -28,6 +28,7 @@ build
 *.sln
 *.sw?
 .eslintcache
+*.tar
 
 .env.dev
 .env
