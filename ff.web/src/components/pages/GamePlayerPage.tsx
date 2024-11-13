@@ -1,14 +1,24 @@
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "antd-mobile";
 import mockRecipe from '@static/mockRecipe';
 import mockQuizData from '@static/mockQuizData';
 import games from '../organisms/GamePlayer';
 import styles from './Minigames.module.scss';
 
+interface GamePageState {
+    questId?: string;
+    quizId?: string;
+    animal?: 'Cow' | 'Chicken' | 'Pig';
+    allowReplay?: boolean;
+    allowClose?: boolean;
+}
+
 function GamePlayerPage() {
     const { gameId } = useParams();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const location = useLocation();
+    const state = location.state as GamePageState;
+    const { questId, quizId, animal, allowReplay, allowClose } = state || {};
     
     const game = games.find(g => g.id === gameId);
     
@@ -16,11 +26,6 @@ function GamePlayerPage() {
         navigate('/minigames');
         return null;
     }
-
-    const questId = searchParams.get('questId');
-    const quizId = searchParams.get('quizId');
-    const animal = searchParams.get('animal') as 'Cow' | 'Chicken' | 'Pig' | undefined;
-    const allowReplayParam = searchParams.get('allowReplay');
 
     const quiz = quizId 
         ? mockQuizData.find(q => q.id === quizId) 
@@ -31,7 +36,6 @@ function GamePlayerPage() {
             const completedQuestIds = JSON.parse(localStorage.getItem('completedQuestIds') || '[]')
             localStorage.setItem('completedQuestIds', JSON.stringify([...completedQuestIds, questId]))
         }
-        console.log(`${questId  } closed and completed`)
         navigate(-1);
     };
 
@@ -43,10 +47,11 @@ function GamePlayerPage() {
                 Exit
             </Button>
             <GameComponent 
-                allowReplay={allowReplayParam === 'true'}
+                allowClose={allowClose === true}
+                allowReplay={allowReplay === true}
                 recipe={mockRecipe}
                 quiz={quiz!}
-                presetAnimal={animal}
+                presetAnimal={animal as 'Cow' | 'Chicken' | 'Pig'}
                 onClose={onClose} 
             />
         </div>

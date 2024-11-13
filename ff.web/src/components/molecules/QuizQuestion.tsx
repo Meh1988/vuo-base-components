@@ -1,6 +1,5 @@
-// @ts-nocheck
 import { useState } from 'react';
-import { Answer, QuizQuestionData, UserAnswer } from '@vuo/models/QuizTypes';
+import { QuizQuestionData, UserAnswer } from '@vuo/models/QuizTypes';
 
 import Input from '../atoms/Input';
 import styles from '../organisms/Quiz.module.scss';
@@ -11,10 +10,10 @@ export interface QuizQuestionProps {
 }
 
 export default function QuizQuestion({ question, onAnswer }: QuizQuestionProps) {
-  const [answer, setAnswer] = useState<Answer>('');
+  const [answer, setAnswer] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
 
-  const handleAnswer = (value: Answer) => {
+  const handleAnswer = (value: string[]) => {
     setAnswer(value);
     onAnswer({ questionId: question.id, answer: value });
   };
@@ -29,8 +28,8 @@ export default function QuizQuestion({ question, onAnswer }: QuizQuestionProps) 
               className={styles.sliderInput}
               min={question.min || 0}
               max={question.max || 30}
-              value={answer as number}
-              onChange={(e) => handleAnswer(Number(e.target.value))}
+              value={answer[0]}
+              onChange={(e) => handleAnswer([e.target.value])}
               aria-label={`Slider for ${question.question}`}
             />
             <div className={styles.sliderLabels}>
@@ -42,14 +41,14 @@ export default function QuizQuestion({ question, onAnswer }: QuizQuestionProps) 
         );
       case 'single-choice':
         return (
-        <div className={styles.optionsContainer} role="radiogroup" aria-labelledby={`question-${question.id}`}>
+          <div className={styles.optionsContainer} role="radiogroup" aria-labelledby={`question-${question.id}`}>
             {question.options?.map((option) => (
               <button
                 type="button"
                 key={option.toString()}
-                className={`${styles.optionButton} ${answer === option ? styles.selected : ''}`}
-                onClick={() => handleAnswer(option)}
-                aria-checked={answer === option}
+                className={`${styles.optionButton} ${answer[0] === option ? styles.selected : ''}`}
+                onClick={() => handleAnswer([option])}
+                aria-checked={answer[0] === option}
                 role="radio"
               >
                 {option}
@@ -72,7 +71,7 @@ export default function QuizQuestion({ question, onAnswer }: QuizQuestionProps) 
                     const updatedAnswer = isSelected
                       ? newAnswer.filter((item) => item !== option)
                       : [...newAnswer, option];
-                    handleAnswer(updatedAnswer as Answer);
+                    handleAnswer(updatedAnswer);
                   }}
                   aria-checked={isSelected}
                   role="checkbox"
@@ -83,15 +82,28 @@ export default function QuizQuestion({ question, onAnswer }: QuizQuestionProps) 
             })}
           </div>
         );
-      default:
+      case 'text-input':
         return (
-          <Input 
+          <Input
             className={styles.textInput}
             onChange={(e) => {
-              handleAnswer(e.target.value.toLowerCase().trim());
+              handleAnswer([e.target.value.toLowerCase().trim()]);
               setInputValue(e.target.value);
             }}
-            value={inputValue} 
+            value={inputValue}
+            placeholder="Enter your answer"
+            aria-labelledby={`question-${question.id}`}
+          />
+        );
+      default:
+        return (
+          <Input
+            className={styles.textInput}
+            onChange={(e) => {
+              handleAnswer([e.target.value.toLowerCase().trim()]);
+              setInputValue(e.target.value);
+            }}
+            value={inputValue}
             placeholder="Enter your answer"
             aria-labelledby={`question-${question.id}`}
           />

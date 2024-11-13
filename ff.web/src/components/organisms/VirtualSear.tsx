@@ -16,13 +16,13 @@ interface Doneness {
 }
 
 const donenessLevels: Doneness[] = [
-    { min: 0, max: 39, name: 'Raw' },
-    { min: 40, max: 49, name: 'Rare' },
-    { min: 50, max: 59, name: 'Medium Rare' },
-    { min: 60, max: 69, name: 'Medium' },
-    { min: 70, max: 79, name: 'Medium Well' },
-    { min: 80, max: 89, name: 'Well Done' },
-    { min: 90, max: 99, name: 'Overcooked' },
+    { min: 0, max: 39.99, name: 'Raw' },
+    { min: 40, max: 49.99, name: 'Rare' },
+    { min: 50, max: 59.99, name: 'Medium Rare' },
+    { min: 60, max: 69.99, name: 'Medium' },
+    { min: 70, max: 79.99, name: 'Medium Well' },
+    { min: 80, max: 89.99, name: 'Well Done' },
+    { min: 90, max: 99.99, name: 'Overcooked' },
     { min: 100, max: Infinity, name: 'Burnt' }
 ];
 
@@ -54,7 +54,7 @@ const getTemperatureLabel = (temperature: number): string => {
 const baseSearRate = 2;
 const baseDonenessRate = 1;
 
-const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean }> = observer(({ onClose, allowReplay }) => {
+const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean; allowClose: boolean }> = observer(({ onClose, allowReplay, allowClose }) => {
     const [targetDoneness, setTargetDoneness] = useState<Doneness>(donenessLevels[Math.floor(Math.random() * donenessLevels.length)]);
 
     const [topSear, setTopSear] = useState<number>(0);
@@ -114,8 +114,23 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean }> = ob
     }
 
     const getCurrentDoneness = (): Doneness => {
-        const averageDoneness = (topDoneness + bottomDoneness) / 2;
-        return donenessLevels.find(level => averageDoneness >= level.min && averageDoneness <= level.max) || donenessLevels[donenessLevels.length - 1];
+        const rawAverageDoneness = (topDoneness + bottomDoneness) / 2;
+        const averageDoneness = Math.round(rawAverageDoneness);
+        
+        if (averageDoneness > 100) {
+            return donenessLevels[donenessLevels.length - 1];
+        }
+        
+        const foundDoneness = donenessLevels.find(level => 
+            averageDoneness >= level.min && averageDoneness <= level.max
+        );
+        
+        if (!foundDoneness) {
+            // eslint-disable-next-line no-console
+            console.log('No doneness found for value:', averageDoneness);
+        }
+        
+        return foundDoneness || donenessLevels[0];
     };
 
     const getResult = (): string => {
@@ -168,7 +183,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean }> = ob
                         <div className={styles.doneness_result_container}>
                             <p className={styles.result}>Top Sear: {Math.round(topSear) > 100 ? "Burnt" : `${Math.round(topSear)}%`}</p>
                             <p className={styles.result}>Bottom Sear: {Math.round(bottomSear) > 100 ? "Burnt" : `${Math.round(bottomSear)}%`}</p>
-                            <p className={styles.result}>Inside Doneness: {Math.round((topDoneness + bottomDoneness) / 2) > 100 ? "Burnt" : `${Math.round((topDoneness + bottomDoneness) / 2)}%`}</p>
+                            <p className={styles.result}>Inside Doneness: {getCurrentDoneness().name}</p>
                         </div>
                     </div>
                     <div className={styles.controls_container}>
@@ -179,7 +194,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean }> = ob
                                 </Button>
                             )}
                             <div style={{ height: '20px' }} />
-                            {onClose && (
+                            {allowClose && onClose && (
                                 <Button variant="large" color="primary" onClick={() => onClose()}>
                                     Next
                                 </Button>
