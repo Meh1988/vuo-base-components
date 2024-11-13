@@ -13,7 +13,6 @@ import { FormData, OnboardingStatus } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
 import ProgressBar from "@vuo/atoms/ProgressBar";
 import Slider from "@vuo/atoms/Slider";
-import { useAppContext } from "@vuo/context/AppContext";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import ToggleSwitch from "@vuo/molecules/ToggleSwitch";
 
@@ -42,126 +41,31 @@ const OnboardingFlow = observer(() => {
     }
   }, [viewModel])
 
-    setProgress(calculateProgress());
-  }, [currentStep]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+  const FooterContent = () => {
+    return (
+      <>
+        <Button
+          variant="small"
+          color="tertiary"
+          onClick={() => {
+            localStorage.setItem("onboardingData", JSON.stringify(viewModel.formData));
+            navigateWithState("/home");
+          }}
+        >
+          Exit
+        </Button>
+        <Button
+          variant="small"
+          color="primary"
+          onClick={() => viewModel.setIsExitOnboarding(false)}
+        >
+          Cancel
+        </Button>
+      </>
+    );
   };
-
-  const handleMultiSelect = (item: string, field: keyof FormData) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: (prev[field] as string).includes(item)
-        ? (prev[field] as string[]).filter((i: string) => i !== item)
-        : [...(prev[field] as string[]), item],
-    }));
-  };
-
-  const handleCuisinePreference = (
-    cuisine: string,
-    preference: "like" | "dislike",
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      cuisinePreferences: {
-        ...prev.cuisinePreferences,
-        [cuisine]:
-          preference === prev.cuisinePreferences[cuisine] ? null : preference,
-      },
-    }));
-  };
-
-  // const handleNext = () => {
-  //   if (currentStep < steps.length - 1) {
-  //     steps[currentStep].status = OnboardingStatus.completed;
-  //     setCurrentStep(currentStep + 1);
-  //     setProgress(((currentStep + 1) / steps.length) * 100);
-  //   }
-  // };
-//TODO find a good way to compare fotm data
-  const hasFormDataChanged = (currentData: any, initialData: any) => {
-    // Deep comparison of the two objects
-    return JSON.stringify(currentData) !== JSON.stringify(initialData);
-  };
-
-  const handleNext = () => {
-    //TODO run this query and add userid of shadow account
-    //TODO refactor
-    //TODO create an onboarding viewmodel
-      // Check if form data has changed from previous state
-      //TODO this comparison does not really work, fix it
-      if (!hasFormDataChanged(formData, initialOnboardingData)) {
-        // No changes, just move to next step
-        if (currentStep < steps.length - 1) {
-          steps[currentStep].status = OnboardingStatus.completed;
-          setCurrentStep(currentStep + 1);
-          setProgress(((currentStep + 1) / steps.length) * 100);
-        }
-        return;
-      }
-
-      setLoading(true);
-      fetch(`${import.meta.env.VITE_FFAPI_BASE_URL}/v1/profile/update`, {
-        method: 'PATCH',
-        body: JSON.stringify(formData),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Profile updated:', data);
-        if (currentStep < steps.length - 1) {
-          steps[currentStep].status = OnboardingStatus.completed;
-          setCurrentStep(currentStep + 1);
-          setProgress(((currentStep + 1) / steps.length) * 100);
-        }
-      })
-      .catch(error => {
-        console.error('Error updating profile:', error);
-        setError(error);
-        alert("failed to update profile")
-        setLoading(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-    }
-    //no change in form data, just move to the next step
-
-  const handleBack = () => {
-    if (currentStep > 0) {
-      steps[currentStep].status = OnboardingStatus.notStarted;
-      setCurrentStep((prev) => prev - 1);
-      setProgress(((currentStep - 1) / steps.length) * 100);
-    }
-  };
-
-  const handleFinish = () => {
-    localStorage.setItem("profileData", JSON.stringify(formData));
-    localStorage.removeItem("onboardingData");
-    setIsOnboardingComplete(true);
-    goBack();
-  };
-
-  const FooterContent = () => (
-    <>
-      <Button variant="small" color="tertiary" onClick={() => goBack()}>
-        Exit
-      </Button>
-      <Button
-        variant="small"
-        color="primary"
-        onClick={() => setIsExitOnboarding(false)}
-      >
-        Cancel
-      </Button>
-    </>
-  );
 
   const renderOption = (
     value: string,
@@ -297,7 +201,7 @@ const OnboardingFlow = observer(() => {
               "Male",
               "",
               viewModel.formData.sex === "male",
-              (value) => viewModel.setFormData((prev) => ({ ...prev, sex: value })),
+              (value) => viewModel.handleInputChange({ target: { name: 'sex', value } } as React.ChangeEvent<HTMLInputElement>),
             )}
           </>
         );
@@ -810,5 +714,6 @@ const OnboardingFlow = observer(() => {
       )}
     </>
   );
+});
 
 export default OnboardingFlow

@@ -2,15 +2,12 @@
 
 import { observer } from 'mobx-react-lite';
 import Button from "../atoms/Button";
-import Page from "../templates/Page";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import mockProgressionPathData from "@static/mockProgressionPathData";
 import { ProgressionPathQuest } from "@vuo/models/ProgressionPathTypes";
-import Button from "../atoms/Button";
 import Page from "../templates/Page";
-import Section from "../atoms/Section";
 import ProgressionPath from "../organisms/ProgressionPath";
 import Section from "../atoms/Section";
 import QuestBrowseViewModel from "@vuo/viewModels/QuestBrowseViewModel";
@@ -101,7 +98,7 @@ const Home = observer(() => {
                 <Button onClick={goToQuest}>Start Quest</Button>
             </Section>
             {
-                !isOnboardingComplete && <Section>
+                !viewModel.isOnboardingComplete && <Section>
                     {
                         localStorage.getItem('onboardingData')
                             ? (
