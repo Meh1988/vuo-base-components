@@ -12,6 +12,7 @@ import {
   dietsPlan,
   goals,
   pantry,
+  pastExperience,
 } from "../onboarding/constants/OnboardingSteps";
 import styles from "./userPreferences.module.scss";
 
@@ -324,15 +325,12 @@ export const UserPreferences = ({
         </div>
 
         <div className={styles.userPreferences__section__buttons}>
-          {[
-            { value: "no-past-experience", label: "No Past Experience" },
-            { value: "tried-before", label: "Tried Before" },
-          ].map((pastExperience) => (
+          {pastExperience.map((pastExperienceItem) => (
             <Button
-              key={pastExperience.value}
+              key={pastExperienceItem.value}
               variant="medium"
               color={
-                userData.pastExperience === pastExperience.value
+                userData.pastExperience === pastExperienceItem.value
                   ? "primary"
                   : "secondary"
               }
@@ -340,11 +338,11 @@ export const UserPreferences = ({
               onClick={() =>
                 setUserData((prev: FormData) => ({
                   ...prev,
-                  pastExperience: pastExperience.value,
+                  pastExperience: pastExperienceItem.value,
                 }))
               }
             >
-              {pastExperience.label}
+              {pastExperienceItem.label}
             </Button>
           ))}
         </div>
