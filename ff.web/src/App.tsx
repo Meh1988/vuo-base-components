@@ -4,6 +4,7 @@ import { SafeArea } from "antd-mobile";
 import BottomNavigation from "./components/organisms/BottomNavigation";
 import Navbar from "./components/organisms/Navbar";
 import OnboardingFlow from "./components/organisms/onboarding";
+import { EditProfile } from "./components/pages/EditProfile";
 import FlavourFlowPage from "./components/pages/FlavourFlowPage";
 import FlavourFlowResultPage from "./components/pages/FlavourFlowResultPage";
 import Home from "./components/pages/Home";
@@ -39,6 +40,7 @@ function App() {
               <Route path="/meal-map" element={<MealMap />} />
               <Route path="/shopping-cart" element={<ShoppingCart />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
               <Route path="/flavour-flow" element={<FlavourFlowPage />} />
               <Route
                 path="/flavour-flow/results"

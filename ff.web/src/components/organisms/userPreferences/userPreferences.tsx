@@ -1,42 +1,38 @@
-import {
-  CheckOutlined,
-  CloseOutlined,
-  HeartFilled,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, HeartFilled, PlusOutlined } from "@ant-design/icons";
+import { FormData } from "@models/Onboarding";
 import Button from "@vuo/components/atoms/Button";
 import Input from "@vuo/components/atoms/Input";
 import Section from "@vuo/components/atoms/Section";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+import { allergies, cuisines } from "@vuo/constants/Onboarding";
+import {
+  cookingSkills,
+  dietsPlan,
+  goals,
+  pantry,
+  pastExperience,
+} from "../onboarding/constants/OnboardingSteps";
 import styles from "./userPreferences.module.scss";
 
 interface UserPreferencesProps {
-  listOfAllergies: string[];
   listOfDiets: string[];
-  listOfCuisinePreferences: Record<string, string>;
+  userData: FormData;
+  setUserData: React.Dispatch<React.SetStateAction<FormData>>;
 }
 
 export const UserPreferences = ({
-  listOfAllergies,
-  listOfDiets,
-  listOfCuisinePreferences,
+  userData,
+  setUserData,
 }: UserPreferencesProps) => {
-  const [userDiets, setUserDiets] = useState<string>("");
-  const [userDietsList, setUserDietsList] = useState<Set<string>>(
-    new Set(listOfDiets || []),
-  );
+  const [userDislikes, setUserDislikes] = useState<string>("");
 
-  const [userAllergies, setUserAllergies] = useState<string>("");
-  const [userAllergiesList, setUserAllergiesList] = useState<Set<string>>(
-    new Set(listOfAllergies || []),
+  const [userLikes, setUserLikes] = useState<string>("");
+  const [userLikesList, setUserLikesList] = useState<Set<string>>(new Set());
+  const [userDislikesList, setUserDislikesList] = useState<Set<string>>(
+    new Set(userData.dislikes || []),
   );
-  const [userCuisinePreferences, setUserCuisinePreferences] =
-    useState<string>("");
-  const [userCuisinePreferencesList, setUserCuisinePreferencesList] = useState<
-    Set<string>
-  >(new Set());
 
   const itemAnimation = {
     initial: { opacity: 0, scale: 0.8 },
@@ -46,55 +42,406 @@ export const UserPreferences = ({
   };
 
   useEffect(() => {
-    setUserDietsList(new Set(listOfDiets || []));
-    setUserAllergiesList(new Set(listOfAllergies || []));
+    setUserDislikesList(new Set(userData.dislikes || []));
+    setUserLikesList(new Set(userData.likes || []));
+  }, [userData.dislikes, userData.likes]);
 
-    if (listOfCuisinePreferences) {
-      setUserCuisinePreferencesList(
-        new Set(
-          Object.entries(listOfCuisinePreferences)
-            .filter(([preference]) => preference === "like")
-            .map(([cuisine]) => cuisine),
-        ),
-      );
-    } else {
-      setUserCuisinePreferencesList(new Set());
-    }
-  }, [listOfDiets, listOfAllergies, listOfCuisinePreferences]);
+  const Label = ({
+    children,
+  }: {
+    children: React.ReactNode | React.ReactNode[];
+  }) => <p className={styles.userPreferences__section__label}>{children}</p>;
+
+  const handleCuisinePreference = (
+    cuisine: string,
+    preference: "like" | "dislike",
+  ) => {
+    setUserData((prev: FormData) => ({
+      ...prev,
+      cuisinePreferences: {
+        ...prev.cuisinePreferences,
+        [cuisine]: preference !== "like" ? "like" : "dislike",
+      },
+    }));
+  };
+
+  const handleToggle = <K extends keyof FormData>(field: K, value: string) => {
+    setUserData((prev: FormData) => {
+      if (!Array.isArray(prev[field])) {
+        return { ...prev, [field]: [value] };
+      }
+
+      const currentArray = prev[field] as string[];
+      const newArray = currentArray.includes(value)
+        ? currentArray.filter((item) => item !== value)
+        : [...currentArray, value];
+
+      return { ...prev, [field]: newArray };
+    });
+  };
 
   return (
     <div className={styles.userPreferences}>
-      <div className={styles.userPreferences__header__title}>
-        <p>Your preferences</p>
-        <CheckOutlined />
-      </div>
+      <Section className={styles.userPreferences__section}>
+        <Label>Name</Label>
+        <div className={styles.userPreferences__section__input}>
+          <Input
+            value={userData.userName}
+            placeholder="What's your name?"
+            onChange={(e) => {
+              setUserData((prev: FormData) => ({
+                ...prev,
+                userName: e.target.value,
+              }));
+            }}
+            className={styles.userPreferences__section__input__text}
+          />
+        </div>
+      </Section>
 
       <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled />
-          <p className={styles.userPreferences__section__header__title}>
-            Diets
+        <Label>User Name</Label>
+        <div className={styles.userPreferences__section__input}>
+          <Input
+            value={userData.userId}
+            placeholder="What should we call you?"
+            onChange={(e) => {
+              setUserData((prev: FormData) => ({
+                ...prev,
+                userId: e.target.value,
+              }));
+            }}
+            className={styles.userPreferences__section__input__text}
+          />
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <Label>Description</Label>
+        <div className={styles.userPreferences__section__input}>
+          <textarea
+            name="description"
+            value={userData.description}
+            onChange={(e) => {
+              setUserData((prev: FormData) => ({
+                ...prev,
+                description: e.target.value,
+              }));
+            }}
+            placeholder="Enter your description"
+            className={`${styles.onboardingInput} ${styles.onboardingInputTextarea}`}
+          />
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <Label>Goal weight</Label>
+        <div className={styles.userPreferences__section__input}>
+          <Input
+            value={userData.goalWeight}
+            placeholder="What's your goal weight?"
+            onChange={(e) => {
+              setUserData((prev: FormData) => ({
+                ...prev,
+                goalWeight: e.target.value,
+              }));
+            }}
+            className={styles.userPreferences__section__input__text}
+          />
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Your goals</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            What are your goals?
           </p>
         </div>
 
-        <p className={styles.userPreferences__section__description}>
-          Diets you are on
-        </p>
+        <div className={styles.userPreferences__section__buttons}>
+          {goals.map((goal) => (
+            <Button
+              key={goal}
+              variant="medium"
+              color={userData.goals.includes(goal) ? "primary" : "secondary"}
+              className={styles.onboardingButton}
+              onClick={() => handleToggle("goals", goal)}
+            >
+              {goal}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Activity Level</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            How active are you?
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {[
+            { value: "sedentary", label: "Sedentary" },
+            { value: "light-exercise", label: "Light Exercise" },
+            { value: "moderate-exercise", label: "Moderate Exercise" },
+            { value: "heavy-exercise", label: "Heavy Exercise" },
+            { value: "athlete", label: "Athlete" },
+          ].map((activityLevel) => (
+            <Button
+              key={activityLevel.value}
+              variant="medium"
+              color={
+                userData.activityLevel === activityLevel.value
+                  ? "primary"
+                  : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                setUserData((prev: FormData) => ({
+                  ...prev,
+                  activityLevel: activityLevel.value,
+                }))
+              }
+            >
+              {activityLevel.label}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Mindset</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            How do you feel about the recipes you get?
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {[
+            { value: "agree", label: "Agree" },
+            { value: "neutral", label: "Neutral" },
+            { value: "disagree", label: "Disagree" },
+          ].map((mindset) => (
+            <Button
+              key={mindset.value}
+              variant="medium"
+              color={
+                userData.mindset === mindset.value ? "primary" : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                setUserData((prev: FormData) => ({
+                  ...prev,
+                  mindset: mindset.value,
+                }))
+              }
+            >
+              {mindset.label}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Speed</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            How fast do you want to cook?
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {[
+            { value: "slow", label: "Slow" },
+            { value: "moderate", label: "Moderate" },
+            { value: "fast", label: "Fast" },
+          ].map((speed) => (
+            <Button
+              key={speed.value}
+              variant="medium"
+              color={userData.speed === speed.value ? "primary" : "secondary"}
+              className={styles.onboardingButton}
+              onClick={() =>
+                setUserData((prev: FormData) => ({
+                  ...prev,
+                  speed: speed.value,
+                }))
+              }
+            >
+              {speed.label}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Diets</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            What diets do you follow?
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {dietsPlan.map((diet) => (
+            <Button
+              key={diet.name}
+              variant="medium"
+              color={
+                userData.dietPlan === diet.name.toLowerCase()
+                  ? "primary"
+                  : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                setUserData((prev: FormData) => ({
+                  ...prev,
+                  dietPlan: diet.name.toLowerCase(),
+                }))
+              }
+            >
+              {diet.name}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Past experience</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            How much experience do you have with cooking?
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {pastExperience.map((pastExperienceItem) => (
+            <Button
+              key={pastExperienceItem.value}
+              variant="medium"
+              color={
+                userData.pastExperience === pastExperienceItem.value
+                  ? "primary"
+                  : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                setUserData((prev: FormData) => ({
+                  ...prev,
+                  pastExperience: pastExperienceItem.value,
+                }))
+              }
+            >
+              {pastExperienceItem.label}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Pantry</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            How stocked is your pantry?
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {pantry.map((pantryItem) => (
+            <Button
+              key={pantryItem.value}
+              variant="medium"
+              color={
+                userData.pantry === pantryItem.value ? "primary" : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                setUserData((prev: FormData) => ({
+                  ...prev,
+                  pantry: pantryItem.value,
+                }))
+              }
+            >
+              {pantryItem.label}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Cooking Skills</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            How good are you at cooking?
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {cookingSkills.map((cookingSkill) => (
+            <Button
+              key={cookingSkill.value}
+              variant="medium"
+              color={
+                userData.cookingSkills === cookingSkill.value
+                  ? "primary"
+                  : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                setUserData((prev: FormData) => ({
+                  ...prev,
+                  cookingSkills: cookingSkill.value,
+                }))
+              }
+            >
+              {cookingSkill.label}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <div className={styles.userPreferences__section__header}>
+            <HeartFilled />
+            <p className={styles.userPreferences__section__header__title}>
+              Dislikes
+            </p>
+          </div>
+
+          <p className={styles.userPreferences__section__description}>
+            Dislikes are things you don&apos;t want to be included in your
+            recommendations
+          </p>
+        </div>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {[...userDietsList].map((diet: string, index: number) => (
+            {[...userDislikesList].map((dislikes: string, index: number) => (
               <motion.div key={index} layout {...itemAnimation}>
                 <Button
                   variant="medium"
                   color="secondary"
                   onClick={() => {
-                    setUserDietsList(
+                    setUserDislikesList(
                       (prev) =>
-                        new Set([...prev].filter((item) => item !== diet)),
+                        new Set([...prev].filter((item) => item !== dislikes)),
                     );
+                    handleToggle("dislikes", dislikes);
                   }}
                 >
-                  {diet} <CloseOutlined />
+                  {dislikes} <CloseOutlined />
                 </Button>
               </motion.div>
             ))}
@@ -102,10 +449,10 @@ export const UserPreferences = ({
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={userDiets}
+            value={userDislikes}
             placeholder="Add a dislike"
             onChange={(e) => {
-              setUserDiets(e.target.value);
+              setUserDislikes(e.target.value);
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -114,10 +461,19 @@ export const UserPreferences = ({
             variant="medium"
             color="primary"
             onClick={() => {
-              setUserDietsList((prev) => new Set([...prev, userDiets.trim()]));
-              setUserDiets("");
+              const trimmedDislike = userDislikes.trim();
+              if (!userDislikesList.has(trimmedDislike)) {
+                setUserDislikes("");
+                setUserDislikesList(
+                  (prev) => new Set([...prev, trimmedDislike]),
+                );
+                handleToggle("dislikes", trimmedDislike);
+              }
             }}
-            disabled={userDiets.trim() === ""}
+            disabled={
+              userDislikes.trim() === "" ||
+              userDislikesList.has(userDislikes.trim())
+            }
           >
             Add <PlusOutlined />
           </Button>
@@ -125,31 +481,95 @@ export const UserPreferences = ({
       </Section>
 
       <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled />
-          <p className={styles.userPreferences__section__header__title}>
-            Allergies
+        <div>
+          <Label>Allergies</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            Things you ABOSOLUTELY DONT’T WANT TO BE INCLUDED in your
+            recommendations
           </p>
         </div>
-        <p className={styles.userPreferences__section__description}>
-          Things you ABOSOLUTELY DONT&rsquo;T WANT TO BE INCLUDED in your
-          recommendations
-        </p>
+        <div className={styles.userPreferences__section__buttons}>
+          {allergies.map((allergy) => (
+            <Button
+              key={allergy}
+              variant="medium"
+              color={
+                userData.allergies.includes(allergy) ? "primary" : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() => handleToggle("allergies", allergy)}
+            >
+              {allergy}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <Label>Cuisines</Label>
+
+          <p className={styles.userPreferences__section__description}>
+            Things you like, things you want to be recommended to you!
+          </p>
+        </div>
+
+        <div className={styles.userPreferences__section__buttons}>
+          {cuisines.map((cuisinesItem) => (
+            <Button
+              key={cuisinesItem}
+              variant="medium"
+              color={
+                userData.cuisinePreferences[cuisinesItem] === "like"
+                  ? "primary"
+                  : "secondary"
+              }
+              className={styles.onboardingButton}
+              onClick={() =>
+                handleCuisinePreference(
+                  cuisinesItem,
+                  userData.cuisinePreferences[cuisinesItem] === "like"
+                    ? "like"
+                    : "dislike",
+                )
+              }
+            >
+              {cuisinesItem}
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      <Section className={styles.userPreferences__section}>
+        <div>
+          <div className={styles.userPreferences__section__header}>
+            <HeartFilled size={16} />
+            <p className={styles.userPreferences__section__header__title}>
+              Likes
+            </p>
+          </div>
+          <p className={styles.userPreferences__section__description}>
+            Things you like, things you want to be recommended to you!
+          </p>
+        </div>
         <div className={styles.userPreferences__section__buttons}>
           <AnimatePresence>
-            {[...userAllergiesList].map((allergy: string, index: number) => (
+            {[...userLikesList].map((like: string, index: number) => (
               <motion.div key={index} layout {...itemAnimation}>
                 <Button
+                  key={index}
                   variant="medium"
                   color="secondary"
                   onClick={() => {
-                    setUserAllergiesList(
+                    setUserLikesList(
                       (prev) =>
-                        new Set([...prev].filter((item) => item !== allergy)),
+                        new Set([...prev].filter((item) => item !== like)),
                     );
+                    handleToggle("likes", like);
                   }}
                 >
-                  {allergy} <CloseOutlined />
+                  {like} <CloseOutlined />
                 </Button>
               </motion.div>
             ))}
@@ -157,10 +577,10 @@ export const UserPreferences = ({
         </div>
         <div className={styles.userPreferences__section__input}>
           <Input
-            value={userAllergies}
-            placeholder="Add a like"
+            value={userLikes}
+            placeholder="Add a like food"
             onChange={(e) => {
-              setUserAllergies(e.target.value);
+              setUserLikes(e.target.value);
             }}
             className={styles.userPreferences__section__input__text}
           />
@@ -169,71 +589,16 @@ export const UserPreferences = ({
             variant="medium"
             color="primary"
             onClick={() => {
-              setUserAllergies("");
-              setUserAllergiesList(
-                (prev) => new Set([...prev, userAllergies.trim()]),
-              );
+              const trimmedLike = userLikes.trim();
+              if (!userLikesList.has(trimmedLike)) {
+                setUserLikes("");
+                setUserLikesList((prev) => new Set([...prev, trimmedLike]));
+                handleToggle("likes", trimmedLike);
+              }
             }}
-            disabled={userAllergies.trim() === ""}
-          >
-            Add <PlusOutlined />
-          </Button>
-        </div>
-      </Section>
-
-      <Section className={styles.userPreferences__section}>
-        <div className={styles.userPreferences__section__header}>
-          <HeartFilled size={16} />
-          <p className={styles.userPreferences__section__header__title}>
-            Likes
-          </p>
-        </div>
-        <p className={styles.userPreferences__section__description}>
-          Things you like, things you want to be recommended to you!
-        </p>
-        <div className={styles.userPreferences__section__buttons}>
-          <AnimatePresence>
-            {[...userCuisinePreferencesList].map(
-              (like: string, index: number) => (
-                <motion.div key={index} layout {...itemAnimation}>
-                  <Button
-                    key={index}
-                    variant="medium"
-                    color="secondary"
-                    onClick={() => {
-                      setUserCuisinePreferencesList(
-                        (prev) =>
-                          new Set([...prev].filter((item) => item !== like)),
-                      );
-                    }}
-                  >
-                    {like} <CloseOutlined />
-                  </Button>
-                </motion.div>
-              ),
-            )}
-          </AnimatePresence>
-        </div>
-        <div className={styles.userPreferences__section__input}>
-          <Input
-            value={userCuisinePreferences}
-            placeholder="Add a diet"
-            onChange={(e) => {
-              setUserCuisinePreferences(e.target.value);
-            }}
-            className={styles.userPreferences__section__input__text}
-          />
-
-          <Button
-            variant="medium"
-            color="primary"
-            onClick={() => {
-              setUserCuisinePreferences("");
-              setUserCuisinePreferencesList(
-                (prev) => new Set([...prev, userCuisinePreferences.trim()]),
-              );
-            }}
-            disabled={userCuisinePreferences.trim() === ""}
+            disabled={
+              userLikes.trim() === "" || userLikesList.has(userLikes.trim())
+            }
           >
             Add <PlusOutlined />
           </Button>

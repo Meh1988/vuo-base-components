@@ -17,6 +17,7 @@ export const dietsPlan = [
     name: "Vegetarian",
     description: "Clean eating, complex carbs",
   },
+  { name: "Vegan", description: "No animal products, plant-based" },
   { name: "Low carb", description: "Reduced carbohydrate intake" },
   { name: "Keto", description: "High fat, very low carb" },
 ];
@@ -65,4 +66,9 @@ export const cookingSkills = [
     label: "Advanced",
     description: '"I\'m comfortable cooking any recipe"',
   },
+];
+
+export const pastExperience = [
+  { value: "no-past-experience", label: "No Past Experience" },
+  { value: "tried-before", label: "Tried Before" },
 ];

@@ -1,5 +1,6 @@
 // Tabs.js
 import Section from "@vuo/components/atoms/Section";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { TabItem } from "../../atoms/TabItem";
 import styles from "./Tabs.module.scss";
@@ -20,6 +21,24 @@ export const Tabs = ({ tabs }: TabsProps) => {
     setActiveTab(tab);
   };
 
+  const tabAnimation = {
+    enter: {
+      opacity: 0,
+      y: 20,
+      transition: { duration: 0.2 },
+    },
+    center: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.2 },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.2 },
+    },
+  };
+
   return (
     <div className={styles.tabs}>
       <Section>
@@ -38,14 +57,23 @@ export const Tabs = ({ tabs }: TabsProps) => {
           })}
         </div>
       </Section>
-      {tabs.map(
-        (tab) =>
-          tab.id === activeTab && (
-            <div className={styles.tabContent} key={tab.id}>
-              {tab.content}
-            </div>
-          ),
-      )}
+      <AnimatePresence mode="wait">
+        {tabs.map(
+          (tab) =>
+            tab.id === activeTab && (
+              <motion.div
+                key={tab.id}
+                className={styles.tabContent}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                variants={tabAnimation}
+              >
+                {tab.content}
+              </motion.div>
+            ),
+        )}
+      </AnimatePresence>
     </div>
   );
 };

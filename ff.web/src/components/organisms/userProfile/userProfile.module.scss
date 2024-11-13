@@ -4,6 +4,50 @@
   width: 100%;
   gap: var(--space-16);
 
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+
+    &__row {
+      display: flex;
+      gap: var(--space-12);
+    }
+
+    &__title {
+      font-size: var(--font-size-14);
+      color: var(--adm-color-text-secondary);
+    }
+
+    &__description {
+      font-size: var(--font-size-18);
+    }
+  }
+
+  &__buttonDetails {
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__header {
+    width: 100%;
+    margin-bottom: var(--space-16);
+    gap: var(--space-16);
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      justify-content: space-between;
+    }
+  }
+
   &__section {
     gap: var(--space-12);
     align-items: start;
@@ -25,7 +69,7 @@
 
     &__buttons {
       display: flex;
-      gap: var(--space-12);
+      gap: var(--space-8);
       flex-wrap: wrap;
 
       button {
@@ -63,25 +107,12 @@
       }
     }
   }
-}
 
-.onboardingInput {
-  width: 100%;
-  padding: var(--space-8);
-  font-size: var(--font-size-18);
-  background-color: var(--surface-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-8);
-  color: var(--text-primary);
-  margin-bottom: var(--space-16);
+  &__footer {
+    width: 100%;
 
-  &:focus-visible {
-    outline-offset: 0px;
-    outline: none;
+    button {
+      width: 100%;
+    }
   }
-}
-
-.onboardingInputTextarea {
-  height: 150px;
-  resize: none;
 }
