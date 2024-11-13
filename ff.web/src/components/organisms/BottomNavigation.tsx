@@ -6,15 +6,14 @@ import { useLocation } from "react-router-dom";
 import { HomeOutlined, ShoppingCartOutlined, UserOutlined, CoffeeOutlined, QuestionOutlined } from '@ant-design/icons';
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import { useAppContext } from "@vuo/context/AppContext";
+import { isAuthenticated } from "@vuo/routeGuards/AuthenticetedRoute";
+import { observer } from 'mobx-react-lite';
 
 
-
-const BottomNavigation = () => {
+const BottomNavigation = observer(() => {
     const location = useLocation();
     const { navigateWithState } = useStackNavigator(); 
     const { pathname } = location;
-
-    const {isOnboardingComplete} = useAppContext()
 
     const hideOnRoutes = ['/'];
     const isVisible = !hideOnRoutes.includes(location.pathname);
@@ -51,13 +50,13 @@ const BottomNavigation = () => {
           key: '/flavour-flow',
           title: 'FlavourFlow',
           icon: < QuestionOutlined/>,
-          hidden: false
+          hidden: !isAuthenticated()
         },
         {
           key: '/profile',
           title: 'Profile',
           icon: <UserOutlined />,
-          hidden: !isOnboardingComplete
+          hidden: !isAuthenticated()
         }
       ];
     };
@@ -73,6 +72,6 @@ const BottomNavigation = () => {
     );
 
     return null
-  };
+  });
 
   export default BottomNavigation;

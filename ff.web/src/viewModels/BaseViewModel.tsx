@@ -14,8 +14,8 @@ interface RequestConfig {
   data?: Record<string, unknown>;
 }
 
-// const API_URL = process.env.VITE_FFAPI_BASE_URL
-const API_URL = "https://api-core-app-a2l5n.ondigitalocean.app"
+const API_URL = import.meta.env.VITE_FFAPI_BASE_URL || "http://localhost:8080"
+// const API_URL = "https://api-core-app-a2l5n.ondigitalocean.app"
 
 export class BaseViewModel {
   loading: boolean = false;
@@ -90,6 +90,10 @@ export class BaseViewModel {
 
   async patchData<T>(url: string, data: Record<string, unknown>) {
     return this.fetchData<T>({ url, method: 'PATCH', data })
+  }
+
+  async deleteData<T>(url: string) {
+    return this.fetchData<T>({ url, method: 'DELETE' });
   }
 
   async postFile(url: string, file: File) {

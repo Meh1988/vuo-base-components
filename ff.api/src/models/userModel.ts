@@ -55,13 +55,18 @@ interface ICredential {
   counter: number;
 }
 
-interface IUser extends Document {
+export interface IUser extends Document {
   activeUserGroup: mongoose.Types.ObjectId;
   username: string;
   credentials: ICredential[];
   shadowAccount: boolean;
   trackedPlayerAchievements: mongoose.Types.ObjectId[];
   channels: IUserChannel[];
+  firebaseUid?: string;
+  email?: string;
+  displayName?: string;
+  photoURL?: string;
+  authProvider?: 'firebase' | 'passkey';
 }
 
 const CredentialSchema: Schema = new Schema({
@@ -78,6 +83,11 @@ const UserSchema: Schema = new Schema<IUser>(
     shadowAccount: { type: Boolean, required: true, default: false },
     trackedPlayerAchievements: [{ type: Schema.Types.ObjectId, ref: 'PlayerAchievement', default: [] }],
     channels: [UserChannelSchema],
+    firebaseUid: { type: String, sparse: true, unique: true },
+    email: { type: String, sparse: true },
+    displayName: { type: String },
+    photoURL: { type: String },
+    authProvider: { type: String, enum: ['firebase', 'passkey'] }
   },
   {
     timestamps: true,
@@ -87,8 +97,11 @@ const UserSchema: Schema = new Schema<IUser>(
   }
 );
 
+// Add index for firebase authentication
+UserSchema.index({ firebaseUid: 1 }, { sparse: true });
+
 const User = mongoose.model<IUser>('User', UserSchema);
 
 export default User;
-export { IUser, ICredential };
+export { ICredential };
 
