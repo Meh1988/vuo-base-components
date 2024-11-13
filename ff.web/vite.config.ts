@@ -18,7 +18,7 @@ const env = loadEnv("", process.cwd());
 
 const PORT = parseInt(process.env.VITE_FFWEB_PORT as string) ?? 3000;
 const BASE_URL = process.env.VITE_FFWEB_BASE_URL ?? "/";
-const API_URL = process.env.VITE_FFAPI_BASE_URL ?? "http://localhost:6307";
+const API_URL = process.env.VITE_FFAPI_BASE_URL ?? "http://localhost:8080";
 
 export default () => {
   return defineConfig({

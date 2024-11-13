@@ -10,7 +10,12 @@ import {
 import dotenv from "dotenv";
 
 import User from "../models/userModel";
+import { IUser } from '../models/userModel';
 import ChallengeModel from "../models/challengeModel";
+import { getAuth } from 'firebase-admin/auth';
+import { Document } from 'mongoose';
+import Onboarding from "../models/userProfile";
+type UserDocument = Document & IUser;
 
 dotenv.config();
 
@@ -124,4 +129,124 @@ const logoutUser = (req: Request, res: Response) => {
   }
 };
 
-export { authenticateVerify, generateOptions, logoutUser };
+const verifyFirebaseToken = async (req: Request, res: Response) => {
+  const { token, shadowAccountId } = req.body;
+
+  try {
+    const decodedToken = await getAuth().verifyIdToken(token);
+    let user = null;
+    let profile = null;
+
+    // First check if a Firebase user already exists
+    user = await User.findOne({ firebaseUid: decodedToken.uid });
+    if (user) {
+      profile = await Onboarding.findOne({ userId: user._id });
+    }
+
+    if (shadowAccountId) {
+      // If we have a shadowAccountId but already have a Firebase user, return existing user
+      if (user) {
+        const appToken = jwt.sign(
+          { id: user._id, username: user.username },
+          process.env.VITE_JWT_SECRET!,
+          { expiresIn: "4d" }
+        );
+        return res.json({ 
+          status: "ok", 
+          token: appToken, 
+          user,
+          profile 
+        });
+      }
+
+      // No Firebase user exists, so merge with shadow account
+      const shadowUser = await User.findOne({ 
+        _id: shadowAccountId, 
+        shadowAccount: true 
+      });
+
+      if (shadowUser) {
+        // Update shadow account with Firebase info
+        shadowUser.firebaseUid = decodedToken.uid;
+        shadowUser.email = decodedToken.email;
+        shadowUser.displayName = decodedToken.name;
+        shadowUser.photoURL = decodedToken.picture;
+        shadowUser.authProvider = 'firebase';
+        shadowUser.shadowAccount = false;
+        user = await shadowUser.save();
+        profile = await Onboarding.findOne({ userId: user._id });
+      }
+    }
+
+    // If we still don't have a user, create a new one
+    if (!user) {
+      user = await User.create({
+        username: decodedToken.email || decodedToken.uid,
+        firebaseUid: decodedToken.uid,
+        email: decodedToken.email,
+        displayName: decodedToken.name,
+        photoURL: decodedToken.picture,
+        authProvider: 'firebase',
+        shadowAccount: false
+      });
+
+      // Create default profile for new user
+      profile = await Onboarding.create({
+        userId: user._id,
+        userName: decodedToken.name || decodedToken.email,
+        onboardingStatus: 'notStarted'
+      });
+    }
+
+    const appToken = jwt.sign(
+      { id: user._id, username: user.username },
+      process.env.VITE_JWT_SECRET!,
+      { expiresIn: "4d" }
+    );
+
+    res.json({ 
+      status: "ok", 
+      token: appToken, 
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      },
+      profile
+    });
+  } catch (error) {
+    console.error('Firebase token verification failed:', error);
+    res.status(401).json({ error: "Invalid token" });
+  }
+};
+
+const deleteUserAndProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.id;
+
+    // Update profile to mark as deleted user
+    await Onboarding.findOneAndUpdate(
+      { userId },
+      { 
+        $set: { 
+          userName: "Deleted User", 
+        }
+      }
+    );
+
+    // Delete the user account
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error('Error deleting user account:', error);
+    res.status(500).json({ 
+      message: 'Failed to delete account', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
+  }
+};
+
+export { authenticateVerify, generateOptions, logoutUser, verifyFirebaseToken, deleteUserAndProfile };

@@ -21,7 +21,7 @@
 # CMD ["npm", "run", "start"]
 
 # Use the official Node.js image
-FROM node:16-alpine
+FROM node:20-alpine
 
 # Create app directory
 WORKDIR /usr/src/app

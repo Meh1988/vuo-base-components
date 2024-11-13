@@ -16,6 +16,7 @@ dist-ssr
 dev-dist
 build
 *.local
+*.tar
 
 # Editor directories and files
 .vscode/*
@@ -28,7 +29,9 @@ build
 *.sln
 *.sw?
 .eslintcache
+*.tar
 
 .env.dev
 .env
 *storybook.log
+backup.tar

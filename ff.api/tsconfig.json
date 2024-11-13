@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "outDir": "./dist"
   },
-  "include": ["src/**/*", "setup.ts"],
+  "include": ["src/**/*", "setup.ts", "../ff.web/src/routeGuards"],
   "files": ["./src/types/customTypes.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
