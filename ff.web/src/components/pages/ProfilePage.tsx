@@ -9,8 +9,6 @@ import { Tabs } from "../molecules/Tabs";
 import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserProfile } from "../organisms/userProfile";
 import styles from "./ProfilePage.module.scss";
-// import { signInWithGoogle, signInWithFacebook, logOut } from '../../auth/auth';
-import { authStore } from '../../stores/AuthStore';
 import LoginComponent from "../organisms/LoginComponent";
 import LoginViewModel from "../..//viewModels/LoginViewModel";
 
@@ -63,19 +61,7 @@ const ProfilePage = () => {
           Delete
         </Button>
       </>
-    );
-  };
-  
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     const user = await signInWithGoogle();
-  //     console.log('Logged in user:', user);
-  //   } catch (error) {
-  //     console.error('Login failed:', error);
-  //   }
-  // };
-
-  //TODO fix this creappy UI
+    )
 
   return (
     <Page>
@@ -160,7 +146,7 @@ const ProfilePage = () => {
         </Modal>
       )}
     </Page>
-  );
-};
+  )
+}
 
 export default ProfilePage;
