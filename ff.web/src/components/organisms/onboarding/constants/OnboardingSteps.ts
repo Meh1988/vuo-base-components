@@ -67,3 +67,8 @@ export const cookingSkills = [
     description: '"I\'m comfortable cooking any recipe"',
   },
 ];
+
+export const pastExperience = [
+  { value: "no-past-experience", label: "No Past Experience" },
+  { value: "tried-before", label: "Tried Before" },
+];

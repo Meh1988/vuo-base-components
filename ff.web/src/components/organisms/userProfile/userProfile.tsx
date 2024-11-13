@@ -12,6 +12,12 @@ import { FormData } from "@models/Onboarding";
 
 import { cuisines } from "@vuo/constants/Onboarding";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  cookingSkills,
+  dietsPlan,
+  pantry,
+  pastExperience,
+} from "../onboarding/constants/OnboardingSteps";
 import styles from "./userProfile.module.scss";
 
 interface UserProfileProps {
@@ -111,11 +117,23 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
               <div className={styles.userPreferences__details__row}>
                 <SectionPreference
                   label="Diet Plan"
-                  value={profileData?.dietPlan}
+                  value={
+                    dietsPlan.find(
+                      (dietsPlanItem) =>
+                        dietsPlanItem.name.toLowerCase() ===
+                        profileData?.dietPlan?.toLowerCase(),
+                    )?.name || ""
+                  }
                 />
                 <SectionPreference
                   label="Past Experience"
-                  value={profileData?.pastExperience}
+                  value={
+                    pastExperience.find(
+                      (pastExperienceItem) =>
+                        pastExperienceItem.value ===
+                        profileData?.pastExperience,
+                    )?.label || ""
+                  }
                 />
               </div>
 
@@ -123,14 +141,23 @@ export const UserProfile = ({ profileData }: UserProfileProps) => {
                 <SectionPreference label="Format" value={profileData?.format} />
                 <SectionPreference
                   label="Your pantry"
-                  value={profileData?.pantry}
+                  value={
+                    pantry.find(
+                      (pantryItem) => pantryItem.value === profileData?.pantry,
+                    )?.label || ""
+                  }
                 />
               </div>
 
               <div className={styles.userPreferences__details__row}>
                 <SectionPreference
                   label="Cooking skills"
-                  value={profileData?.cookingSkills}
+                  value={
+                    cookingSkills.find(
+                      (cookingSkillsItem) =>
+                        cookingSkillsItem.value === profileData?.cookingSkills,
+                    )?.label || ""
+                  }
                 />
               </div>
             </div>
