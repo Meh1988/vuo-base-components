@@ -11,8 +11,8 @@ import {
 } from "@vuo/models/PlayerQuest";
 import Page from "@vuo/templates/Page";
 import QuestPlayViewModel from "@vuo/viewModels/QuestPlayViewModel";
-import doneSoundFile from '@assets/sounds/done2.mp3';
-import challengeDoneSoundFile from '@assets/sounds/challenge_done.mp3';
+import doneSoundFile from '@assets/sounds/card_slide.mp3';
+import challengeDoneSoundFile from '@assets/sounds/card_shuffle_ding.mp3';
 import questDoneSoundFile from '@assets/sounds/mission_completed.mp3'
 
 import QuestTask from "../organisms/QuestTask";
@@ -49,7 +49,7 @@ const QuestPlay = observer(() => {
     });
 
     if (viewModel.playerQuest?.state === PlayerQuestState.completed) {
-      // questDoneSound.play()
+      questDoneSound.play()
       navigate(`/home/quests/${viewModel.playerQuest!.id}/outro`);
     }
 
@@ -90,7 +90,7 @@ const QuestPlay = observer(() => {
 
   const onStepDone = (step: PlayerQuestStep) => {
     viewModel.updateStepState(step.id, StepState.completed);
-    // doneSounds.play();
+    doneSounds.play();
   };
 
   const onStepClaimed = (step: PlayerQuestStep) => {
@@ -102,8 +102,23 @@ const QuestPlay = observer(() => {
   }
 
   const onSubStepDone = (stepId: string) => {
-    viewModel.updateSubStepState(stepId)
-    challengeDoneSound.play()
+    const currentStep = viewModel.playerQuest?.recipe.steps.find(step => 
+      step.subSteps?.some(ss => ss.id === stepId)
+    );
+    
+    // Check if this is the last uncompleted substep
+    const isAllSubstepsCompleted = currentStep?.subSteps?.every(
+      ss => ss.id === stepId || ss.state === StepState.completed || ss.state === StepState.skipped
+    );
+
+    viewModel.updateSubStepState(stepId);
+
+    // Play different sounds based on completion status
+    if (isAllSubstepsCompleted) {
+      challengeDoneSound.play();
+    } else {
+      doneSounds.play();
+    }
   }
 
   const onClose = () => {
