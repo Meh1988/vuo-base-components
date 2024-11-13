@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import type { Unit, ProgressionPathQuest } from '@vuo/models/ProgressionPathTypes';
 
 import styles from './ProgressionPath.module.scss';
@@ -20,7 +20,7 @@ export default function ProgressionPath({ units, onQuestClick, completedQuestIds
 
     const isUnitCompleted = (unit: Unit) => unit.quests.every(quest => completedQuestIds.includes(quest.id));
 
-    const renderLevel = (unit: Unit, quest: ProgressionPathQuest, index: number, isParentUnitCompleted: boolean) => {
+    const renderLevel = useCallback((unit: Unit, quest: ProgressionPathQuest, index: number, isParentUnitCompleted: boolean) => {
         const isPlayable = index === 0 || completedQuestIds.includes(
             unit.quests[index - 1].id
         );
@@ -66,8 +66,6 @@ export default function ProgressionPath({ units, onQuestClick, completedQuestIds
                             switch (quest.type) {
                                 case 'recipe':
                                     return '🍳';
-                                case 'minigame':
-                                    return '🎮';
                                 case 'minigame-virtual-sear':
                                     return <VirtualSearIcon />;
                                 case 'minigame-cut-guessr':
@@ -87,7 +85,7 @@ export default function ProgressionPath({ units, onQuestClick, completedQuestIds
 
             </div>
         );
-    };
+    }, [completedQuestIds, onQuestClick]);
 
     const renderUnit = (unit: Unit) => (
         <div key={unit.id} className={styles.progressionPathUnit}>

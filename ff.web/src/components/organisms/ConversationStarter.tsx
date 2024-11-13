@@ -10,7 +10,7 @@ interface CardData {
     text: string;
 }
 
-const ConversationStarter: React.FC<{ category?: string, allowReplay: boolean, onClose?: () => void }> = observer(({ category, allowReplay, onClose }) => {
+const ConversationStarter: React.FC<{ category?: string, allowReplay: boolean, allowClose: boolean, onClose?: () => void }> = observer(({ category, allowReplay, allowClose, onClose }) => {
     const [gameState, setGameState] = useState<'initial' | 'cardSelection' | 'finalSelection' | 'discussion'>('initial');
     const [selectedCards, setSelectedCards] = useState<CardData[]>([]);
     const [currentCard, setCurrentCard] = useState<CardData | null>(null);
@@ -122,7 +122,7 @@ const ConversationStarter: React.FC<{ category?: string, allowReplay: boolean, o
                             <Button onClick={resetGame}>
                                 Play Again
                             </Button>}
-                            {onClose && <Button onClick={onClose}>
+                            {allowClose && onClose && <Button onClick={onClose}>
                                 Close
                             </Button>}
                         </div>

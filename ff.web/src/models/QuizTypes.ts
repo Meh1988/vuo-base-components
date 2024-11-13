@@ -1,15 +1,21 @@
 export interface QuizQuestionData {
   id: string;
-  type: string;
+  type: QuizQuestionType;
   question: string;
   options?: string[];
   min?: number;
   max?: number;
   imageUrl?: string;
-  correctAnswer: Answer;
+  correctAnswer: string[];
   feedbackTitle?: string[];
-  feedbackMessage?: string | string[];
+  feedbackMessage?: string[];
 }
+
+export type QuizQuestionType = 
+    | 'slider'
+    | 'single-choice' 
+    | 'multiple-choice'
+    | 'text-input';
 
 export interface QuizData {
   id: string;
@@ -18,9 +24,7 @@ export interface QuizData {
 
 }
 
-export type Answer = string | number | string[] | number[];
-
 export interface UserAnswer {
   questionId: string;
-  answer: Answer;
+  answer: string[];
 }

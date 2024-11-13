@@ -17,7 +17,6 @@ export interface Unit {
 
 export type ProgressionPathQuestType = 
     | 'recipe' 
-    | 'minigame'
     | 'minigame-virtual-sear'
     | 'minigame-cut-guessr'
     | 'minigame-conversation-starter'
