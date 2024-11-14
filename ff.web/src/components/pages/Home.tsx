@@ -118,10 +118,10 @@ const Home = observer(() => {
                                 </>
                             )
                             : (
-                                <div>
+                                <>
                                     <h2>Start onboarding here</h2>
                                     <Button onClick={goToOnboading}>Start</Button>
-                                </div>
+                                </>
                             )
                     }
                 </Section>

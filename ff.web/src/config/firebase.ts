@@ -1,13 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
+console.log("secrets from firebase.ts", import.meta.env.VITE_FIREBASE_WEB_API_KEY);
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDEY5Y4PAOGCaT_MxtCUWjf-ueT0Qq4Yxs",    // Your Web API Key
-  authDomain: "fixfoodauth.firebaseapp.com",             // Project ID + ".firebaseapp.com"
-  projectId: "fixfoodauth",                              // Your Project ID
-  storageBucket: "fixfoodauth.appspot.com",             // Project ID + ".appspot.com"
-  messagingSenderId: "670789600397",                     // Your Project number
-  appId: "1:670789600397:web:XXXXX"    
+  apiKey: import.meta.env.VITE_FIREBASE_WEB_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);

@@ -33,7 +33,7 @@ interface AuthenticationVerifiedJSON {
 }
 
 export default class LoginViewModel extends BaseViewModel {
-  private sessionDataStore = sessionDataStore;
+  sessionDataStore = sessionDataStore;
   // onboardingComplete: boolean;
   isLoginModalOpen = false;
 
@@ -346,11 +346,6 @@ export default class LoginViewModel extends BaseViewModel {
   toggleLoginModal() {
     runInAction(() => {
       this.isLoginModalOpen = !this.isLoginModalOpen;
-      // sessionDataStore.token = undefined;
-      // sessionDataStore.user = undefined;
-      // sessionDataStore.shadowAccount = false;
-      // sessionDataStore.username = "";
-      // sessionDataStore.profile = undefined;
     });
   }
 }

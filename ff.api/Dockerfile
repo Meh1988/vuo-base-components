@@ -21,6 +21,11 @@
 # CMD ["npm", "run", "start"]
 
 # Use the official Node.js image
+
+ARG FIREBASE_PROJECT_ID
+ARG FIREBASE_PRIVATE_KEY
+ARG FIREBASE_CLIENT_EMAIL
+
 FROM node:20-alpine
 
 # Create app directory

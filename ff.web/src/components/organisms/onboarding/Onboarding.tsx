@@ -2,14 +2,13 @@ import {
   allergies,
   commonDislikes,
   cuisines,
-  initialOnboardingData,
+
   steps,
 } from "@constants/Onboarding";
 
 import { Modal } from "@vuo/molecules/Modal";
 import { observer } from "mobx-react-lite";
 
-import { FormData, OnboardingStatus } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
 import ProgressBar from "@vuo/atoms/ProgressBar";
 import Slider from "@vuo/atoms/Slider";
@@ -33,7 +32,10 @@ const OnboardingFlow = observer(() => {
   const [viewModel] = useState(() => new OnboardingViewModel());
 
   useEffect(() => {
-    const sessionData = JSON.parse(localStorage.getItem("SessionDataStore"))
+    const sessionDataString = localStorage.getItem("SessionDataStore");
+    if (!sessionDataString) return;
+    
+    const sessionData = JSON.parse(sessionDataString);
     if(sessionData?.user?.id) {
       viewModel.handleInputChange({
         target: { name: 'userId', value: sessionData.user.id }
@@ -217,7 +219,7 @@ const OnboardingFlow = observer(() => {
               type="number"
               name="age"
               value={viewModel.formData.age}
-              onChange={viewModel.handleInputChange}
+              onChange={(e) => viewModel.handleInputChange(e as unknown as React.ChangeEvent<HTMLInputElement>)}
               placeholder="Enter your age"
               className={styles.onboardingInput}
             />
@@ -235,7 +237,7 @@ const OnboardingFlow = observer(() => {
               type="number"
               name="height"
               value={viewModel.formData.height}
-              onChange={viewModel.handleInputChange}
+              onChange={(e) => viewModel.handleInputChange(e as unknown as React.ChangeEvent<HTMLInputElement>)}
               placeholder="Enter your height in cm"
               className={styles.onboardingInput}
             />
@@ -299,7 +301,7 @@ const OnboardingFlow = observer(() => {
               "Prefer moderate changes",
               viewModel.formData.motivation === "willing-to-give-it-a-go",
               (value) =>
-                viewModel.setFormData((prev) => ({ ...prev, motivation: value })),
+                viewModel.handleInputChange({ target: { name: 'motivation', value } } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "small-changes-are-best",
@@ -420,7 +422,7 @@ const OnboardingFlow = observer(() => {
                   viewModel.handleInputChange({
                     target: { 
                       name: 'speed', 
-                      value: speedMap[value[0] - 1] 
+                      value: speedMap[value - 1] 
                     }
                   } as React.ChangeEvent<HTMLInputElement>);
                 }}
