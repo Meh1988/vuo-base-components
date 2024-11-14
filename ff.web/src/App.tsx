@@ -21,8 +21,54 @@ import ShoppingCart from "./components/pages/ShoppingCart";
 import { ThemeProvider } from "./context/ThemeContext";
 import GamePlayerPage from './components/pages/GamePlayerPage';
 import AuthenticatedRoute from "./routeGuards/AuthenticetedRoute";
+import { useEffect } from "react";
+import { getAnalytics } from "firebase/analytics";
+import { app } from './config/firebase';
+import { logEvent } from "firebase/analytics";
+
+
+// Initialize Firebase Analytics
+const analytics = getAnalytics(app);
+
+// Get GTM ID from env
+const GTM_ID = import.meta.env.VITE_GTM_ID;
+
+function initializeGTM() {
+  if (!GTM_ID) {
+    console.warn('GTM ID not found in environment variables');
+    return;
+  }
+
+  // Add GTM Script
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+  document.head.appendChild(script);
+
+  // Add noscript iframe for GTM
+  const noscript = document.createElement('noscript');
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.googletagmanager.com/ns.html?id=${GTM_ID}`;
+  iframe.height = "0";
+  iframe.width = "0";
+  iframe.style.display = "none";
+  iframe.style.visibility = "hidden";
+  noscript.appendChild(iframe);
+  document.body.insertBefore(noscript, document.body.firstChild);
+}
+
+
 
 function App() {
+  useEffect(() => {
+    // Initialize GTM for ad tracking
+    initializeGTM();
+
+    // Log initial page view in Firebase Analytics
+    logEvent(analytics, 'page_view');
+
+  }, []);
+
   return (
     <ThemeProvider>
       <SafeArea position="top" />
