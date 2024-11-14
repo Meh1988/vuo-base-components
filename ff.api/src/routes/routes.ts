@@ -29,6 +29,7 @@ import {
 } from "../controllers/playerAchievementsController";
 import { getAchievements } from "../controllers/AchievementsController";
 import authMiddleware from "../middleware/authMiddleware";
+import errorHandler from "../middleware/errorHandler";
 import {
   getCurrentPlayerProfile,
   updateCurrentPlayerProfile,
@@ -75,7 +76,16 @@ import {
   createProgressionPath,
   generateProgressionPath,
   getAllProgressionPaths,
+  getProgressionPathById,
+  updateProgressionPath,
 } from "../controllers/progressionPathController";
+
+import {
+  createPlayerProgressionPath,
+  getPlayerProgressionPathById,
+  getPlayerProgressionPaths,
+  updatePlayerProgressionPath,
+} from "../controllers/playerProgressionPathController";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
@@ -186,16 +196,51 @@ router.patch("/profile/update", updateUserProfile);
 router.delete("/profile/delete", deleteUserProfile);
 
 //PrepPal routes
-router.post("/prepPal/stepBreakdown", getStepBreakdown);
+router.post("/prepPal/stepBreakdown", errorHandler, getStepBreakdown);
 
 //Challenge routes
-router.post("/challenges/create", createChallenge);
-router.get("/challenges/challenge/:id", getChallengeById);
-router.post("/challenges/generate", generateChallenge);
+router.post("/challenges/create", errorHandler, createChallenge);
+router.get("/challenges/challenge/:id", errorHandler, getChallengeById);
+router.post("/challenges/generate", errorHandler, generateChallenge);
 
 //Progression Path routes
-router.post("/progressionPaths/create", createProgressionPath);
-router.post("/progressionPaths/generate", generateProgressionPath);
-router.get("/progressionPaths", getAllProgressionPaths);
+router.post("/progressionPaths/create", errorHandler, createProgressionPath);
+router.post(
+  "/progressionPaths/generate",
+  errorHandler,
+  generateProgressionPath
+);
+router.get("/progressionPaths", errorHandler, getAllProgressionPaths);
+router.get(
+  "/progressionPaths/progressionPath/:id",
+  errorHandler,
+  getProgressionPathById
+);
+router.patch(
+  "/progressionPaths/progressionPath/:id",
+  errorHandler,
+  updateProgressionPath
+);
+
+//Player Progression Path routes
+router.post(
+  "/playerProgressionPaths/create",
+  errorHandler,
+  createPlayerProgressionPath
+);
+router.post(
+  "/playerProgressionPaths/byUser",
+  errorHandler,
+  getPlayerProgressionPaths
+);
+router.get(
+  "/playerProgressionPaths/playerProgressionPath/:id",
+  getPlayerProgressionPathById
+);
+router.patch(
+  "/playerProgressionPaths/playerProgressionPath/:id",
+  errorHandler,
+  updatePlayerProgressionPath
+);
 
 export default router;

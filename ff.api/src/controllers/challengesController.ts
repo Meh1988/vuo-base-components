@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import ChallengeModel from "../models/challengeModel";
 import { ProgressionPathModel } from "../models/progressionPathModel";
 import mongoose from "mongoose";
@@ -7,7 +7,11 @@ import { Quest } from "../models/progressionPathModel";
 import { sendOpenAIRequest } from "../externalAPI/openAI";
 import OpenAI from "openai";
 
-export const createChallenge = async (req: Request, res: Response) => {
+export const createChallenge = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const challenge = new ChallengeModel(req.body);
   // challenge.uuid = crypto.randomUUID(); // TODO: remove this
   try {
@@ -18,12 +22,16 @@ export const createChallenge = async (req: Request, res: Response) => {
       console.log(error);
       res.status(400).json({ message: error.message });
     } else {
-      res.status(500).json({ message: "Server error", error });
+      next(error);
     }
   }
 };
 
-export const getChallengeById = async (req: Request, res: Response) => {
+export const getChallengeById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const id = req.params.id;
   try {
     const challenge = await ChallengeModel.findById(id);
@@ -32,16 +40,18 @@ export const getChallengeById = async (req: Request, res: Response) => {
     }
     res.json(challenge);
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    next(error);
   }
 };
 
-const generateChallengeFunction = async (
+export const generateChallengeFunction = async (
   progressionPathTitle: string,
   progressionPathDescription: string,
   quest: Quest
 ) => {
   console.log("GENERATION STARTED");
+  console.log("QUEST:", quest);
+  console.log("QUEST MINIGAME ID:", quest.minigameId);
   if (quest.minigameId === "cut-guessr") {
     const messages = [
       {
@@ -257,7 +267,7 @@ const generateChallengeFunction = async (
     const messages = [
       {
         role: "system",
-        content: `You are a helpful assistant that generates a set of topics to discuss based on the provided context. The context is a progression path title and description, as well as the topics set title and description. The topics must be relevant to the progression path and the topic.`,
+        content: `You are a helpful assistant that generates a set of topics for a group of peopleto discuss based on the provided context. The context is a progression path title and description, as well as the topics set title and description. The topics must be relevant to the progression path and the topic.`,
       },
       {
         role: "assistant",
@@ -293,7 +303,7 @@ const generateChallengeFunction = async (
       },
       {
         role: "user",
-        content: `Generate a set of topics to discuss with the following set title and description: ${quest.title}, ${quest.description}. The topics are for the following progression path: ${progressionPathTitle}, ${progressionPathDescription}
+        content: `Generate a set of topics for a group of people to discuss with the following set title and description: ${quest.title}, ${quest.description}. The topics are for the following progression path: ${progressionPathTitle}, ${progressionPathDescription}
         The response should be in the following format: {
           "conversationStarterData": [
             {
@@ -303,6 +313,7 @@ const generateChallengeFunction = async (
           ]
         }
         The set of topics should be relevant to the progression path and the set of topics.
+        Keep the topics friendly and engaging.
         The number of topics should be 10.
         The category of a topic must be selected from the following list: Childhood, History, Travel, Skill, Advice, Fiction`,
       },
@@ -338,13 +349,21 @@ const generateChallengeFunction = async (
     await newChallenge.save();
     console.log("CHALLENGE ID AT FUNCTION:", newChallenge._id);
     return newChallenge;
+  } else if (
+    quest.minigameId === "ingredient-match" ||
+    quest.minigameId === "virtual-sear"
+  ) {
+    return "pass";
   } else {
     throw new Error("Invalid minigame ID");
   }
 };
 
-export const generateChallenge = async (req: Request, res: Response) => {
-  console.log("REQUEST RECEIVED");
+export const generateChallenge = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { progressionPathId, unitNumber, questNumber } = req.body;
     const progressionPath = await ProgressionPathModel.findById(
@@ -368,6 +387,8 @@ export const generateChallenge = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid quest number" });
     }
 
+    //TODO: Consider using Promise.all to generate all challenges at once to reduce generation time
+
     for (const number of questNumber) {
       if (isNaN(number) || number < 0 || number >= unit.quests.length) {
         return res
@@ -382,11 +403,15 @@ export const generateChallenge = async (req: Request, res: Response) => {
         quest
       );
 
-      if (!challenge || Array.isArray(challenge)) {
+      if (!challenge) {
         return res.status(500).json({
           message: "Failed to generate challenge",
           questNumber: number,
         });
+      }
+
+      if (challenge === "pass") {
+        continue;
       }
 
       console.log("CHALLENGE ID AT ENDPOINT:", challenge._id);
@@ -398,9 +423,6 @@ export const generateChallenge = async (req: Request, res: Response) => {
     res.json(progressionPath);
   } catch (error) {
     console.error("Generate challenge error:", error);
-    res.status(500).json({
-      message: "Server error",
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
+    next(error);
   }
 };

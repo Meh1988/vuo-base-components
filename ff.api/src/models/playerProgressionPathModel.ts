@@ -1,9 +1,10 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface Quest {
-  id: mongoose.Schema.Types.ObjectId;
   type: string;
-  minigameId: string;
+  minigameId?: string;
+  minigameData?: mongoose.Types.ObjectId;
+  recipeId?: mongoose.Types.ObjectId;
   title: string;
   description: string;
 }
@@ -30,13 +31,24 @@ export interface PlayerProgressionPathDocument extends Document {
   title: string;
   description: string;
   units: Unit[];
-  progress: Progress[];
+  official: boolean;
+  user: mongoose.Types.ObjectId;
+  progress: Progress;
 }
 
 const QuestSchema = new Schema<Quest>({
-  id: { type: mongoose.Schema.Types.ObjectId, required: true },
   type: { type: String, required: true },
-  minigameId: { type: String, required: true },
+  minigameId: { type: String, required: false },
+  minigameData: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Challenge",
+    required: false,
+  },
+  recipeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Recipe",
+    required: false,
+  },
   title: { type: String, required: true },
   description: { type: String, required: true },
 });
@@ -53,7 +65,9 @@ const PlayerProgressionPathSchema = new Schema<PlayerProgressionPathDocument>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   units: { type: [UnitSchema], required: true },
-  progress: { type: [ProgressSchema], required: true },
+  official: { type: Boolean, required: true, default: false },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  progress: { type: ProgressSchema, required: true },
 });
 
 export const PlayerProgressionPathModel =

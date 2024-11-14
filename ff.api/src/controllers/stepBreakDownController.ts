@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Recipe from "../models/recipeModel";
 import { sendOpenAIRequest } from "../externalAPI/openAI";
 import mongoose from "mongoose";
@@ -7,8 +7,13 @@ import OpenAI from "openai";
 /** Get the step breakdown for a recipe step
  * @param req: The request body containing the recipeId and stepNo
  * @param res: The response to send to the client
+ * @param next: The next function to pass the error to error handler middleware
  */
-export async function getStepBreakdown(req: Request, res: Response) {
+export async function getStepBreakdown(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const { recipeId, stepNo } = req.body;
   // Specific response format for step breakdown
   const response_format = {
@@ -60,10 +65,8 @@ export async function getStepBreakdown(req: Request, res: Response) {
       return res
         .status(400)
         .json({ message: "Validation Error", details: error.errors });
-    } else if (error instanceof Error) {
-      return res.status(500).json({ message: error.message, error: error });
     } else {
-      return res.status(500).json({ message: "Server error", error: error });
+      next(error);
     }
   }
 }
