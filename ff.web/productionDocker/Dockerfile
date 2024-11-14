@@ -13,9 +13,13 @@ FROM node:20.12-alpine3.18 AS build
 # Set the working directory
 WORKDIR /app
 
+# Add libc6-compat and update npm
+RUN apk add --no-cache libc6-compat
+RUN npm install -g npm@latest
+
 # Install dependencies and build the app
 COPY package*.json ./
-RUN npm install
+RUN npm install --platform=linuxmusl --arch=x64
 COPY . .
 RUN npm run build
 
