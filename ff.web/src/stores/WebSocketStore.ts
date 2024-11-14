@@ -18,6 +18,7 @@ export interface ChannelUser {
   role: ChannelUserRole;
   username: string;
   currentUser: boolean;
+  photoURL: string;
 }
 
 class WebSocketStore {
