@@ -29,7 +29,11 @@ dotenv.config();
 // Define CORS configuration
 const corsConfig = { //TODO ENABLE THIS ASAP
   // origin: `https://${process.env.VITE_PASSKEY_RPID!}`,
-  origin: ['http://localhost:7701', 'https://goldfish-app-xz6p5.ondigitalocean.app/'],
+  origin: [
+    'http://localhost:7701',
+    'https://goldfish-app-xz6p5.ondigitalocean.app',
+    'https://api-core-app-a2l5n.ondigitalocean.app'
+  ],
   methods: ['GET', 'POST', 'PUT', "PATCH", 'DELETE', 'OPTIONS'],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
@@ -66,8 +70,7 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
 const app = express();
 
 // Use CORS middleware with the defined configuration
-// app.use(cors(corsConfig));
-app.use(cors(corsConfig)); //TODO FIX CORS
+app.use(cors(corsConfig)); 
 
 // Handle OPTIONS requests globally
 app.options('*', cors(corsConfig));
