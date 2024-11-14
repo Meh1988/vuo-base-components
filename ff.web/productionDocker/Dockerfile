@@ -1,3 +1,4 @@
+# Declare ARGs
 ARG VITE_FFAPI_BASE_URL
 ARG VITE_FIREBASE_WEB_API_KEY
 ARG VITE_FIREBASE_AUTH_DOMAIN
@@ -10,22 +11,33 @@ ARG VITE_GTM_ID
 
 FROM node:20.12-alpine3.18 AS build
 
+# Convert ARGs to ENVs
+ENV VITE_FFAPI_BASE_URL=$VITE_FFAPI_BASE_URL
+ENV VITE_FIREBASE_WEB_API_KEY=$VITE_FIREBASE_WEB_API_KEY
+ENV VITE_FIREBASE_AUTH_DOMAIN=$VITE_FIREBASE_AUTH_DOMAIN
+ENV VITE_FIREBASE_PROJECT_ID=$VITE_FIREBASE_PROJECT_ID
+ENV VITE_FIREBASE_STORAGE_BUCKET=$VITE_FIREBASE_STORAGE_BUCKET
+ENV VITE_FIREBASE_MESSAGING_SENDER_ID=$VITE_FIREBASE_MESSAGING_SENDER_ID
+ENV VITE_FIREBASE_APP_ID=$VITE_FIREBASE_APP_ID
+ENV VITE_FIREBASE_MEASUREMENT_ID=$VITE_FIREBASE_MEASUREMENT_ID
+ENV VITE_GTM_ID=$VITE_GTM_ID
+
 # Set the working directory
 WORKDIR /app
+
+# Debug environment variables
+RUN echo "Firebase API Key: $VITE_FIREBASE_WEB_API_KEY"
 
 # Install dependencies and build the app
 COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-RUN echo "Firebase API Key: $VITE_FIREBASE_WEB_API_KEY"
+
 # Use Nginx to serve the static files
 FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 8080
 EXPOSE 8080
-
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
