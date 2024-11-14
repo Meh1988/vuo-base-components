@@ -84,7 +84,7 @@ export default class OnboardingViewModel extends BaseViewModel {
     this.progress = (completedSteps / steps.length) * 100;
   }
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     runInAction(() => {
       this.formData = { ...this.formData, [name]: value };

@@ -14,7 +14,7 @@ const LoginModal = observer(({ isOpen, onClose }: LoginModalProps) => {
         isOpen={isOpen}
         onClose={onClose}
         title="Login or Register"
-        footer={
+        footerContent={
           <Button variant="small" color="tertiary" onClick={onClose}>
             Close
           </Button>

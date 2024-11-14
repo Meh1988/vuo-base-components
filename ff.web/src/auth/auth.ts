@@ -2,7 +2,6 @@ import { auth } from '../config/firebase';
 import { 
   GoogleAuthProvider, 
   signInWithPopup,
-  FacebookAuthProvider,
   signOut,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -109,15 +108,15 @@ export const linkShadowAccountWithGoogle = async (shadowAccountId: string) => {
   }
 };
 
-const linkAccount = async () => {
-  try {
-    const result = await linkShadowAccountWithGoogle(sessionDataStore.user.id);
-    if (result.status === "ok") {
-      sessionDataStore.token = result.token;
-      sessionDataStore.user = result.user;
-      sessionDataStore.shadowAccount = false;
-    }
-  } catch (error) {
-    console.error('Failed to link account:', error);
-  }
-}
+// const linkAccount = async () => {
+//   try {
+//     const result = await linkShadowAccountWithGoogle(sessionDataStore.user.id);
+//     if (result.status === "ok") {
+//       sessionDataStore.token = result.token;
+//       sessionDataStore.user = result.user;
+//       sessionDataStore.shadowAccount = false;
+//     }
+//   } catch (error) {
+//     console.error('Failed to link account:', error);
+//   }
+// }
