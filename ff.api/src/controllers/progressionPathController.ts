@@ -1,15 +1,28 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ProgressionPathModel } from "../models/progressionPathModel";
 import { sendOpenAIRequest } from "../externalAPI/openAI";
+import { generateChallengeFunction } from "./challengesController";
 import OpenAI from "openai";
 import mongoose from "mongoose";
 
-export const getAllProgressionPaths = async (req: Request, res: Response) => {
-  const progressionPaths = await ProgressionPathModel.find();
-  res.json(progressionPaths);
+export const getAllProgressionPaths = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const progressionPaths = await ProgressionPathModel.find();
+    res.json(progressionPaths);
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const createProgressionPath = async (req: Request, res: Response) => {
+export const createProgressionPath = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { title, description, units } = req.body;
   if (!title || !description || !units) {
     return res.status(400).json({ message: "Missing required fields" });
@@ -28,12 +41,16 @@ export const createProgressionPath = async (req: Request, res: Response) => {
     } else if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
     } else {
-      return res.status(500).json({ message: "Server error", error });
+      next(error);
     }
   }
 };
 
-export const generateProgressionPath = async (req: Request, res: Response) => {
+export const generateProgressionPath = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const prompt = req.body.prompt;
   if (!prompt) {
     return res.status(400).json({ message: "Missing required fields" });
@@ -297,6 +314,29 @@ export const generateProgressionPath = async (req: Request, res: Response) => {
   try {
     const response = await sendOpenAIRequest(messages, response_format);
     const progressionPath = new ProgressionPathModel(response);
+    console.log("PROGRESSION PATH QUESTS:", progressionPath.units[0].quests);
+    for (let i = 0; i < 2; i++) {
+      const quest = progressionPath.units[0].quests[i];
+      const challenge = await generateChallengeFunction(
+        progressionPath.title,
+        progressionPath.description,
+        quest
+      );
+
+      if (!challenge) {
+        return res.status(500).json({
+          message: "Failed to generate challenge",
+          questNumber: i,
+        });
+      }
+
+      if (challenge === "pass") {
+        continue;
+      }
+
+      progressionPath.units[0].quests[i].minigameData =
+        new mongoose.Types.ObjectId(challenge._id);
+    }
     await progressionPath.save();
     res.json(progressionPath);
   } catch (error) {
@@ -305,7 +345,58 @@ export const generateProgressionPath = async (req: Request, res: Response) => {
     } else if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
     } else {
-      return res.status(500).json({ message: "Server error", error });
+      next(error);
+    }
+  }
+};
+
+export const getProgressionPathById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const progressionPathId = req.params.id;
+    const progressionPath = await ProgressionPathModel.findById(
+      progressionPathId
+    );
+    if (!progressionPath) {
+      return res.status(404).json({ message: "Progression path not found" });
+    }
+    res.json(progressionPath);
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ message: "Invalid progression path ID" });
+    } else {
+      next(error);
+    }
+  }
+};
+
+export const updateProgressionPath = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const progressionPathId = req.params.id;
+    const updateData = req.body;
+    const updatedProgressionPath = await ProgressionPathModel.findByIdAndUpdate(
+      progressionPathId,
+      updateData,
+      {
+        new: true,
+      }
+    );
+    if (!updatedProgressionPath) {
+      return res.status(404).json({ message: "Progression path not found" });
+    }
+    res.json(updatedProgressionPath);
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ message: "Invalid progression path ID" });
+    } else {
+      next(error);
     }
   }
 };

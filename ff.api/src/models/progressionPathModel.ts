@@ -21,6 +21,7 @@ export interface ProgressionPathDocument extends Document {
   title: string;
   description: string;
   units: Unit[];
+  official: boolean;
 }
 
 const QuestSchema = new Schema<Quest>({
@@ -52,6 +53,7 @@ const ProgressionPathSchema = new Schema<ProgressionPathDocument>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   units: { type: [UnitSchema], required: true },
+  official: { type: Boolean, required: true, default: false },
 });
 
 export const ProgressionPathModel = mongoose.model<ProgressionPathDocument>(
