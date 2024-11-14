@@ -5,7 +5,7 @@ import { initialOnboardingData } from "@constants/Onboarding";
 import { steps } from "@constants/Onboarding";
 
 export default class OnboardingViewModel extends BaseViewModel {
-  formData = initialOnboardingData;
+  formData: Record<string, any> = initialOnboardingData;
   currentStep = 0;
   progress = 0;
   isExitOnboarding = false;
@@ -31,7 +31,7 @@ export default class OnboardingViewModel extends BaseViewModel {
       calculateProgress: action,
       handleFinish: action,
       currentStepData: computed,
-      hasFormDataChanged: action,
+      hasFormDataChanged: computed,
 
       onboardingComplete: observable,
       setIsOnboardingComplete: action,
@@ -54,7 +54,7 @@ export default class OnboardingViewModel extends BaseViewModel {
     return steps[this.currentStep];
   }
 
-  private hasFormDataChanged = (): boolean => {
+  get hasFormDataChanged(): boolean {
     return JSON.stringify(this.formData) !== JSON.stringify(initialOnboardingData);
   };
 
@@ -116,7 +116,7 @@ export default class OnboardingViewModel extends BaseViewModel {
   };
 
   handleNext = async () => {
-    if (this.hasFormDataChanged()) {
+    if (this.hasFormDataChanged) {
       const userId = this.formData.userId;
       try {
         await this.fetchData({

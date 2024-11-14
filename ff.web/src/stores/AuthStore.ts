@@ -27,7 +27,7 @@ class AuthStore {
       await signInWithGoogle();
     } catch (error) {
       runInAction(() => {
-        this.error = error.message;
+        this.error = error instanceof Error ? error.message : 'An unknown error occurred';
       });
     } finally {
       runInAction(() => {
@@ -43,7 +43,7 @@ class AuthStore {
       await logOut();
     } catch (error) {
       runInAction(() => {
-        this.error = error.message;
+        this.error = error instanceof Error ? error.message : 'An unknown error occurred';
       });
     } finally {
       runInAction(() => {

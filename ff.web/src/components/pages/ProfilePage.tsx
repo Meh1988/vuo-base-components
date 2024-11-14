@@ -1,7 +1,8 @@
 import { Avatar } from "@vuo/atoms/Avatar";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import Page from "@vuo/templates/Page";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+
 
 import { FormData } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
@@ -12,8 +13,10 @@ import styles from "./ProfilePage.module.scss";
 import LoginComponent from "../organisms/LoginComponent";
 import LoginViewModel from "../..//viewModels/LoginViewModel";
 import { Modal } from "../molecules/Modal";
+import { ThemeContext } from "@vuo/context/ThemeContext";
 
 const ProfilePage = () => {
+  const { toggleTheme } = useContext(ThemeContext);
   const [profileData, setProfileData] = useState<FormData>({} as FormData); // Ensure it's typed correctly
   const { navigateWithState } = useStackNavigator();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
