@@ -2,7 +2,6 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
 
-console.log("secrets from firebase.ts", import.meta.env.VITE_FIREBASE_WEB_API_KEY);
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_WEB_API_KEY,
@@ -13,6 +12,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
+console.log("secrets from firebase.ts", firebaseConfig);
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app); 
