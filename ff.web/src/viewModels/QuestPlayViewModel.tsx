@@ -145,6 +145,39 @@ class QuestPlayViewModel extends BaseViewModel {
     }
   }
 
+  async addSubStep(stepId: string, subSteps: PlayerQuestStep[]) {
+    if (!this.playerQuest) { 
+      console.error("No player quest")
+      return
+    }
+
+    // Find the step and check if it exists
+    const stepIndex = this.playerQuest.recipe.steps.findIndex((s: PlayerQuestStep) => s.id === stepId);
+    if (stepIndex === -1) {
+      console.error("Step not found")
+      return
+    }
+
+    // update on the database
+    this.patchData<PlayerQuest>(`v1/playerQuests/${this.playerQuest.id}/${stepId}/subSteps`, { subSteps })
+
+    // Create new steps array with updated substeps
+    const updatedSteps = [...this.playerQuest.recipe.steps];
+    updatedSteps[stepIndex] = {
+      ...updatedSteps[stepIndex],
+      subSteps
+    };
+
+    // add to playerQuestDataStore
+    const updatedPlayerQuest: PlayerQuest = {
+      ...this.playerQuest,
+      recipe: { ...this.playerQuest.recipe, steps: updatedSteps }
+    }
+    runInAction(() => {
+      this.playerQuestDataStore.addPlayerQuest(updatedPlayerQuest)
+    })
+  }
+
   async updateSubStepState(stepId: string) {
     if (!this.playerQuest) {
       console.error("No player quest")
