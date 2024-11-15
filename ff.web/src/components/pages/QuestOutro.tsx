@@ -102,12 +102,12 @@ const QuestOutro = observer(() => {
   }, [viewModel.playerAchievementsForCompletedQuest]);
 
   useEffect(() => {
-    // Track quest completion
     if (viewModel.playerQuest) {
+      // Track quest completion
       logEvent(analytics, 'quest_completed', {
         quest_id: viewModel.playerQuest.id,
         quest_name: viewModel.playerQuest.name,
-        quest_duration: viewModel.playerQuest.duration, // You'll need to add this to your Quest model
+        // quest_duration: viewModel.playerQuest.duration, // You'll need to add this to your Quest model
         xp_earned: viewModel.combinedPlayerSkillsForCompletedQuest?.reduce(
           (prevValue, { challenge_rating }) => prevValue + challenge_rating, 
           0
@@ -115,8 +115,31 @@ const QuestOutro = observer(() => {
         achievements_earned: viewModel.playerAchievementsForCompletedQuest?.length || 0,
         skills_earned: viewModel.combinedPlayerSkillsForCompletedQuest?.map(skill => skill.name) || [],
       });
+
+      // Track individual achievements
+      viewModel.playerAchievementsForCompletedQuest?.forEach(achievement => {
+        logEvent(analytics, 'achievement_unlocked', {
+          achievement_id: achievement.achievement.id,
+          achievement_name: achievement.achievement.name,
+          quest_id: viewModel.playerQuest.id,
+          quest_name: viewModel.playerQuest.name,
+          achievement_type: achievement.achievement.type, // if you have achievement types
+          achievement_description: achievement.achievement.description,
+          achievement_xp: achievement.achievement.xpValue // if achievements have XP values
+        });
+      });
+
+      // Track skills gained
+      viewModel.combinedPlayerSkillsForCompletedQuest?.forEach(skill => {
+        logEvent(analytics, 'skill_gained', {
+          skill_name: skill.name,
+          skill_xp: skill.challenge_rating,
+          quest_id: viewModel.playerQuest.id,
+          quest_name: viewModel.playerQuest.name
+        });
+      });
     }
-  }, [viewModel.playerQuest]);
+  }, [viewModel.playerQuest, viewModel.playerAchievementsForCompletedQuest, viewModel.combinedPlayerSkillsForCompletedQuest]);
 
   // const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
