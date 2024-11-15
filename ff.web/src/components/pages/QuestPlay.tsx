@@ -102,10 +102,10 @@ const QuestPlay = observer(() => {
   }
 
   const onSubStepDone = (stepId: string) => {
-    const currentStep = viewModel.playerQuest?.recipe.steps.find(step => 
+    const currentStep = viewModel.playerQuest?.recipe.steps.find(step =>
       step.subSteps?.some(ss => ss.id === stepId)
     );
-    
+
     // Check if this is the last uncompleted substep
     const isAllSubstepsCompleted = currentStep?.subSteps?.every(
       ss => ss.id === stepId || ss.state === StepState.completed || ss.state === StepState.skipped
@@ -188,7 +188,8 @@ const QuestPlay = observer(() => {
                       step={step}
                       onChallengeAccepted={onChallengeAccepted}
                       onStepDone={onStepDone}
-                      onStepClaimed={onStepClaimed} />
+                      onStepClaimed={onStepClaimed} 
+                      onPrepPalPress={onPrepPalPress}/>
                   )}
                 </div>
               );

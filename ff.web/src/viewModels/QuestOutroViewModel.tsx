@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { action, computed, makeObservable, runInAction } from "mobx";
 import { startRegistration } from "@simplewebauthn/browser";
 import { PublicKeyCredentialCreationOptionsJSON } from "@simplewebauthn/types";
@@ -8,7 +6,7 @@ import { BaseViewModel, BaseViewModelProps } from "@vuo/viewModels/BaseViewModel
 import playerAchievementStore from "@vuo/stores/PlayerAchievementStore";
 import playerQuestDataStore from "@vuo/stores/PlayerQuestDataStore";
 import { PlayerAchievement } from "@vuo/models/PlayerAchievement";
-import { CombinedSkill, Skill } from "@vuo/models/Step";
+import { Skill } from "@vuo/models/Step";
 import { PlayerQuest } from "@vuo/models/PlayerQuest";
 import sessionDataStore from "@vuo/stores/SessionDataStore";
 import { ChannelUser } from "@vuo/stores/WebSocketStore";
@@ -100,7 +98,7 @@ export default class QuestOutroViewModel extends BaseViewModel {
     return playerAchievementStore.getPlayerAchievementsForQuestById(this.playerQuest.id)
   }
 
-  get combinedPlayerSkillsForCompletedQuest(): CombinedSkill[] | undefined {
+  /* get combinedPlayerSkillsForCompletedQuest(): CombinedSkill[] | undefined {
     if (!this.playerQuest) { return undefined }
     const skillMap = new Map<string, number>();
 
@@ -116,9 +114,27 @@ export default class QuestOutroViewModel extends BaseViewModel {
 
     return Array.from(skillMap, ([name, challenge_rating]) => ({ name, challenge_rating }));
   }
+  */
+
+  get combinedPlayerSkillsForCompletedQuest(): Map<string, number> | undefined {
+    if (!this.playerQuest) { return undefined }
+    const skillMap = new Map<string, number>();
+
+    this.playerQuest.recipe.steps.forEach(step => {
+      step.skills?.forEach(skill => {
+        if (skillMap.has(skill.name)) {
+          skillMap.set(skill.name, skillMap.get(skill.name)! + 1);
+        } else {
+          skillMap.set(skill.name, 1);
+        }
+      });
+    });
+
+    return skillMap;
+  }
 
   get playerSkillsForCompletedQuest(): Skill[] | undefined {
     if (!this.playerQuest) { return undefined }
-    return this.playerQuest.recipe.steps.flatMap(step => step.skills).flat()
+    return this.playerQuest.recipe.steps.flatMap(step => step.skills || []) 
   }
 }

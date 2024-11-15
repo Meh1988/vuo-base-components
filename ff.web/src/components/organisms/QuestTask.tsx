@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DOMPurify from 'dompurify';
 import { PlayerQuestStep, StepState } from "@vuo/models/PlayerQuest";
 import { HighlightType } from "@vuo/models/Step";
+import { AISparklesSVG, ChevronDownSVG } from "@vuo/atoms/SVGComponents";
 import Chip from "../atoms/Chip";
 import Button from "../atoms/Button";
 import InfoCard from "../molecules/InfoCard";
 import Space from "../atoms/Space";
 import styles from "./QuestTask.module.scss";
+import ReactDOM from 'react-dom';
 
 export type QuestTaskProps = {
   step: PlayerQuestStep;
@@ -15,11 +17,13 @@ export type QuestTaskProps = {
   onStepDone?: (step: PlayerQuestStep) => void;
   onStepClaimed?: (step: PlayerQuestStep) => void;
   onChallengeAccepted?: (step: PlayerQuestStep) => void;
+  onPrepPalPress?: () => void;
 };
 
 function QuestTask(props: QuestTaskProps) {
-  const { currentStep, hideClaimButton, step, onChallengeAccepted, onStepDone, onStepClaimed } = props;
+  const { currentStep, hideClaimButton, step, onChallengeAccepted, onStepDone, onStepClaimed, onPrepPalPress } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isPrepPalOpen, setIsPrepPalOpen] = useState<boolean>(false);
 
   const expand = isOpen || currentStep;
   const showButton = step.state !== StepState.completed;
@@ -29,6 +33,10 @@ function QuestTask(props: QuestTaskProps) {
     if (step.state === StepState.completed) {
       setIsOpen(!isOpen);
     }
+  }
+
+  function handlePrepPalOpen() {
+    setIsPrepPalOpen(!isPrepPalOpen);
   }
 
   function injectResourceToStepText(pqStep: PlayerQuestStep): string | undefined {
@@ -44,6 +52,36 @@ function QuestTask(props: QuestTaskProps) {
 
   const stepClassName = currentStep ? styles.current : styles.notCurrent;
   const isHighlighted = step?.highlight === HighlightType.Challenge
+
+  const PrepPalButton = (
+    <button
+      type="button"
+      onClick={onPrepPalPress}
+      className={styles.prep_pal_button}
+    >
+      <div className={styles.prep_pal_button_text}>
+        Too Difficult? Break steps down
+      </div>
+      <div className={styles.prep_pal_button_icon}>
+        <AISparklesSVG color="var(--text-secondary)" />
+      </div>
+    </button>
+  )
+
+  const ExpandButton = (
+    <button
+      type="button"
+      onClick={handlePrepPalOpen}
+      className={styles.prep_pal_button}
+    >
+      <div className={styles.prep_pal_button_text}>
+        {isPrepPalOpen ? "Close" : "Too Difficult? See broken down steps"}
+      </div>
+      <div className={styles.prep_pal_button_icon} style={{ transform: isPrepPalOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
+        <ChevronDownSVG color="var(--text-secondary)"/>
+      </div>
+    </button>
+  )
 
   return (
     <div
@@ -99,19 +137,37 @@ function QuestTask(props: QuestTaskProps) {
             )}
           </div>
         )}
-        
-        <div
-          className={styles.step_text}
-          // DOMPurify sanitizes the string and prevents XSS attacks
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(
-              step.resources && step.resources.length > 0
-                ? injectResourceToStepText(step) || ""
-                : step.text
-            )
-          }}
-        />
+
+        <div>
+          <div className={styles.step_content}>
+            <div
+              className={styles.step_text}
+            // DOMPurify sanitizes the string and prevents XSS attacks
+            // eslint-disable-next-line react/no-danger
+            // dangerouslySetInnerHTML={{
+            //   __html: DOMPurify.sanitize(
+            //     step.resources && step.resources.length > 0
+            //       ? injectResourceToStepText(step) || ""
+            //       : step.text
+            //   )
+            // }}
+            >
+              {injectResourceToStepText(step)}
+            </div>
+            <div className={styles.preppal_container}>
+              {currentStep && step.highlight !== HighlightType.Challenge && (step.subSteps?.length && step.subSteps?.length > 0 ? ExpandButton : PrepPalButton)}
+              {currentStep && isPrepPalOpen && step.subSteps?.length && step.subSteps?.length > 0 && (
+                <div className={styles.prep_pal_steps} style={{ transform: isPrepPalOpen ? "scaleY(1)" : "scaleY(0)" }}>
+                  <ul>
+                    {step.subSteps.map((subStep) => (
+                      <li key={subStep.id}>- {subStep.text}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
         {expand && (
           <Space
