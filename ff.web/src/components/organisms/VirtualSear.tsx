@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite';
 import { Card, Slider } from 'antd-mobile';
 import Button from '@vuo/atoms/Button';
-import PanSvg from '@vuo/atoms/PanSvg';
+import { PanSVG } from '@vuo/atoms/SVGComponents';
 import React, { useEffect, useState } from 'react';
 import Tooltip from '@vuo/atoms/ToolTip';
 // import SteakCrossSection from '@vuo/molecules/SteakCrossSection';
 import styles from './VirtualSear.module.scss';
-import SteakSvg from '../atoms/SteakSvg';
+import { SteakSVG } from '../atoms/SVGComponents';
 import FlameSvg from '../atoms/FlameSvg';
 
 interface Doneness {
@@ -116,20 +116,20 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean; allowC
     const getCurrentDoneness = (): Doneness => {
         const rawAverageDoneness = (topDoneness + bottomDoneness) / 2;
         const averageDoneness = Math.round(rawAverageDoneness);
-        
+
         if (averageDoneness > 100) {
             return donenessLevels[donenessLevels.length - 1];
         }
-        
-        const foundDoneness = donenessLevels.find(level => 
+
+        const foundDoneness = donenessLevels.find(level =>
             averageDoneness >= level.min && averageDoneness <= level.max
         );
-        
+
         if (!foundDoneness) {
             // eslint-disable-next-line no-console
             console.log('No doneness found for value:', averageDoneness);
         }
-        
+
         return foundDoneness || donenessLevels[0];
     };
 
@@ -233,7 +233,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean; allowC
                     </div>
                     <div className={styles.content}>
 
-                        <PanSvg className={styles.pan_svg} />
+                        <PanSVG className={styles.pan_svg} />
 
 
                         {/* <SteakCrossSection
@@ -244,7 +244,7 @@ const VirtualSear: React.FC<{ onClose?: () => void; allowReplay: boolean; allowC
                             topSear={topSear}
                             bottomSear={bottomSear}
                         /> */}
-                        <SteakSvg
+                        <SteakSVG
                             className={`${styles.steak_svg} ${isPlaced ? styles.placed : ''} ${placedSide !== 'bottom' ? styles.flipped : ''}`}
                             sideColor={`hsl(354, 67%, ${56 - ((topDoneness + bottomDoneness) / 2) * 0.48}%)`}
                             faceColor={faceColor}
