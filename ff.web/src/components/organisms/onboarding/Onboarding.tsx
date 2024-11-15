@@ -2,7 +2,6 @@ import {
   allergies,
   commonDislikes,
   cuisines,
-
   steps,
 } from "@constants/Onboarding";
 
@@ -16,6 +15,7 @@ import useStackNavigator from "@vuo/hooks/StackNavigator";
 import ToggleSwitch from "@vuo/molecules/ToggleSwitch";
 
 // Adjust the import path accordingly
+import OnboardingViewModel from "@viewModels/OnboardingViewModel";
 import { useEffect, useState } from "react";
 import styles from "./Onboarding.module.scss";
 import {
@@ -24,7 +24,6 @@ import {
   goals,
   pantry,
 } from "./constants/OnboardingSteps";
-import OnboardingViewModel from "../../../viewModels/OnboardingViewModel";
 
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = observer(() => {
@@ -34,40 +33,39 @@ const OnboardingFlow = observer(() => {
   useEffect(() => {
     const sessionDataString = localStorage.getItem("SessionDataStore");
     if (!sessionDataString) return;
-    
+
     const sessionData = JSON.parse(sessionDataString);
-    if(sessionData?.user?.id) {
+    if (sessionData?.user?.id) {
       viewModel.handleInputChange({
-        target: { name: 'userId', value: sessionData.user.id }
+        target: { name: "userId", value: sessionData.user.id },
       } as React.ChangeEvent<HTMLInputElement>);
     }
-  }, [viewModel])
+  }, [viewModel]);
 
-
-
-  const FooterContent = () => {
-    return (
-      <>
-        <Button
-          variant="small"
-          color="tertiary"
-          onClick={() => {
-            localStorage.setItem("onboardingData", JSON.stringify(viewModel.formData));
-            navigateWithState("/home");
-          }}
-        >
-          Exit
-        </Button>
-        <Button
-          variant="small"
-          color="primary"
-          onClick={() => viewModel.setIsExitOnboarding(false)}
-        >
-          Cancel
-        </Button>
-      </>
-    );
-  };
+  const FooterContent = () => (
+    <>
+      <Button
+        variant="small"
+        color="tertiary"
+        onClick={() => {
+          localStorage.setItem(
+            "onboardingData",
+            JSON.stringify(viewModel.formData),
+          );
+          navigateWithState("/home");
+        }}
+      >
+        Exit
+      </Button>
+      <Button
+        variant="small"
+        color="primary"
+        onClick={() => viewModel.setIsExitOnboarding(false)}
+      >
+        Cancel
+      </Button>
+    </>
+  );
 
   const renderOption = (
     value: string,
@@ -174,6 +172,7 @@ const OnboardingFlow = observer(() => {
             </div>
             {goals.map((goal) => (
               <button
+                type="button"
                 key={goal}
                 className={`${styles.onboardingButton} ${viewModel.formData.goals.includes(goal) ? styles.selected : ""}`}
                 onClick={() => viewModel.handleMultiSelect(goal, "goals")}
@@ -196,14 +195,20 @@ const OnboardingFlow = observer(() => {
               "Female",
               "",
               viewModel.formData.sex === "female",
-              (value) => viewModel.handleInputChange({ target: { name: 'sex', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "sex", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "male",
               "Male",
               "",
               viewModel.formData.sex === "male",
-              (value) => viewModel.handleInputChange({ target: { name: 'sex', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "sex", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
           </>
         );
@@ -219,7 +224,11 @@ const OnboardingFlow = observer(() => {
               type="number"
               name="age"
               value={viewModel.formData.age}
-              onChange={(e) => viewModel.handleInputChange(e as unknown as React.ChangeEvent<HTMLInputElement>)}
+              onChange={(e) =>
+                viewModel.handleInputChange(
+                  e as unknown as React.ChangeEvent<HTMLInputElement>,
+                )
+              }
               placeholder="Enter your age"
               className={styles.onboardingInput}
             />
@@ -237,7 +246,11 @@ const OnboardingFlow = observer(() => {
               type="number"
               name="height"
               value={viewModel.formData.height}
-              onChange={(e) => viewModel.handleInputChange(e as unknown as React.ChangeEvent<HTMLInputElement>)}
+              onChange={(e) =>
+                viewModel.handleInputChange(
+                  e as unknown as React.ChangeEvent<HTMLInputElement>,
+                )
+              }
               placeholder="Enter your height in cm"
               className={styles.onboardingInput}
             />
@@ -293,7 +306,9 @@ const OnboardingFlow = observer(() => {
               "Ready for big changes",
               viewModel.formData.motivation === "very-motivated",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'motivation', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "motivation", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "willing-to-give-it-a-go",
@@ -301,7 +316,9 @@ const OnboardingFlow = observer(() => {
               "Prefer moderate changes",
               viewModel.formData.motivation === "willing-to-give-it-a-go",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'motivation', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "motivation", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "small-changes-are-best",
@@ -309,7 +326,9 @@ const OnboardingFlow = observer(() => {
               "Prefer to take things step by step",
               viewModel.formData.motivation === "small-changes-are-best",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'motivation', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "motivation", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "not-ready-yet",
@@ -317,7 +336,9 @@ const OnboardingFlow = observer(() => {
               "",
               viewModel.formData.motivation === "not-ready-yet",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'motivation', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "motivation", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
           </>
         );
@@ -335,7 +356,9 @@ const OnboardingFlow = observer(() => {
               "No exercise, desk job",
               viewModel.formData.activityLevel === "sedentary",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'activityLevel', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "activityLevel", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "light-exercise",
@@ -343,7 +366,9 @@ const OnboardingFlow = observer(() => {
               "1-2 days per week",
               viewModel.formData.activityLevel === "light-exercise",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'activityLevel', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "activityLevel", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "moderate-exercise",
@@ -351,7 +376,9 @@ const OnboardingFlow = observer(() => {
               "3-5 days per week",
               viewModel.formData.activityLevel === "moderate-exercise",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'activityLevel', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "activityLevel", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "heavy-exercise",
@@ -359,7 +386,9 @@ const OnboardingFlow = observer(() => {
               "6-7 days per week",
               viewModel.formData.activityLevel === "heavy-exercise",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'activityLevel', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "activityLevel", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "athlete",
@@ -367,7 +396,9 @@ const OnboardingFlow = observer(() => {
               "Daily exercise or heavy labor",
               viewModel.formData.activityLevel === "athlete",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'activityLevel', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "activityLevel", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
           </>
         );
@@ -384,21 +415,30 @@ const OnboardingFlow = observer(() => {
               "Agree",
               "",
               viewModel.formData.mindset === "agree",
-              (value) => viewModel.handleInputChange({ target: { name: 'mindset', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "mindset", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "neutral",
               "Neutral",
               "",
               viewModel.formData.mindset === "neutral",
-              (value) => viewModel.handleInputChange({ target: { name: 'mindset', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "mindset", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "disagree",
               "Disagree",
               "",
               viewModel.formData.mindset === "disagree",
-              (value) => viewModel.handleInputChange({ target: { name: 'mindset', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "mindset", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
           </>
         );
@@ -420,22 +460,26 @@ const OnboardingFlow = observer(() => {
                 onChange={(value: number) => {
                   const speedMap = ["slow", "moderate", "fast"];
                   viewModel.handleInputChange({
-                    target: { 
-                      name: 'speed', 
-                      value: speedMap[value - 1] 
-                    }
+                    target: {
+                      name: "speed",
+                      value: speedMap[value],
+                    },
                   } as React.ChangeEvent<HTMLInputElement>);
                 }}
               />
               <span>⚡</span>
             </div>
             <p className={styles.onboardingSpeedLabel}>
-              {viewModel.formData.speed.charAt(0).toUpperCase() + viewModel.formData.speed.slice(1)}
+              {viewModel.formData.speed.charAt(0).toUpperCase() +
+                viewModel.formData.speed.slice(1)}
             </p>
             <p className={styles.onboardingSpeedDescription}>
-              {viewModel.formData.speed === "slow" && "Sustainable and gradual pace"}
-              {viewModel.formData.speed === "moderate" && "Sustainable and moderate pace"}
-              {viewModel.formData.speed === "fast" && "Ambitious and quick pace"}
+              {viewModel.formData.speed === "slow" &&
+                "Sustainable and gradual pace"}
+              {viewModel.formData.speed === "moderate" &&
+                "Sustainable and moderate pace"}
+              {viewModel.formData.speed === "fast" &&
+                "Ambitious and quick pace"}
             </p>
           </>
         );
@@ -454,7 +498,9 @@ const OnboardingFlow = observer(() => {
                 diet.description,
                 viewModel.formData.dietPlan === diet.name.toLowerCase(),
                 (value) =>
-                  viewModel.handleInputChange({ target: { name: 'dietPlan', value } } as React.ChangeEvent<HTMLInputElement>),
+                  viewModel.handleInputChange({
+                    target: { name: "dietPlan", value },
+                  } as React.ChangeEvent<HTMLInputElement>),
               ),
             )}
           </>
@@ -473,7 +519,9 @@ const OnboardingFlow = observer(() => {
               "Trying to make changes for the first time",
               viewModel.formData.pastExperience === "no-past-experience",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'pastExperience', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "pastExperience", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "tried-before",
@@ -481,7 +529,9 @@ const OnboardingFlow = observer(() => {
               "Giving healthy eating another shot",
               viewModel.formData.pastExperience === "tried-before",
               (value) =>
-                viewModel.handleInputChange({ target: { name: 'pastExperience', value } } as React.ChangeEvent<HTMLInputElement>),
+                viewModel.handleInputChange({
+                  target: { name: "pastExperience", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
           </>
         );
@@ -498,28 +548,40 @@ const OnboardingFlow = observer(() => {
               "Dinners",
               "A few dinner ideas every week",
               viewModel.formData.format === "dinners",
-              (value) => viewModel.handleInputChange({ target: { name: 'format', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "format", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "lunches-and-dinners",
               "Lunches and dinners",
               "Make lunch and dinner most days",
               viewModel.formData.format === "lunches-and-dinners",
-              (value) => viewModel.handleInputChange({ target: { name: 'format', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "format", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "every-meal",
               "Every meal",
               "Make breakfast, lunch, dinner every day",
               viewModel.formData.format === "every-meal",
-              (value) => viewModel.handleInputChange({ target: { name: 'format', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "format", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
             {renderOption(
               "custom",
               "Custom",
               "",
               viewModel.formData.format === "custom",
-              (value) => viewModel.handleInputChange({ target: { name: 'format', value } } as React.ChangeEvent<HTMLInputElement>),
+              (value) =>
+                viewModel.handleInputChange({
+                  target: { name: "format", value },
+                } as React.ChangeEvent<HTMLInputElement>),
             )}
           </>
         );
@@ -570,7 +632,9 @@ const OnboardingFlow = observer(() => {
                   type="button"
                   key={dislike}
                   className={`${styles.onboardingButton} ${viewModel.formData.dislikes.includes(dislike) ? styles.selected : ""}`}
-                  onClick={() => viewModel.handleMultiSelect(dislike, "dislikes")}
+                  onClick={() =>
+                    viewModel.handleMultiSelect(dislike, "dislikes")
+                  }
                 >
                   {dislike}
                 </button>
@@ -591,14 +655,20 @@ const OnboardingFlow = observer(() => {
                 <span>{cuisine}</span>
                 <div className={styles.onboardingCuisineButtons}>
                   <button
+                    type="button"
                     className={`${styles.onboardingButton} ${viewModel.formData.cuisinePreferences[cuisine] === "dislike" ? styles.selected : ""}`}
-                    onClick={() => viewModel.handleCuisinePreference(cuisine, "dislike")}
+                    onClick={() =>
+                      viewModel.handleCuisinePreference(cuisine, "dislike")
+                    }
                   >
                     👎
                   </button>
                   <button
+                    type="button"
                     className={`${styles.onboardingButton} ${viewModel.formData.cuisinePreferences[cuisine] === "like" ? styles.selected : ""}`}
-                    onClick={() => viewModel.handleCuisinePreference(cuisine, "like")}
+                    onClick={() =>
+                      viewModel.handleCuisinePreference(cuisine, "like")
+                    }
                   >
                     ❤️
                   </button>
@@ -621,9 +691,10 @@ const OnboardingFlow = observer(() => {
                 option.label,
                 option.description,
                 viewModel.formData.pantry === option.value,
-                (value) => viewModel.handleInputChange({ 
-                  target: { name: 'pantry', value } 
-                } as React.ChangeEvent<HTMLInputElement>),
+                (value) =>
+                  viewModel.handleInputChange({
+                    target: { name: "pantry", value },
+                  } as React.ChangeEvent<HTMLInputElement>),
               ),
             )}
           </>
@@ -643,7 +714,9 @@ const OnboardingFlow = observer(() => {
                 option.description,
                 viewModel.formData.cookingSkills === option.value,
                 (value) =>
-                  viewModel.handleInputChange({ target: { name: 'cookingSkills', value } } as React.ChangeEvent<HTMLInputElement>),
+                  viewModel.handleInputChange({
+                    target: { name: "cookingSkills", value },
+                  } as React.ChangeEvent<HTMLInputElement>),
               ),
             )}
           </>
@@ -670,7 +743,10 @@ const OnboardingFlow = observer(() => {
           <div className={styles.onboardingStep}>{renderStep()}</div>
         </div>
         <div className={styles.onboardingNavigation}>
-          <ProgressBar value={viewModel.progress} className={styles.onboardingProgress} />
+          <ProgressBar
+            value={viewModel.progress}
+            className={styles.onboardingProgress}
+          />
           <div className={styles.onboardingButtons}>
             <Button
               color="secondary"
@@ -718,4 +794,4 @@ const OnboardingFlow = observer(() => {
   );
 });
 
-export default OnboardingFlow
+export default OnboardingFlow;
