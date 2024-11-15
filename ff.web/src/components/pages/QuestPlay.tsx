@@ -121,6 +121,35 @@ const QuestPlay = observer(() => {
     }
   }
 
+  const onPrepPalPress = (step: PlayerQuestStep) => {
+    console.log("onPrepPalPress")
+    const mockSubSteps: PlayerQuestStep[] = [
+      {
+        id: "le id le fishe 1",
+        attachable: false,
+        text: "Step 1",
+        state: StepState.notStarted
+      },
+      {
+        id: "le id le fishe 2",
+        attachable: false,
+        text: "Step 2",
+        state: StepState.notStarted
+
+      },
+      {
+        id: "le id le fishe 3",
+        attachable: false,
+        text: "Step 3",
+        state: StepState.notStarted
+      }
+    ]
+
+    if (step) {
+      viewModel.addSubStep(step.id, mockSubSteps)
+    }
+  }
+
   const onClose = () => {
     TagManager.dataLayer({
       dataLayer: {

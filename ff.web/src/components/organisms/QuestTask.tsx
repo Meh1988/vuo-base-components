@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import DOMPurify from 'dompurify';
+import { useState } from "react";
 import { PlayerQuestStep, StepState } from "@vuo/models/PlayerQuest";
 import { HighlightType } from "@vuo/models/Step";
 import { AISparklesSVG, ChevronDownSVG } from "@vuo/atoms/SVGComponents";
@@ -8,7 +7,6 @@ import Button from "../atoms/Button";
 import InfoCard from "../molecules/InfoCard";
 import Space from "../atoms/Space";
 import styles from "./QuestTask.module.scss";
-import ReactDOM from 'react-dom';
 
 export type QuestTaskProps = {
   step: PlayerQuestStep;
@@ -17,7 +15,7 @@ export type QuestTaskProps = {
   onStepDone?: (step: PlayerQuestStep) => void;
   onStepClaimed?: (step: PlayerQuestStep) => void;
   onChallengeAccepted?: (step: PlayerQuestStep) => void;
-  onPrepPalPress?: () => void;
+  onPrepPalPress?: (step: PlayerQuestStep) => void;
 };
 
 function QuestTask(props: QuestTaskProps) {
@@ -56,7 +54,7 @@ function QuestTask(props: QuestTaskProps) {
   const PrepPalButton = (
     <button
       type="button"
-      onClick={onPrepPalPress}
+      onClick={() => onPrepPalPress?.(step)}
       className={styles.prep_pal_button}
     >
       <div className={styles.prep_pal_button_text}>
