@@ -17,6 +17,8 @@ import { ChannelUser } from "@vuo/stores/WebSocketStore";
 import PlayerItem from '@vuo/organisms/PlayerItem';
 
 import soundFile from '@vuo/assets/sounds/swishh.mp3';
+import { analytics } from '../../config/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const QuestIntro = observer(() => {
   const navigate = useNavigate();
