@@ -38,6 +38,9 @@
       ],
       "@static/*": [
         "./public/static/*"
+      ],
+      "@viewModels/*": [
+        "./src/viewModels/*"
       ]
     },
     "useDefineForClassFields": true,
@@ -64,4 +67,3 @@
     }
   ]
 }
-
