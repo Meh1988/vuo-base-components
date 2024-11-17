@@ -458,13 +458,12 @@ const OnboardingFlow = observer(() => {
                 max={2}
                 step={1}
                 onChange={(value: number) => {
-                  const speedMap = ["slow", "moderate", "fast"];
                   viewModel.handleInputChange({
                     target: {
                       name: "speed",
-                      value: speedMap[value],
+                      value: value.toString(),
                     },
-                  } as React.ChangeEvent<HTMLInputElement>);
+                  } as unknown as React.ChangeEvent<HTMLInputElement>);
                 }}
               />
               <span>⚡</span>
