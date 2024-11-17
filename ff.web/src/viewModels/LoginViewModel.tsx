@@ -1,25 +1,32 @@
 // @ts-nocheck
-import { action, computed, makeObservable, observable, runInAction } from "mobx";
-
 import {
-  BaseViewModel,
-  BaseViewModelProps,
-} from "@vuo/viewModels/BaseViewModel";
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
+
 import {
   startAuthentication,
   startRegistration,
 } from "@simplewebauthn/browser";
 import {
   AuthenticationResponseJSON,
-  PublicKeyCredentialRequestOptionsJSON,
   PublicKeyCredentialCreationOptionsJSON,
+  PublicKeyCredentialRequestOptionsJSON,
 } from "@simplewebauthn/types";
+import {
+  BaseViewModel,
+  BaseViewModelProps,
+} from "@vuo/viewModels/BaseViewModel";
 
+import { FormData } from "@models/Onboarding";
 import sessionDataStore from "@vuo/stores/SessionDataStore";
-import TagManager from "react-gtm-module";
 import { ChannelUser } from "@vuo/stores/WebSocketStore";
+import TagManager from "react-gtm-module";
 import { signInWithGoogle } from "../auth/auth";
-import { authStore } from '../stores/AuthStore';
+import { authStore } from "../stores/AuthStore";
 
 interface AuthenticationOptions {
   options: PublicKeyCredentialRequestOptionsJSON;
@@ -100,7 +107,7 @@ export default class LoginViewModel extends BaseViewModel {
               runInAction(() => {
                 sessionDataStore.token = authenticateVerifyResponse.token;
                 sessionDataStore.user = authenticateVerifyResponse.user;
-              })
+              });
             }
           } catch (error) {
             this.setErrors(
@@ -144,7 +151,7 @@ export default class LoginViewModel extends BaseViewModel {
 
     TagManager.dataLayer({
       dataLayer: {
-        event: "user_registered"
+        event: "user_registered",
       },
     });
 
@@ -154,50 +161,59 @@ export default class LoginViewModel extends BaseViewModel {
 
   async signInWithGoogle(): Promise<void> {
     try {
-      const account = JSON.parse(localStorage.getItem('SessionDataStore') || '{}');
+      const account = JSON.parse(
+        localStorage.getItem("SessionDataStore") || "{}",
+      );
       const shadowAccountId = account?.shadowAccount ? account?.user._id : null;
-      
+
       const user = await signInWithGoogle();
       if (!user) return;
-  
+
       const idToken = await user.getIdToken();
-      
+
       const response = await this.fetchData<AuthenticationVerifiedJSON>({
         url: "v1/authenticate/verify-firebase",
         method: "POST",
-        data: { 
+        data: {
           token: idToken,
-          ...(shadowAccountId && { shadowAccountId })
-        }
+          ...(shadowAccountId && { shadowAccountId }),
+        },
       });
-  
+
       if (response) {
         runInAction(() => {
           sessionDataStore.token = response.token;
           sessionDataStore.user = response.user;
           sessionDataStore.shadowAccount = false;
-          this.toggleLoginModal()
+          this.toggleLoginModal();
         });
-  
+
         if (shadowAccountId) {
-          localStorage.removeItem('shadowAccountId');
+          localStorage.removeItem("shadowAccountId");
         }
       }
     } catch (error) {
-      if (error.message === 'Sign-in cancelled by user') {
-        console.log('User cancelled the sign-in process');
+      if (error.message === "Sign-in cancelled by user") {
+        console.log("User cancelled the sign-in process");
         return;
       }
-      this.setErrors(error instanceof Error ? error : new Error("Failed to sign in with Google"));
+      this.setErrors(
+        error instanceof Error
+          ? error
+          : new Error("Failed to sign in with Google"),
+      );
     }
   }
 
-  async updateUserProfile(userId: string): Promise<void> {
+  async updateUserProfile(
+    userId: string,
+    profileData: FormData,
+  ): Promise<void> {
     try {
       const response = await this.fetchData({
         url: `v1/profile/update/${userId}`,
         method: "PATCH",
-        data: { userId }
+        data: profileData,
       });
 
       if (response) {
@@ -206,7 +222,7 @@ export default class LoginViewModel extends BaseViewModel {
         });
       }
     } catch (error) {
-      console.error('Error updating user profile:', error);
+      console.error("Error updating user profile:", error);
     }
   }
 
@@ -232,16 +248,20 @@ export default class LoginViewModel extends BaseViewModel {
   //   }
   // };
 
-  async signUpWithEmail(email: string, password: string, displayName: string): Promise<void> {
+  async signUpWithEmail(
+    email: string,
+    password: string,
+    displayName: string,
+  ): Promise<void> {
     try {
       const user = await signUpWithEmail(email, password, displayName);
       if (user) {
         const response = await this.fetchData<AuthenticationVerifiedJSON>({
           url: "v1/authenticate/verify-firebase",
           method: "POST",
-          data: { token: await user.getIdToken() }
+          data: { token: await user.getIdToken() },
         });
-  
+
         if (response) {
           runInAction(() => {
             sessionDataStore.token = response.token;
@@ -251,10 +271,14 @@ export default class LoginViewModel extends BaseViewModel {
         }
       }
     } catch (error) {
-      this.setErrors(error instanceof Error ? error : new Error("Failed to sign up with email"));
+      this.setErrors(
+        error instanceof Error
+          ? error
+          : new Error("Failed to sign up with email"),
+      );
     }
   }
-  
+
   async signInWithEmail(email: string, password: string): Promise<void> {
     try {
       const user = await signInWithEmail(email, password);
@@ -262,9 +286,9 @@ export default class LoginViewModel extends BaseViewModel {
         const response = await this.fetchData<AuthenticationVerifiedJSON>({
           url: "v1/authenticate/verify-firebase",
           method: "POST",
-          data: { token: await user.getIdToken() }
+          data: { token: await user.getIdToken() },
         });
-  
+
         if (response) {
           runInAction(() => {
             sessionDataStore.token = response.token;
@@ -274,7 +298,11 @@ export default class LoginViewModel extends BaseViewModel {
         }
       }
     } catch (error) {
-      this.setErrors(error instanceof Error ? error : new Error("Failed to sign in with email"));
+      this.setErrors(
+        error instanceof Error
+          ? error
+          : new Error("Failed to sign in with email"),
+      );
     }
   }
 
@@ -282,7 +310,7 @@ export default class LoginViewModel extends BaseViewModel {
     try {
       // First clear session data and storage
       localStorage.clear(); // Clear all localStorage instead of individual items
-      
+
       runInAction(() => {
         sessionDataStore.token = undefined;
         sessionDataStore.user = undefined;
@@ -293,15 +321,15 @@ export default class LoginViewModel extends BaseViewModel {
 
       // Then sign out from Firebase auth
       await authStore.signOut();
-      
+
       // Finally call backend logout endpoint if we have a token
       if (sessionDataStore.token) {
         await this.fetchData({
           url: "v1/authenticate/logout", // The endpoint was wrong
           method: "POST",
           headers: {
-            'Authorization': `Bearer ${sessionDataStore.token}`
-          }
+            Authorization: `Bearer ${sessionDataStore.token}`,
+          },
         });
       }
 
@@ -319,16 +347,17 @@ export default class LoginViewModel extends BaseViewModel {
 
       // Force a reload of the store
       await sessionDataStore.init();
-      
     } catch (error) {
-      this.setErrors(error instanceof Error ? error : new Error("Failed to logout"));
+      this.setErrors(
+        error instanceof Error ? error : new Error("Failed to logout"),
+      );
     }
   }
 
   async deleteAccount(): Promise<void> {
     await this.fetchData({
       url: "v1/users/delete/me",
-      method: "DELETE"
+      method: "DELETE",
     });
 
     localStorage.removeItem("SessionDataStore");

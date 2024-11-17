@@ -263,16 +263,18 @@ export const UserPreferences = ({
             { value: "slow", label: "Slow" },
             { value: "moderate", label: "Moderate" },
             { value: "fast", label: "Fast" },
-          ].map((speed) => (
+          ].map((speed, index) => (
             <Button
               key={speed.value}
               variant="medium"
-              color={userData.speed === speed.value ? "primary" : "secondary"}
+              color={
+                userData.speed === index.toString() ? "primary" : "secondary"
+              }
               className={styles.onboardingButton}
               onClick={() =>
                 setUserData((prev: FormData) => ({
                   ...prev,
-                  speed: speed.value,
+                  speed: index.toString(),
                 }))
               }
             >
