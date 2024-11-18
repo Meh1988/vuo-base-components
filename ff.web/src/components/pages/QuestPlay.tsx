@@ -21,6 +21,8 @@ import QuestTask from "../organisms/QuestTask";
 import QuestProgressBar from "../molecules/QuestProgressBar";
 // import QuestChallenge from "../organisms/QuestChallenge";
 
+import { analytics } from '../../config/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const QuestPlay = observer(() => {
   const { id } = useParams();
@@ -67,6 +69,17 @@ const QuestPlay = observer(() => {
           behavior: "smooth",
         });
       }
+    }
+
+    if (viewModel.playerQuest) {
+      // Track quest start
+      logEvent(analytics, 'quest_started', {
+        quest_id: viewModel.playerQuest.id,
+        quest_name: viewModel.playerQuest.name,
+        // player_level: viewModel.playerLevel, // You'll need to add this to your viewModel
+        // player_total_xp: viewModel.playerTotalXP, // You'll need to add this to your viewModel
+        // is_retry: viewModel.isRetry // You'll need to add this to your viewModel
+      });
     }
   }, [
     viewModel.playerQuest?.state,
