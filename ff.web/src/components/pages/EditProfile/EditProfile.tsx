@@ -17,7 +17,7 @@ export const EditProfile = () => {
     initialOnboardingData,
   );
   const { navigateWithState, goBack } = useStackNavigator();
-  const loginViewModel = new LoginViewModel();
+  const [loginViewModel] = useState(() => new LoginViewModel());
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
