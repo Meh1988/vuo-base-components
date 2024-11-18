@@ -1,8 +1,16 @@
-import { action, computed, makeObservable, observable, runInAction } from "mobx";
-import { BaseViewModel, BaseViewModelProps } from "@vuo/viewModels/BaseViewModel";
+import { initialOnboardingData, steps } from "@constants/Onboarding";
 import { OnboardingStatus } from "@models/Onboarding";
-import { initialOnboardingData } from "@constants/Onboarding";
-import { steps } from "@constants/Onboarding";
+import {
+  BaseViewModel,
+  BaseViewModelProps,
+} from "@vuo/viewModels/BaseViewModel";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 
 export default class OnboardingViewModel extends BaseViewModel {
   formData: Record<string, any> = initialOnboardingData;
@@ -11,10 +19,11 @@ export default class OnboardingViewModel extends BaseViewModel {
   isExitOnboarding = false;
   loading = false;
   onboardingComplete: boolean;
-  
+
   constructor() {
     super();
-    this.onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
+    this.onboardingComplete =
+      localStorage.getItem("onboardingComplete") === "true";
     makeObservable(this, {
       ...BaseViewModelProps,
       formData: observable,
@@ -55,11 +64,15 @@ export default class OnboardingViewModel extends BaseViewModel {
   }
 
   get hasFormDataChanged(): boolean {
-    return JSON.stringify(this.formData) !== JSON.stringify(initialOnboardingData);
-  };
+    return (
+      JSON.stringify(this.formData) !== JSON.stringify(initialOnboardingData)
+    );
+  }
 
   async loadInitialData() {
-    const sessionData = JSON.parse(localStorage.getItem("SessionDataStore") || "{}");
+    const sessionData = JSON.parse(
+      localStorage.getItem("SessionDataStore") || "{}",
+    );
     if (sessionData?.user?.id) {
       runInAction(() => {
         this.formData = { ...this.formData, userId: sessionData.user.id };
@@ -79,19 +92,24 @@ export default class OnboardingViewModel extends BaseViewModel {
 
   calculateProgress() {
     const completedSteps = steps.filter(
-      (step) => step.status === OnboardingStatus.completed
+      (step) => step.status === OnboardingStatus.completed,
     ).length;
     this.progress = (completedSteps / steps.length) * 100;
   }
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     runInAction(() => {
       this.formData = { ...this.formData, [name]: value };
     });
   };
 
-  handleMultiSelect = (item: string, field: "goals" | "allergies" | "dislikes") => {
+  handleMultiSelect = (
+    item: string,
+    field: "goals" | "allergies" | "dislikes",
+  ) => {
     runInAction(() => {
       this.formData = {
         ...this.formData,
@@ -102,14 +120,19 @@ export default class OnboardingViewModel extends BaseViewModel {
     });
   };
 
-  handleCuisinePreference = (cuisine: string, preference: "like" | "dislike") => {
+  handleCuisinePreference = (
+    cuisine: string,
+    preference: "like" | "dislike",
+  ) => {
     runInAction(() => {
       this.formData = {
         ...this.formData,
         cuisinePreferences: {
           ...this.formData.cuisinePreferences,
           [cuisine]:
-            preference === this.formData.cuisinePreferences[cuisine] ? null : preference,
+            preference === this.formData.cuisinePreferences[cuisine]
+              ? null
+              : preference,
         },
       };
     });
@@ -117,14 +140,14 @@ export default class OnboardingViewModel extends BaseViewModel {
 
   handleNext = async () => {
     if (this.hasFormDataChanged) {
-      const userId = this.formData.userId;
+      const { userId } = this.formData;
       try {
         await this.fetchData({
           url: `v1/profile/update/${userId}`,
-          method: 'PATCH',
-          data: this.formData
+          method: "PATCH",
+          data: this.formData,
         });
-        
+
         runInAction(() => {
           if (this.currentStep < steps.length - 1) {
             steps[this.currentStep].status = OnboardingStatus.completed;
@@ -133,11 +156,13 @@ export default class OnboardingViewModel extends BaseViewModel {
           }
         });
       } catch (error) {
-        this.setErrors(error instanceof Error ? error : new Error('Failed to update profile'));
+        this.setErrors(
+          error instanceof Error
+            ? error
+            : new Error("Failed to update profile"),
+        );
       } finally {
-        runInAction(() => { 
-
-        });
+        runInAction(() => {});
       }
     } else {
       this.moveToNextStep();
@@ -169,17 +194,23 @@ export default class OnboardingViewModel extends BaseViewModel {
   };
 
   handleFinish = async () => {
-    const userId = this.formData.userId;
+    const { userId } = this.formData;
     const data = { ...this.formData, onboardingComplete: true };
     try {
-      await this.patchData("v1/profile/update/" + userId, data);
+      await this.fetchData({
+        url: `v1/profile/update/${userId}`,
+        method: "PATCH",
+        data,
+      });
       localStorage.removeItem("onboardingData");
       runInAction(() => {
         this.setIsOnboardingComplete(true);
       });
       return true;
     } catch (error) {
-      this.setErrors(error instanceof Error ? error : new Error('Failed to update profile'));
+      this.setErrors(
+        error instanceof Error ? error : new Error("Failed to update profile"),
+      );
       return false;
     }
   };

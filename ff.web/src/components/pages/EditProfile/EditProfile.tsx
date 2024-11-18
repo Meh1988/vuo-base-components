@@ -4,10 +4,12 @@ import Page from "@vuo/templates/Page";
 import { useEffect, useState } from "react";
 
 import { FormData } from "@models/Onboarding";
+import LoginViewModel from "@viewModels/LoginViewModel";
 import Button from "@vuo/atoms/Button";
 import { initialOnboardingData } from "@vuo/constants/Onboarding";
 import { Modal } from "@vuo/molecules/Modal";
 import { UserPreferences } from "@vuo/organisms/userPreferences";
+
 import styles from "./EditProfile.module.scss";
 
 export const EditProfile = () => {
@@ -15,6 +17,7 @@ export const EditProfile = () => {
     initialOnboardingData,
   );
   const { navigateWithState, goBack } = useStackNavigator();
+  const [loginViewModel] = useState(() => new LoginViewModel());
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
@@ -94,6 +97,7 @@ export const EditProfile = () => {
           color="primary"
           onClick={() => {
             localStorage.setItem("profileData", JSON.stringify(profileData));
+            loginViewModel.updateUserProfile(profileData.userId, profileData);
             goBack();
           }}
         >
