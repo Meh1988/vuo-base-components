@@ -116,6 +116,7 @@ function QuestChallenge(props: Props) {
                   block
                   className="btn btn-blue btn-large btn-raised"
                   color="primary"
+                  style={{ width: "100%" }}
                   onClick={() => onStepDone?.(step.id)}
                 >
                   Done!

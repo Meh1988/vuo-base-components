@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PlayerQuestStep, StepState } from "@vuo/models/PlayerQuest";
 import { HighlightType } from "@vuo/models/Step";
-import { AISparklesSVG, ChevronDownSVG } from "@vuo/atoms/SVGComponents";
+import { AISparklesSVG, ChevronDownSVG, LoadingCircleSVG } from "@vuo/atoms/SVGComponents";
 import Chip from "../atoms/Chip";
 import Button from "../atoms/Button";
 import InfoCard from "../molecules/InfoCard";
@@ -37,6 +37,11 @@ function QuestTask(props: QuestTaskProps) {
     setIsPrepPalOpen(!isPrepPalOpen);
   }
 
+  function handlePrepPalPress() {
+    handlePrepPalOpen();
+    onPrepPalPress?.(step);
+  }
+
   function injectResourceToStepText(pqStep: PlayerQuestStep): string | undefined {
     if (!pqStep.resources || !pqStep.text) {
       return undefined;
@@ -54,11 +59,12 @@ function QuestTask(props: QuestTaskProps) {
   const PrepPalButton = (
     <button
       type="button"
-      onClick={() => onPrepPalPress?.(step)}
+      onClick={handlePrepPalPress}
       className={styles.prep_pal_button}
     >
       <div className={styles.prep_pal_button_text}>
-        Too Difficult? Break steps down
+        {/* If prep pal is open, it means that it is loading an answer */}
+        {isPrepPalOpen ? "Close" : "Too Difficult? Break down steps"}
       </div>
       <div className={styles.prep_pal_button_icon}>
         <AISparklesSVG color="var(--text-secondary)" />
@@ -154,13 +160,19 @@ function QuestTask(props: QuestTaskProps) {
             </div>
             <div className={styles.preppal_container}>
               {currentStep && step.highlight !== HighlightType.Challenge && (step.subSteps?.length && step.subSteps?.length > 0 ? ExpandButton : PrepPalButton)}
-              {currentStep && isPrepPalOpen && step.subSteps?.length && step.subSteps?.length > 0 && (
-                <div className={styles.prep_pal_steps} style={{ transform: isPrepPalOpen ? "scaleY(1)" : "scaleY(0)" }}>
+              {currentStep && step.highlight !== HighlightType.Challenge && step.subSteps?.length === 0 && (
+                <div className={`${styles.prep_pal_steps} ${styles.prep_pal_steps_loading}  ${isPrepPalOpen ? styles.open : styles.closed}`}>
+                  <LoadingCircleSVG style={{ width: "48px", height: "48px" }} />
+                  <p>Creating simpler steps with AI!</p>
+              </div>
+              )}
+              {currentStep && step.highlight !== HighlightType.Challenge && Array.isArray(step.subSteps) && (
+                <div className={`${styles.prep_pal_steps} ${isPrepPalOpen && step.subSteps.length > 0 ? styles.open : styles.closed}`}>
                   <ul>
                     {step.subSteps.map((subStep) => (
-                      <li key={subStep.id}>- {subStep.text}</li>
-                    ))}
-                  </ul>
+                        <li key={subStep.id}>- {subStep.text}</li>
+                      ))}
+                    </ul>
                 </div>
               )}
             </div>
