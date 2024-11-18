@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PlayerQuestStep, StepState } from "@vuo/models/PlayerQuest";
 import { HighlightType } from "@vuo/models/Step";
-import { AISparklesSVG, ChevronDownSVG, LoadingCircleSVG } from "@vuo/atoms/SVGComponents";
+import { AISparklesSVG, ChevronSVG, LoadingCircleSVG } from "@vuo/atoms/SVGComponents";
 import Chip from "../atoms/Chip";
 import Button from "../atoms/Button";
 import InfoCard from "../molecules/InfoCard";
@@ -81,8 +81,14 @@ function QuestTask(props: QuestTaskProps) {
       <div className={styles.prep_pal_button_text}>
         {isPrepPalOpen ? "Close" : "Too Difficult? See broken down steps"}
       </div>
-      <div className={styles.prep_pal_button_icon} style={{ transform: isPrepPalOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
-        <ChevronDownSVG color="var(--text-secondary)"/>
+      <div className={styles.prep_pal_button_icon}>
+        <ChevronSVG 
+          color="var(--text-secondary)" 
+          direction={isPrepPalOpen ? "up" : "down"} 
+          style={{
+            transition: "transform 0.2s ease-in-out"
+          }}
+        />
       </div>
     </button>
   )
