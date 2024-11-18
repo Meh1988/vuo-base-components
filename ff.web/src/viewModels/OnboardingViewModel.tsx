@@ -202,6 +202,7 @@ export default class OnboardingViewModel extends BaseViewModel {
         method: "PATCH",
         data,
       });
+      localStorage.setItem("profileData", JSON.stringify(this.formData));
       localStorage.removeItem("onboardingData");
       runInAction(() => {
         this.setIsOnboardingComplete(true);
