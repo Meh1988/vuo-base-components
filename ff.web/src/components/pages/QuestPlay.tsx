@@ -121,8 +121,12 @@ const QuestPlay = observer(() => {
     }
   }
 
-  const onPrepPalPress = (step: PlayerQuestStep) => {
+  const onPrepPalPress = async (step: PlayerQuestStep) => {
     console.log("onPrepPalPress")
+    
+    // Simulate API call delay (2 seconds)
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    
     const mockSubSteps: PlayerQuestStep[] = [
       {
         id: "le id le fishe 1",
@@ -135,7 +139,6 @@ const QuestPlay = observer(() => {
         attachable: false,
         text: "Step 2",
         state: StepState.notStarted
-
       },
       {
         id: "le id le fishe 3",
