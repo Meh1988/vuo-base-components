@@ -148,17 +148,32 @@ export function PanSVG({
   </svg>
 }
 
-export function ChevronDownSVG({
+interface ChevronSVGProps extends AverageSVGProps {
+  direction?: "down" | "up" | "left" | "right";
+}
+
+export function ChevronSVG({
   color = "#ffffff",
-  style
-}: AverageSVGProps) {
+  style,
+  direction = "down"
+}: ChevronSVGProps) {
+  const rotationMap = {
+    down: 0,
+    up: 180,
+    left: 90,
+    right: 270
+  };
+
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       stroke={color}
-      style={style}
+      style={{
+        transform: `rotate(${rotationMap[direction]}deg)`,
+        ...style
+      }}
     >
       <g id="SVGRepo_bgCarrier" strokeWidth="0" />
       <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
