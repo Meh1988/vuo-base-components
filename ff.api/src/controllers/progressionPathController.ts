@@ -5,6 +5,13 @@ import { generateChallengeFunction } from "./challengesController";
 import OpenAI from "openai";
 import mongoose from "mongoose";
 
+/**
+ * Get all progression paths
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The progression paths
+ */
 export const getAllProgressionPaths = async (
   req: Request,
   res: Response,
@@ -18,6 +25,13 @@ export const getAllProgressionPaths = async (
   }
 };
 
+/**
+ * Create a progression path
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The created progression path
+ */
 export const createProgressionPath = async (
   req: Request,
   res: Response,
@@ -46,6 +60,13 @@ export const createProgressionPath = async (
   }
 };
 
+/**
+ * Generate a progression path
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The generated progression path
+ */
 export const generateProgressionPath = async (
   req: Request,
   res: Response,
@@ -350,6 +371,13 @@ export const generateProgressionPath = async (
   }
 };
 
+/**
+ * Get a progression path by ID
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The progression path
+ */
 export const getProgressionPathById = async (
   req: Request,
   res: Response,
@@ -373,6 +401,13 @@ export const getProgressionPathById = async (
   }
 };
 
+/**
+ * Update a progression path
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The updated progression path
+ */
 export const updateProgressionPath = async (
   req: Request,
   res: Response,

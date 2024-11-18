@@ -7,6 +7,15 @@ import { Quest } from "../models/progressionPathModel";
 import { sendOpenAIRequest } from "../externalAPI/openAI";
 import OpenAI from "openai";
 
+//TODO: Refactor code
+
+/**
+ * Create a challenge
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The created challenge
+ */
 export const createChallenge = async (
   req: Request,
   res: Response,
@@ -27,6 +36,13 @@ export const createChallenge = async (
   }
 };
 
+/**
+ * Get a challenge by ID
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The challenge
+ */
 export const getChallengeById = async (
   req: Request,
   res: Response,
@@ -44,6 +60,13 @@ export const getChallengeById = async (
   }
 };
 
+/**
+ * Function toenerate a challenge
+ * @param progressionPathTitle: The title of the progression path
+ * @param progressionPathDescription: The description of the progression path
+ * @param quest: The quest to generate a challenge for
+ * @returns The generated challenge
+ */
 export const generateChallengeFunction = async (
   progressionPathTitle: string,
   progressionPathDescription: string,
@@ -359,6 +382,13 @@ export const generateChallengeFunction = async (
   }
 };
 
+/**
+ * Generate a challenge
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The generated challenge
+ */
 export const generateChallenge = async (
   req: Request,
   res: Response,

@@ -5,6 +5,13 @@ import mongoose from "mongoose";
 import { PlayerProgressionPathModel } from "../models/playerProgressionPathModel";
 import User from "../models/userModel";
 
+/**
+ * Create a player progression path
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The created player progression path
+ */
 export const createPlayerProgressionPath = async (
   req: Request,
   res: Response,
@@ -59,6 +66,13 @@ export const createPlayerProgressionPath = async (
   }
 };
 
+/**
+ * Get all player progression paths
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The player progression paths
+ */
 export const getPlayerProgressionPaths = async (
   req: Request,
   res: Response,
@@ -75,6 +89,13 @@ export const getPlayerProgressionPaths = async (
   }
 };
 
+/**
+ * Get a player progression path by ID
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The player progression path
+ */
 export const getPlayerProgressionPathById = async (
   req: Request,
   res: Response,
@@ -96,6 +117,13 @@ export const getPlayerProgressionPathById = async (
   }
 };
 
+/**
+ * Update a player progression path
+ * @param req: The request
+ * @param res: The response
+ * @param next: The next function
+ * @returns The updated player progression path
+ */
 export const updatePlayerProgressionPath = async (
   req: Request,
   res: Response,
