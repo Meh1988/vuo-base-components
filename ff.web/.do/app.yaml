@@ -1,0 +1,12 @@
+static_sites:
+  - name: web
+    environment_slug: node-js
+    github:
+      repo: your-repo-name
+      branch: main
+      deploy_on_push: true
+    output_dir: dist
+    routes:
+      - path: /progressier.js
+        serve_static: true
+    catchall_document: index.html 
