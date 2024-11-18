@@ -13,7 +13,7 @@
 .mealsGrid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-12);
 }
 
 .mealBox {

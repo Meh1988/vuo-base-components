@@ -20,7 +20,7 @@ const ProfilePage = () => {
   const { navigateWithState } = useStackNavigator();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const loginViewModel = new LoginViewModel();
+  const [loginViewModel] = useState(() => new LoginViewModel());
 
   const handleLogout = async () => {
     await loginViewModel.logout();
@@ -47,7 +47,7 @@ const ProfilePage = () => {
     fetchProfile();
   }, []);
 
-  const confirmDeleteAccount = () => {
+  const confirmDeleteAccount: () => void = () => {
     loginViewModel.deleteAccount();
     localStorage.removeItem("profileData");
     navigateWithState("/home");
