@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useEffect, useState, CSSProperties, useRef } from 'react';
 import { observer } from 'mobx-react-lite'
 import { useNavigate, useParams } from 'react-router-dom';
@@ -24,7 +22,7 @@ const QuestOutro = observer(() => {
 
   const { id } = useParams()
   const [viewModel] = useState<QuestOutroViewModel>(() => new QuestOutroViewModel(id!))
-  const [popupVisible, setPopupVisible] = useState<boolean>(false)
+  const [, setPopupVisible] = useState<boolean>(false)
 
   const achievementScroller = useRef<HTMLDivElement>(null)
   const achievementScrollerTrack = useRef<HTMLDivElement>(null)
@@ -108,12 +106,10 @@ const QuestOutro = observer(() => {
         quest_id: viewModel.playerQuest.id,
         quest_name: viewModel.playerQuest.name,
         // quest_duration: viewModel.playerQuest.duration, // You'll need to add this to your Quest model
-        xp_earned: viewModel.combinedPlayerSkillsForCompletedQuest?.reduce(
-          (prevValue, { challenge_rating }) => prevValue + challenge_rating, 
-          0
-        ),
+        xp_earned: Array.from(viewModel.combinedPlayerSkillsForCompletedQuest?.values() || [])
+          .reduce((prevValue, count) => prevValue + count, 0),
         achievements_earned: viewModel.playerAchievementsForCompletedQuest?.length || 0,
-        skills_earned: viewModel.combinedPlayerSkillsForCompletedQuest?.map(skill => skill.name) || [],
+        skills_earned: Array.from(viewModel.combinedPlayerSkillsForCompletedQuest?.keys() || []),
       });
 
       // Track individual achievements
@@ -179,76 +175,86 @@ const QuestOutro = observer(() => {
       {!viewModel.loading && viewModel.playerQuest && (
         <>
           <SkewedTitleList items={titleList()} sequential={false} />
-          <div className={`${style.outro_achievements} mt48 align-items-center flex flex-col`}>
-            <h2 className={`font-big font-weight-700 ${style.outro_achievements_title}`}>
-              Achievements unlocked
-            </h2>
-            <div
-              className={`${style.outro_achievements_scroller} ${style.outro_achievements_scroller_snap}`}
-              ref={achievementScroller}>
-              <div
-                className={`${style.outro_achievements_scroller_track}`}
-                ref={achievementScrollerTrack}
-              >
-                {viewModel.playerAchievementsForCompletedQuest?.map(playerAchievement =>
-                (
+          <div style={{ marginTop: 'var(--space-88)' }} />
+          <div className={`${style.outro_achievements}`}>
+            {viewModel.playerAchievementsForCompletedQuest && viewModel.playerAchievementsForCompletedQuest.length > 0 && (
+              <>
+                <h2 className={`${style.outro_achievements_title}`}>
+                  Achievements unlocked
+                </h2>
+                <div
+                  className={`${style.outro_achievements_scroller} ${style.outro_achievements_scroller_snap}`}
+                  ref={achievementScroller}>
                   <div
-                    className={`${style.outro_achievements_scroller_box}`}
-                    key={playerAchievement.achievement.name}>
-                    {/* <AchievementOutro playerAchievement={playerAchievement} /> */}
-                  </div>
-                )
-                )}
-              </div>
-            </div>
-            <div className={`${style.outro_skills} mt16`}>
-              {viewModel.combinedPlayerSkillsForCompletedQuest?.map((skill, index) => {
-                const skillStyle: CSSProperties = {
-                  backgroundColor: "var(--purple)",
-                  '--delay': `${AchievementDelay + (viewModel.playerAchievementsForCompletedQuest?.length || 0) * 600 + 300 * (index + 1)}ms`
-                } as CSSProperties;
-
-                return (
-                  <div
-                    className={`${style.skill}`}
-                    key={`${skill.name}_index`}
-                    style={skillStyle}
+                    className={`${style.outro_achievements_scroller_track}`}
+                    ref={achievementScrollerTrack}
                   >
-                    <div>
-                      {/* TODO fix icons  */}
-                      {/* <Icon name="chef-knife" /> */}
-                      Icon
-                    </div>
-                    <div className={`${style.skill_title} font-weight-600`}>
-                      {skill.name}
-                    </div>
-                    <Chip className={`${style.skill_chip}`}>+{skill.challenge_rating}XP</Chip>
+                    {viewModel.playerAchievementsForCompletedQuest.map(playerAchievement =>
+                    (
+                      <div
+                        className={`${style.outro_achievements_scroller_box}`}
+                        key={playerAchievement.achievement.name}>
+                        {/* <AchievementOutro playerAchievement={playerAchievement} /> */}
+                      </div>
+                    )
+                    )}
                   </div>
-                )
-              })}
-            </div>
-            <div
-              className={`${style.outro_score} text-center flex flex-col`}
-              style={scoreScaleStyle}
-            >
-              <div className={`${style.outro_skill_score_value} font-h3 font-weight-900 mt16`}>
-                {viewModel.combinedPlayerSkillsForCompletedQuest?.reduce((prevValue, { challenge_rating }) => prevValue + challenge_rating, 0)}
+                </div>
+              </>
+            )}
+            <div className={`${style.outro_skills_score_container}`}>
+              <div className={`${style.outro_skills}`}>
+                {Array.from(viewModel.combinedPlayerSkillsForCompletedQuest?.entries() || []).map(([skill, count], index) => {
+                  const verticalPosition = `position${Math.floor(Math.random() * 4) + 1}`;
+                  const horizontalPosition = ['left', 'center', 'right'][Math.floor(Math.random() * 3)];
+
+                  const skillStyle: CSSProperties = {
+                    backgroundColor: "var(--surface-brand-purple)",
+                    '--delay': `${AchievementDelay + 300 * (index + 1)}ms`
+                  } as CSSProperties;
+
+                  return (
+                    <div
+                      className={`${style.skill} ${style[verticalPosition]} ${style[horizontalPosition]}`}
+                      key={`${skill}_index`}
+                      style={skillStyle}
+                    >
+                      <div>
+                        {/* TODO fix icons  */}
+                        {/* <Icon name="chef-knife" /> */}
+
+                      </div>
+                      <div className={`${style.skill_title} font-weight-600`}>
+                        {skill}
+                      </div>
+                      <Chip className={`${style.skill_chip}`}>+ {count}XP</Chip>
+                    </div>
+                  )
+                })}
               </div>
-              <small className={`${style.outro_skill_text} font-weight-700 uppercase mb16 mt8`}>
-                Cooking
-                <br />
-                Skill XP
-                <br />
-                Earned
-              </small>
+              <div
+                className={`${style.outro_score}`}
+                style={scoreScaleStyle}
+              >
+                <div className={`${style.outro_skill_score_value}`}>
+                  {Array.from(viewModel.combinedPlayerSkillsForCompletedQuest?.values() || []).reduce((prevValue, count) => prevValue + count, 0)}
+                </div>
+                <small className={`${style.outro_skill_text}`}>
+                  Cooking
+                  <br />
+                  Skill XP
+                  <br />
+                  Earned
+                </small>
+              </div>
             </div>
           </div>
-          <div className='mt48 width100'>
-            <Button block className='btn btn-large btn-raised' color='primary' size='large' onClick={onContinue}>Continue</Button>
+          <div className={style.outro_actions}>
+            <Button block className='btn btn-large btn-raised' color='primary' onClick={onContinue}>Continue</Button>
             {viewModel.shadowAccount && (
               <>
-                <h1 style={{width: "100%", textAlign: "center"}}>or</h1>
-                <Button block className='btn btn-large btn-raised' color='primary' size='large' onClick={() => {setPopupVisible(true)}}>Save your progress!</Button>
+                <p style={{ width: "100%", textAlign: "center", marginBottom: "var(--space-8)" }}>or</p>
+                <Button block className='btn btn-large btn-raised' color='primary' onClick={() => setPopupVisible(true)}>Save your progress!</Button>
               </>
             )}
           </div>

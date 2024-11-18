@@ -73,7 +73,7 @@ export default function QuizOrganism({ quiz, allowClose, onClose }: { quiz: Quiz
 */}
           <h3 className={styles.questionTitle}>
             {(() => {
-              if (currentQuestion.feedbackTitle && Array.isArray(currentQuestion.feedbackTitle) && givenAnswerIndex! >= 0) {
+              if (currentQuestion.feedbackTitle && Array.isArray(currentQuestion.feedbackTitle) && currentQuestion.feedbackTitle.length > 0 && givenAnswerIndex! >= 0) {
                 return currentQuestion.feedbackTitle[givenAnswerIndex!];
               }
               return isCorrect ? 'Correct!' : 'Incorrect!';
@@ -83,10 +83,8 @@ export default function QuizOrganism({ quiz, allowClose, onClose }: { quiz: Quiz
           <div className={styles.optionsContainer}>
             <p>
               {(() => {
-                if (currentQuestion.feedbackMessage && Array.isArray(currentQuestion.feedbackMessage) && givenAnswerIndex! >= 0) {
+                if (currentQuestion.feedbackMessage && Array.isArray(currentQuestion.feedbackMessage) && currentQuestion.feedbackMessage.length > 0 && givenAnswerIndex! >= 0) {
                   return currentQuestion.feedbackMessage[givenAnswerIndex!];
-                } if (currentQuestion.feedbackMessage && !isCorrect) {
-                  return currentQuestion.feedbackMessage;
                 }
                 return isCorrect ? 'You are correct!' : 'But worry not, you\'ll get it right next time.';
               })()}
