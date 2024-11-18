@@ -1,3 +1,4 @@
+import { cacheService } from "@services/CacheService";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "./BaseViewModel";
 
@@ -21,6 +22,8 @@ interface DayPlan {
 }
 
 export class MealMapViewModel extends BaseViewModel {
+  static CACHE_KEY = "mealMapRecipes"; // cache key for recipes
+
   recipes: Recipe[] = [];
   mealPlan: DayPlan[] = [];
   isLoading = false;
@@ -38,24 +41,42 @@ export class MealMapViewModel extends BaseViewModel {
       fetchRecipes: action,
     });
 
-    // Automatically fetch recipes when instance is created
     this.fetchRecipes();
   }
 
   async fetchRecipes(): Promise<void> {
     this.isLoading = true; // Add loading state
+    const cachedData = cacheService.get<Recipe[]>(MealMapViewModel.CACHE_KEY);
 
-    const data = await this.fetchData<Recipe[]>({
-      url: "v1/mealmap/recipes",
-      method: "GET",
-    });
+    if (cachedData) {
+      runInAction(() => {
+        this.recipes = cachedData;
+        this.mealPlan = this.organizeMeals(cachedData);
+        this.isLoading = false;
+        this.empty = cachedData.length === 0;
+      });
+    } else {
+      try {
+        const data = await this.fetchData<Recipe[]>({
+          url: "v1/mealmap/recipes",
+          method: "GET",
+        });
 
-    runInAction(() => {
-      this.recipes = data || [];
-      this.mealPlan = this.organizeMeals(data || []);
-      this.isLoading = false;
-      this.empty = data?.length === 0 || !data;
-    });
+        runInAction(() => {
+          this.recipes = data || [];
+          this.mealPlan = this.organizeMeals(data || []);
+          this.isLoading = false;
+          this.empty = data?.length === 0 || !data;
+
+          cacheService.set<Recipe[] | null>(MealMapViewModel.CACHE_KEY, data); // Cache the fetched data
+        });
+      } catch (err) {
+        runInAction(() => {
+          this.error = "Failed to fetch recipes.";
+          this.isLoading = false;
+        });
+      }
+    }
   }
 
   private organizeMeals(recipes: Recipe[]): DayPlan[] {
