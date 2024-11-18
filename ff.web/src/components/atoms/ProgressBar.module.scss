@@ -1,5 +1,5 @@
 .progressBar {
-    background-color: white;
+    background-color: var(--surface-brand-white);
     border-radius: var(--radius-16); // Use CSS variable for border radius
     height: var(--space-8); // Use CSS variable for height
     width: 100%;
