@@ -31,6 +31,7 @@ export const EditProfile = () => {
 
   const confirmDeleteAccount = () => {
     localStorage.removeItem("profileData");
+    loginViewModel.deleteAccount();
     navigateWithState("/home");
   };
 
