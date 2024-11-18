@@ -106,12 +106,10 @@ const QuestOutro = observer(() => {
         quest_id: viewModel.playerQuest.id,
         quest_name: viewModel.playerQuest.name,
         // quest_duration: viewModel.playerQuest.duration, // You'll need to add this to your Quest model
-        xp_earned: viewModel.combinedPlayerSkillsForCompletedQuest?.reduce(
-          (prevValue, { challenge_rating }) => prevValue + challenge_rating, 
-          0
-        ),
+        xp_earned: Array.from(viewModel.combinedPlayerSkillsForCompletedQuest?.values() || [])
+          .reduce((prevValue, count) => prevValue + count, 0),
         achievements_earned: viewModel.playerAchievementsForCompletedQuest?.length || 0,
-        skills_earned: viewModel.combinedPlayerSkillsForCompletedQuest?.map(skill => skill.name) || [],
+        skills_earned: Array.from(viewModel.combinedPlayerSkillsForCompletedQuest?.keys() || []),
       });
 
       // Track individual achievements
