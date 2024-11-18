@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import TagManager from "react-gtm-module";
 import { BaseViewModel, BaseViewModelProps } from "@vuo/viewModels/BaseViewModel";

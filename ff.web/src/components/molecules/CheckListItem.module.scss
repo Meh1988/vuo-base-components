@@ -3,25 +3,21 @@
   border-radius: 16px;
   display: flex;
   justify-content: space-between;
+  background-color: var(--surface-secondary);
   transition: background-color 0.1s ease;
-}
-
-.container:active {
-  background-color: var(--gray-700);
 }
 
 .container_checked {
-  background-color: var(--blue);
-  transition: background-color 0.1s ease;
+  background-color: var(--surface-brand-blue);
 }
 
 .icon_container {
-  background-color: var(--gray-500);
-  border-radius: 9999px;
-  height: 32px;
+  background-color: var(--color-grey-systemGrayAccessibleLight);
+  border-radius: var(--radius-32);
+  height: 40px;
   margin: 8px 0px 8px 8px;
   padding: 4px;
-  width: 32px;
+  width: 40px;
 }
 
 .check_container {
@@ -29,6 +25,8 @@
   padding: 4px;
   margin: 8px 16px 8px 8px;
   width: 40px;
+  padding: var(--space-8);
+  transition: background-color 0.1s ease;
 }
 
 .nonchecked {
@@ -38,7 +36,7 @@
 }
 
 .checked {
-  background-color: var(--white);
+  background-color: white;
   border-radius: 50%;
   transition: background-color 0.1s ease;
 }
@@ -62,4 +60,14 @@
   margin-left: 8px;
   padding: 1px 6px;
   text-transform: uppercase;
+}
+
+.quantity_and_unit_bullet {
+  background-color: var(--color-grey-systemGrayAccessibleLight);
+}
+
+.ingredient_container {
+  display: flex;
+  align-items: center;
+  direction: row;
 }

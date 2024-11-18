@@ -3,6 +3,8 @@ $bounce: cubic-bezier(.34, 1.2, .35, 1);
 .container {
   transform: skewY(-5deg);
   transform-origin: top right;
+  font-weight: 600;
+  text-align: center;
 }
 
 .title_odd {
@@ -11,11 +13,19 @@ $bounce: cubic-bezier(.34, 1.2, .35, 1);
   animation-duration: .5s;
   animation-fill-mode: forwards;
   animation-timing-function: $bounce;
-  background-color: var(--blue);
-  color: var(--white);
+  background-color: var(--surface-brand-blue);
+  color: white;
   line-height: 1 !important;
-  padding: 16px 16px;
+  padding: var(--space-16) var(--space-16);
   opacity: 0;
+}
+
+.title_short {
+  font-size: var(--font-size-40);
+}
+
+.title_long {
+  font-size: var(--font-size-48);
 }
 
 .title_even {
@@ -24,10 +34,10 @@ $bounce: cubic-bezier(.34, 1.2, .35, 1);
   animation-duration: .5s;
   animation-fill-mode: forwards;
   animation-timing-function: $bounce;
-  background-color: var(--blue);
-  color: var(--white);
+  background-color: var(--surface-brand-blue);
+  color: white;
   line-height: 1 !important;
-  padding: 16px 16px;
+  padding: var(--space-16) var(--space-16);
   opacity: 0;
 }
 

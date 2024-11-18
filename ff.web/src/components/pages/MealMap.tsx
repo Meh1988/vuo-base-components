@@ -68,21 +68,20 @@ const MealMap = observer(() => {
 
   return (
     <Page>
-      {viewModel.mealPlan.map((dayPlan) => (
-        <div className={styles.dayPlan}>
-          <h3>{dayPlan.date}</h3>
-
-          <div className={styles.mealsGrid}>
-            {dayPlan.meals.map((meal: Meal) => (
-              <div key={meal.id} className={styles.mealBox}>
-                <strong>{meal.name}</strong>
-                <img src={meal?.image} alt={meal.name} />
-                <p>{meal.description}</p>
-              </div>
-            ))}
+       {viewModel.mealPlan.map((dayPlan, index) => (
+          <div key={index} className={styles.dayPlan}>
+            <h3>{dayPlan.date}</h3>
+            <div className={styles.mealsGrid}>
+              {dayPlan.meals.map((meal: any) => (
+                <div key={meal.id} className={styles.mealBox}>
+                  <strong>{meal.name}</strong>
+                  <img src={meal?.image} alt={meal.name} />
+                  <p>{meal.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </Page>
   );
 });

@@ -1,5 +1,5 @@
 .container {
-    background-color: var(--gray-900);
+    background-color: var(--surface-primary);
     border-radius: 15px;
     color: var(--white);
     display: flex;
@@ -51,6 +51,21 @@
     object-fit: cover;
     border-radius: 15px;
 }
+
+.play_button {
+    background-color: var(--surface-brand-blue);
+    border: none;
+    border-radius: 15px;
+    width: 100%;
+    padding: 10px;
+    height: 70px;
+}
+
+.play_icon {
+    height: 50px;
+}
+
+
 
 @media (max-width: 425px) {
     .title{
