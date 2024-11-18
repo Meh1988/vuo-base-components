@@ -22,6 +22,7 @@ import {
   getCurrentPlayerQuests,
   getPlayerQuest,
   claimStep,
+  updatePlayerQuestStepSubSteps
 } from "../controllers/playerQuestsController";
 import {
   getCurrentUserAchievement,
@@ -103,6 +104,7 @@ router.get("/playerQuests/:id", authMiddleware, getPlayerQuest);
 router.post("/playerQuests", authMiddleware, createPlayerQuest);
 router.patch("/playerQuests/:id", authMiddleware, updatePlayerQuestProgress);
 router.patch("/playerQuests/:id/:stepId/claim", authMiddleware, claimStep);
+router.patch("/playerQuests/:id/:stepId/subSteps", authMiddleware, updatePlayerQuestStepSubSteps);
 
 // Achievement routes
 router.get("/achievements", authMiddleware, getAchievements);

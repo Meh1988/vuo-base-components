@@ -140,6 +140,57 @@ const updatePlayerQuestProgress = async (req: Request, res: Response) => {
   }
 };
 
+const updatePlayerQuestStepSubSteps = async (req: Request, res: Response) => {
+  const { id, stepId } = req.params;
+  const { subSteps } = req.body;
+
+  try {
+    let playerQuest = await PlayerQuest
+      .findOne({ _id: id })
+      .populate('tags')
+      .populate({
+        'path': 'recipe',
+        'model': 'Recipe',
+        'populate': {
+          'path': 'steps',
+          'populate': {
+            'path': 'skills'
+          }
+        }
+      })
+
+    if (!playerQuest) {
+      res.status(404).json({ message: 'PlayerQuest not found' })
+      return
+    }
+
+    const questStepIndex = playerQuest.recipe.steps.findIndex((step: any) => step._id.toString() === stepId);
+    if (questStepIndex === -1) {
+      res.status(400).json({ message: 'Step not found' });
+      return;
+    }
+
+    playerQuest.recipe.steps[questStepIndex].subSteps = subSteps
+    await playerQuest.save();
+
+    const updatedQuest = await PlayerQuest
+      .findOne({ _id: id })
+      .populate('tags')
+      .populate({
+        'path': 'recipe',
+        'model': 'Recipe',
+        'populate': {
+          'path': 'steps',
+          'populate': { path: 'skills' }
+        }
+      })
+    res.json(updatedQuest);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+
+}
+
 const claimStep = async (req: Request, res: Response) => {
   const { id, stepId } = req.params;
 
@@ -241,6 +292,7 @@ export {
   claimStep,
   createPlayerQuest,
   updatePlayerQuestProgress,
+  updatePlayerQuestStepSubSteps,
   getCurrentPlayerQuests,
   getPlayerQuest
 };

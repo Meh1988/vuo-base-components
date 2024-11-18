@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import { Quest } from '@vuo/models/Quest';
-import Button from '@vuo/atoms/Button';
 import styles from './QuestSelectCard.module.scss'
+import PlayIcon from '../atoms/PlayIcon';
 
 interface QuestSelectCardProps {
   quest: Quest;
@@ -50,17 +48,13 @@ function QuestSelectCard(props: QuestSelectCardProps) {
           {quest.recipe?.description}
         </span>
       </div>
-      <Button
-        className="btn btn-large btn-raised"
-        color='primary'
-        size='large'
-        style={{ backgroundColor: "var(--blue)" }}
-        onClick={(e: any) => { handleButtonClick(e) }}
+      <button
+        type='button'
+        className={styles.play_button}
+        onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => { handleButtonClick(e) }}
       >
-        {/* TODO fix icons */}
-        {/* <Icon name='play' /> */}
-        Icon
-      </Button>
+        <PlayIcon />
+      </button>
     </div>
   )
 }

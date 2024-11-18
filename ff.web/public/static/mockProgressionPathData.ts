@@ -19,7 +19,7 @@ const mockProgressionPathData: ProgressionPath[] = [
                         type: "minigame-quiz",
                         minigameId: "quiz",
                         title: "Knife Basics",
-                        quizId: "knife-skills-001",
+                        quizId: "67334bb63711d8e7d6350dff",
                         description: "Get versed with knife skills",
                     },
 
@@ -198,6 +198,122 @@ const mockProgressionPathData: ProgressionPath[] = [
                         title: "Global Flavors 2",
                         quizId: "international-cuisines-002",
                         description: "Master various cooking techniques",
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Mastering Spaghetti Making",
+        "description": "A comprehensive guide to mastering the art of spaghetti making, from selecting ingredients to perfecting sauces and cooking techniques.",
+        "units": [
+            {
+                "id": "unit1",
+                "title": "Understanding Ingredients",
+                "levels": 3,
+                "description": "Learn about the essential ingredients for making spaghetti.",
+                "quests": [
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Pasta Varieties Quiz",
+                        "description": "Identify different types of pasta and their uses."
+                    },
+                    {
+                        "type": "minigame-ingredient-match",
+                        "minigameId": "ingredient-match",
+                        "title": "Sauce and Pasta Pairing",
+                        "description": "Match sauces with the appropriate pasta types."
+                    },
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Herbs and Spices Quiz",
+                        "description": "Learn about herbs and spices used in spaghetti dishes."
+                    }
+                ]
+            },
+            {
+                "id": "unit2",
+                "title": "Perfecting the Sauce",
+                "levels": 4,
+                "description": "Master the art of making delicious spaghetti sauces.",
+                "quests": [
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Tomato Sauce Basics",
+                        "description": "Learn the fundamentals of making tomato sauce."
+                    },
+                    {
+                        "type": "minigame-ingredient-match",
+                        "minigameId": "ingredient-match",
+                        "title": "Ingredient Selection",
+                        "description": "Choose the best ingredients for your sauce."
+                    },
+                    {
+                        "type": "minigame-conversation-starter",
+                        "minigameId": "conversation-starter",
+                        "title": "Sauce Flavor Balancing",
+                        "description": "Discuss how to balance flavors in your sauce."
+                    },
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Creamy Sauces Quiz",
+                        "description": "Explore the techniques for making creamy sauces."
+                    }
+                ]
+            },
+            {
+                "id": "unit3",
+                "title": "Cooking Techniques",
+                "levels": 3,
+                "description": "Learn the techniques for cooking perfect spaghetti.",
+                "quests": [
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Boiling Pasta Quiz",
+                        "description": "Understand the process of boiling pasta to perfection."
+                    },
+                    {
+                        "type": "minigame-virtual-sear",
+                        "minigameId": "virtual-sear",
+                        "title": "Searing Ingredients",
+                        "description": "Learn how to sear ingredients for added flavor."
+                    },
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Timing and Texture",
+                        "description": "Master the timing and texture of cooked pasta."
+                    }
+                ]
+            },
+            {
+                "id": "unit4",
+                "title": "Presentation and Serving",
+                "levels": 3,
+                "description": "Enhance your spaghetti presentation and serving skills.",
+                "quests": [
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Plating Techniques Quiz",
+                        "description": "Learn techniques for plating spaghetti beautifully."
+                    },
+                    {
+                        "type": "minigame-conversation-starter",
+                        "minigameId": "conversation-starter",
+                        "title": "Garnishing Ideas",
+                        "description": "Discuss creative garnishing ideas for spaghetti."
+                    },
+                    {
+                        "type": "minigame-quiz",
+                        "minigameId": "quiz",
+                        "title": "Serving Suggestions",
+                        "description": "Explore different ways to serve spaghetti dishes."
                     }
                 ]
             }
