@@ -1,11 +1,20 @@
 export interface DayPlan {
-  date: string;
-  meals: Meal[];
+  date: Date;
+  meals: MealMapMeal[];
 }
 
-export interface Meal {
+export interface MealMapMeal {
   id: string;
   name: string;
   description: string;
-  image?: string;
+  media?: {
+    image?: string;
+  };
+  time: MealTime;
+}
+
+export enum MealTime {
+  Breakfast = "Breakfast",
+  Lunch = "Lunch",
+  Dinner = "Dinner",
 }
