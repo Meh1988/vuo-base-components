@@ -9,10 +9,14 @@ import { ThemeContext } from "@vuo/context/ThemeContext";
 import LoginViewModel from "../../viewModels/LoginViewModel";
 import { Modal } from "../molecules/Modal";
 import { Tabs } from "../molecules/Tabs";
-import LoginComponent from "../organisms/LoginComponent";
+// import LoginComponent from "../organisms/LoginComponent";
 import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserProfile } from "../organisms/userProfile";
 import styles from "./ProfilePage.module.scss";
+import shadowAvatar from "../../assets/images/shadow-account.jpeg";
+// import Section from "../atoms/Section";
+// import LoginModal from "../organisms/LoginModal";
+import LoginComponent from "../organisms/LoginComponent";
 
 const ProfilePage = () => {
   const { toggleTheme } = useContext(ThemeContext);
@@ -69,15 +73,16 @@ const ProfilePage = () => {
     </>
   );
 
+  const avatarSrc = loginViewModel.sessionDataStore.user?.shadowAccount 
+  ? shadowAvatar  // Add this image to your public folder
+  : loginViewModel.sessionDataStore.user?.photoURL || "https://placehold.co/50x50";
+
   return (
     <Page>
       <div className={styles.profilePage__header}>
         <div className={styles.profilePage__header__avatar}>
           <Avatar
-            src={
-              loginViewModel.sessionDataStore.user?.photoURL ||
-              "https://placehold.co/50x50"
-            }
+            src={avatarSrc}
             alt="Image profile"
           />
           <div className={styles.profilePage__avatarInfo}>
@@ -106,6 +111,7 @@ const ProfilePage = () => {
       >
         Edit Profile
       </Button>
+    
       <LoginComponent />
       <Tabs
         tabs={[

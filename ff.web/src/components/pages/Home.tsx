@@ -29,7 +29,9 @@ const Home = observer(() => {
     };
 
     const userAccount = loginViewModel.sessionDataStore?.user;
+    const userAccountId = localStorage.getItem("SessionDataStore")
 
+    console.log("useraccount from home", JSON.stringify(userAccount))
     const goToOnboading = () => {
         // Add conditional navigation logic
         //creating shadow account
