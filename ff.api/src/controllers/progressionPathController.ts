@@ -73,8 +73,8 @@ export const generateProgressionPath = async (
   next: NextFunction
 ) => {
   const prompt = req.body.prompt;
-  if (!prompt) {
-    return res.status(400).json({ message: "Missing required fields" });
+  if (!prompt || typeof prompt !== "string") {
+    return res.status(400).json({ message: "Invalid or missing prompt" });
   }
   const messages = [
     {
@@ -363,8 +363,6 @@ export const generateProgressionPath = async (
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).json({ message: error.message });
-    } else if (error instanceof Error) {
-      return res.status(500).json({ message: error.message });
     } else {
       next(error);
     }

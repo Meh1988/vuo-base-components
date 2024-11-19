@@ -59,7 +59,9 @@ export const createPlayerProgressionPath = async (
     res.json(newPlayerProgressionPath);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return res.status(400).json({ message: error.message });
+      return res
+        .status(400)
+        .json({ message: "Invalid progression path data: " + error.message });
     } else {
       next(error);
     }
@@ -79,13 +81,17 @@ export const getPlayerProgressionPaths = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.params.userId;
     const playerProgressionPaths = await PlayerProgressionPathModel.find({
       user: userId,
     });
     res.json(playerProgressionPaths);
   } catch (error) {
-    next(error);
+    if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    } else {
+      next(error);
+    }
   }
 };
 
@@ -113,7 +119,13 @@ export const getPlayerProgressionPathById = async (
     }
     res.json(playerProgressionPath);
   } catch (error) {
-    next(error);
+    if (error instanceof mongoose.Error.CastError) {
+      return res
+        .status(400)
+        .json({ message: "Invalid player progression path ID" });
+    } else {
+      next(error);
+    }
   }
 };
 
@@ -147,6 +159,18 @@ export const updatePlayerProgressionPath = async (
     }
     res.json(updatedPlayerProgressionPath);
   } catch (error) {
-    next(error);
+    if (error instanceof mongoose.Error.CastError) {
+      return res
+        .status(400)
+        .json({ message: "Invalid player progression path ID" });
+    } else if (error instanceof mongoose.Error.ValidationError) {
+      return res
+        .status(400)
+        .json({
+          message: "Invalid player progression path data: " + error.message,
+        });
+    } else {
+      next(error);
+    }
   }
 };
