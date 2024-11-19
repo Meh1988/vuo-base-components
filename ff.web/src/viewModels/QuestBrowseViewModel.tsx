@@ -144,7 +144,6 @@ export default class QuestBrowseViewModel extends BaseViewModel {
     if (userProfile) {
       this.sessionDataStore.userProfile = userProfile;
     }
-    console.log("storeeee", this.sessionDataStore)
   }
 
   async searchQuests(): Promise<void> {

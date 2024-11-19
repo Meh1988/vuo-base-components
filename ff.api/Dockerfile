@@ -46,4 +46,4 @@ EXPOSE 8080
 
 # Start the app
 # CMD ["node", "dist/index.js"]
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
