@@ -36,28 +36,26 @@ const getUserProfile = async (req: Request, res: Response) => {
 
 
 const updateUserProfile = async (req: Request, res: Response) => {
-  console.log("updateUserProfile :: req", req.body)
   try {
     const userId = req.params.id;
-    const updateData = req.body;
+    const updateData = req.body.pathData || req.body; // Handle both pathData and direct updates
 
-    // Log the input data for debugging
     console.log('Update attempt for userId:', userId);
     console.log('Update data:', updateData);
 
-    const updatedUserProfile = await Onboarding.findOneAndUpdate(
-      { userId },
-      { $set: updateData },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedUserProfile) {
+    // Use findOne first to check if document exists
+    const existingProfile = await Onboarding.findOne({ userId });
+    
+    if (!existingProfile) {
       return res.status(404).json({ message: 'User profile not found' });
     }
 
-    res.json(updatedUserProfile);
+    // Apply updates to existing document
+    Object.assign(existingProfile, updateData);
+    await existingProfile.save();
+
+    res.json(existingProfile);
   } catch (error) {
-    // Improved error handling
     console.error('Error updating user profile:', error);
     res.status(500).json({ 
       message: 'Server error', 

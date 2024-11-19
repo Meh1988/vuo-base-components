@@ -60,6 +60,7 @@ export default class LoginViewModel extends BaseViewModel {
       // signInWithFacebook: action,
       isLoginModalOpen: observable,
       toggleLoginModal: action,
+      getProfile: action,
     });
   }
 
@@ -205,24 +206,22 @@ export default class LoginViewModel extends BaseViewModel {
     }
   }
 
-  async updateUserProfile(
-    userId: string,
-    profileData: FormData,
-  ): Promise<void> {
+  async updateUserProfile(userId: string, profileData: any): Promise<void> {
+    console.log("input", userId)
     try {
-      const response = await this.fetchData({
-        url: `v1/profile/update/${userId}`,
-        method: "PATCH",
-        data: profileData,
-      });
+      const response = await this.patchData(
+        `v1/profile/update/${userId}`, 
+        { pathData: profileData }
+      );
 
       if (response) {
         runInAction(() => {
-          sessionDataStore.profile = response.profile;
+          sessionDataStore.profile = response;
         });
       }
     } catch (error) {
       console.error("Error updating user profile:", error);
+      this.setErrors(error instanceof Error ? error : new Error("Failed to update profile"));
     }
   }
 
@@ -376,5 +375,24 @@ export default class LoginViewModel extends BaseViewModel {
     runInAction(() => {
       this.isLoginModalOpen = !this.isLoginModalOpen;
     });
+  }
+
+  async getProfile(userId: string): Promise<any> {
+    try {
+      const response = await this.fetchData<any>({
+        url: `v1/profile/${userId}`,
+        method: "GET"
+      });
+
+      if (response) {
+        runInAction(() => {
+          sessionDataStore.profile = response;
+        });
+      }
+      return response;
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      this.setErrors(error instanceof Error ? error : new Error("Failed to fetch profile"));
+    }
   }
 }

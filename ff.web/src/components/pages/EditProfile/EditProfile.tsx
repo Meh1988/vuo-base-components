@@ -9,6 +9,7 @@ import Button from "@vuo/atoms/Button";
 import { initialOnboardingData } from "@vuo/constants/Onboarding";
 import { Modal } from "@vuo/molecules/Modal";
 import { UserPreferences } from "@vuo/organisms/userPreferences";
+import shadowAvatar from "../../../assets/images/shadow-account.jpeg";
 
 import styles from "./EditProfile.module.scss";
 
@@ -19,15 +20,32 @@ export const EditProfile = () => {
   const { navigateWithState, goBack } = useStackNavigator();
   const [loginViewModel] = useState(() => new LoginViewModel());
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const userAccountId = loginViewModel.sessionDataStore.user?.id;
 
   useEffect(() => {
-    const storedProfile = localStorage.getItem("profileData");
-    if (storedProfile) {
-      const parsedProfile = JSON.parse(storedProfile);
-      delete parsedProfile.completedSteps;
-      setProfileData(parsedProfile);
-    }
-  }, []);
+    const fetchProfile = async () => {
+      try {
+        const sessionData = JSON.parse(
+          localStorage.getItem("SessionDataStore") || "{}"
+        );
+        const userId = sessionData.user?.id;
+        
+        if (userId) {
+          const response = await loginViewModel.getProfile(userId);
+          if (response) {
+            setProfileData(prevData => ({
+              ...prevData,
+              ...response
+            }));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+  
+    fetchProfile();
+  }, [loginViewModel]);
 
   const confirmDeleteAccount = () => {
     localStorage.removeItem("profileData");
@@ -76,7 +94,8 @@ export const EditProfile = () => {
             style={{ display: "none" }}
             id="profile-image-input"
           />
-          <Avatar src={profileData.image} alt="Image profile" />
+          {/* <Avatar src={profileData.image} alt="Image profile" /> */}
+          <Avatar src={loginViewModel.sessionDataStore.user?.photoURL || shadowAvatar} alt="Image profile" />
           <div>
             <p className={styles.editProfilePage__header__name}>Choose Image</p>
             <p className={styles.editProfilePage__header__description}>
@@ -97,8 +116,7 @@ export const EditProfile = () => {
           variant="large"
           color="primary"
           onClick={() => {
-            localStorage.setItem("profileData", JSON.stringify(profileData));
-            loginViewModel.updateUserProfile(profileData.userId, profileData);
+            loginViewModel.updateUserProfile(userAccountId, profileData);
             goBack();
           }}
         >
