@@ -194,6 +194,7 @@ export default class OnboardingViewModel extends BaseViewModel {
   };
 
   handleFinish = async () => {
+    //TODO CALL RECOMMENDER API TO UPDATE USER
     const { userId } = this.formData;
     const data = { ...this.formData, onboardingComplete: true };
     try {
