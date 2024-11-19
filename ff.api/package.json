@@ -9,7 +9,7 @@
     "test": "jest --detectOpenHandles",
     "build": "tsc",
     "start": "ts-node src/server.ts",
-    "dev": "ts-node src/server.ts"
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -53,6 +53,7 @@
     "npm": "^10.7.0",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "nodemon": "^3.0.0"
   }
 }

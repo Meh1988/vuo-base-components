@@ -1,0 +1,8 @@
+{
+    "scripts": {
+      "docker:clean": "docker system prune -af",
+      "docker:clean:volumes": "docker volume prune -f",
+      "docker:clean:all": "docker stop $(docker ps -q) || true && docker rm $(docker ps -a -q) || true && npm run docker:clean && npm run docker:clean:volumes",
+      "docker:clean:specific": "docker rmi $(docker images 'ff-*' -q) -f || true"
+    }
+  }
