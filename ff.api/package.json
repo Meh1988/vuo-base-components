@@ -9,11 +9,7 @@
     "test": "jest --detectOpenHandles",
     "build": "tsc",
     "start": "ts-node src/server.ts",
-<<<<<<< HEAD
-    "dev": "nodemon src/server.ts"
-=======
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
->>>>>>> main
   },
   "keywords": [],
   "author": "",
@@ -37,11 +33,7 @@
     "mongoose": "^8.3.4",
     "mongoose-lean-virtuals": "^0.9.1",
     "multer": "^1.4.5-lts.1",
-<<<<<<< HEAD
-    "openai": "^4.71.1",
-=======
     "openai": "^4.72.0",
->>>>>>> main
     "redis": "^4.7.0",
     "typescript": "^5.4.5",
     "uuid": "^10.0.0",

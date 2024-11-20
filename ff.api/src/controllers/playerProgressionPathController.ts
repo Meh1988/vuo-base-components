@@ -3,6 +3,7 @@ import { ProgressionPathModel } from "../models/progressionPathModel";
 import { sendOpenAIRequest } from "../externalAPI/openAI";
 import mongoose from "mongoose";
 import { PlayerProgressionPathModel } from "../models/playerProgressionPathModel";
+import { Progress } from "../models/playerProgressionPathModel";
 import User from "../models/userModel";
 
 /**
@@ -43,16 +44,22 @@ export const createPlayerProgressionPath = async (
 
     delete progressionPath._id;
 
+    const progressArray: Progress[] = [];
+
+    for (let i = 0; i < progressionPath.units.length; i++) {
+      progressArray.push({
+        unitNumber: i,
+        questNumber: 0,
+      });
+    }
+
     const newPlayerProgressionPath = new PlayerProgressionPathModel({
       title: progressionPath.title,
       description: progressionPath.description,
       units: progressionPath.units,
       official: progressionPath.official,
       user: userId,
-      progress: {
-        unitNumber: 0,
-        questNumber: 0,
-      },
+      progress: progressArray,
     });
 
     await newPlayerProgressionPath.save();
