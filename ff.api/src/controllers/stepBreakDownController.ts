@@ -58,13 +58,36 @@ export async function getStepBreakdown(
     ] as OpenAI.ChatCompletionMessageParam[];
     const response = await sendOpenAIRequest(messages, response_format);
     recipe.steps[stepNo].subSteps = response.subSteps;
-    await recipe.save();
     return res.json(recipe);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res
         .status(400)
         .json({ message: "Validation Error", details: error.errors });
+    } else {
+      next(error);
+    }
+  }
+}
+
+export async function updateStepBreakdown(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const recipe = req.body;
+    const updatedRecipe = await Recipe.findByIdAndUpdate(recipe._id, recipe, {
+      new: true,
+    });
+    return res.json(updatedRecipe);
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return res
+        .status(400)
+        .json({ message: "Validation Error", details: error.errors });
+    } else if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ message: "Invalid recipe ID" });
     } else {
       next(error);
     }

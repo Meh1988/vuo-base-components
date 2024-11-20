@@ -1,3 +1,66 @@
+# PrepPal Step Breakdown API Documentation
+
+## Get Step Breakdown
+
+- **Method**: `POST`
+- **Route**: `/prepPal/stepBreakdown`
+- **Description**: Retrieves a detailed breakdown of a recipe step into smaller, more manageable sub-steps
+- **Request Body**:
+  ```typescript
+  {
+    recipeId: string; // MongoDB ObjectId of the recipe
+    stepNo: number; // Index of the step in the recipe
+  }
+  ```
+- **Response Body**:
+  ```typescript
+  {
+    _id: string;
+    steps: Array<{
+      text: string;
+      subSteps: Array<{
+        attachable: boolean; // Whether this step can be attached to a timer
+        text: string; // The sub-step instruction
+      }>;
+    }>;
+    name: string;
+    description: string;
+  }
+  ```
+
+## Update Step Breakdown
+
+- **Method**: `PATCH`
+- **Route**: `/prepPal/stepBreakdown/update`
+- **Description**: Updates the sub-steps of a recipe step
+- **Request Body**:
+  ```typescript
+  {
+    _id: string; // MongoDB ObjectId of the recipe
+    steps: Array<{
+      text: string;
+      subSteps: Array<{
+        attachable: boolean;
+        text: string;
+      }>;
+    }>;
+  }
+  ```
+- **Response Body**:
+  ```typescript
+  {
+    _id: string;
+    steps: Array<{
+      text: string;
+      subSteps: Array<{
+        attachable: boolean;
+        text: string;
+      }>;
+    }>;
+    updatedAt: string; // ISO timestamp of the update
+  }
+  ```
+
 # Challenge Routes Documentation
 
 ## Create Challenge
