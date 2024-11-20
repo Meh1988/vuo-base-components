@@ -4,7 +4,7 @@ import { connectToDatabase, closeDatabaseConnection } from "./database";
 
 // const PORT = process.env.VITE_FFAPI_PORT || '3001';
 const PORT = process.env.PORT || '8080';
-
+console.log("PORT", PORT)
 const startServer = async () => {
   try {
     await connectToDatabase();

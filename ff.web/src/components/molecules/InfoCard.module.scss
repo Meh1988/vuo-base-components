@@ -1,7 +1,7 @@
 .container {
-  background-color: var(--gray-1000);
+  background-color: var(--surface-secondary);
   border-radius: 15px;
-  color: var(--white);
+  color: var(--text-primary);
   display: flex;
   flex: 1;
   margin-top: 8px;
@@ -15,6 +15,19 @@
 .text {
   font-size: 1.5em;
   word-wrap: break-word;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-grey-systemGrayAccessibleLight);
+  border-radius: var(--radius-16);
+  padding: var(--space-4);
+}
+
+.item {
+  display: flex;
+  gap: 8px;
 }
 
 .container h3 {

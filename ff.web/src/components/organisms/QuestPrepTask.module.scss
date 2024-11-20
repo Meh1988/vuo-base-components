@@ -15,6 +15,35 @@
   width: 100%;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.servings_text,
+.serving_size {
+  font-size: var(--font-size-24);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.servings_text {
+  margin-left: var(--space-16);
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--space-24);
+}
+
+.checklist_container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background-color: var(--surface-secondary);
+  border-radius: var(--radius-24);
+  padding: var(--space-8);
+}
+
 .step {
   position: relative;
   border-radius: 20px;

@@ -6,7 +6,9 @@ export enum OnboardingStatus {
 export interface FormData {
   goals: string[];
   allergies: string[];
+  likes: string[];
   dislikes: string[];
+  diets: string[];
   userName: string;
   userId: string;
   description: string;
@@ -27,4 +29,5 @@ export interface FormData {
   cuisinePreferences: {
     [key: string]: "like" | "dislike" | null;
   };
+  image: string;
 }

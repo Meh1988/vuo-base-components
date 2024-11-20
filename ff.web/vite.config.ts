@@ -18,13 +18,21 @@ const env = loadEnv("", process.cwd());
 
 const PORT = parseInt(process.env.VITE_FFWEB_PORT as string) ?? 3000;
 const BASE_URL = process.env.VITE_FFWEB_BASE_URL ?? "/";
-const API_URL = process.env.VITE_FFAPI_BASE_URL ?? "http://localhost:6307";
+const API_URL = process.env.VITE_FFAPI_BASE_URL ?? "http://localhost:8080";
 
 export default () => {
   return defineConfig({
     base: BASE_URL,
     define: {
       API_URL: JSON.stringify(API_URL),
+      'import.meta.env.VITE_FIREBASE_WEB_API_KEY': JSON.stringify(process.env.VITE_FIREBASE_WEB_API_KEY),
+      'import.meta.env.VITE_FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.VITE_FIREBASE_AUTH_DOMAIN),
+      'import.meta.env.VITE_FIREBASE_PROJECT_ID': JSON.stringify(process.env.VITE_FIREBASE_PROJECT_ID),
+      'import.meta.env.VITE_FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.VITE_FIREBASE_STORAGE_BUCKET),
+      'import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(process.env.VITE_FIREBASE_MESSAGING_SENDER_ID),
+      'import.meta.env.VITE_FIREBASE_APP_ID': JSON.stringify(process.env.VITE_FIREBASE_APP_ID),
+      'import.meta.env.VITE_FIREBASE_MEASUREMENT_ID': JSON.stringify(process.env.VITE_FIREBASE_MEASUREMENT_ID),
+      'import.meta.env.VITE_FFAPI_BASE_URL': JSON.stringify(process.env.VITE_FFAPI_BASE_URL),
     },
     server: {
       port: PORT,

@@ -16,12 +16,13 @@ interface MatchItem {
 
 interface IngredientMatchProps {
     allowReplay: boolean;
+    allowClose: boolean;
     onClose?: () => void;
     recipe: Recipe;
     maxItems?: number; // New prop for maximum number of items
 }
 
-const IngredientMatch: React.FC<IngredientMatchProps> = observer(({ allowReplay, onClose, recipe, maxItems = 5 }) => {
+const IngredientMatch: React.FC<IngredientMatchProps> = observer(({ allowReplay, allowClose, onClose, recipe, maxItems = 5 }) => {
     const [matchSteps, setMatchSteps] = useState<MatchItem[]>([]);
     const [matchIngredients, setMatchIngredients] = useState<MatchItem[]>([]);
     const [selectedIngredient, setSelectedIngredient] = useState<string | null>(null);
@@ -151,7 +152,7 @@ const IngredientMatch: React.FC<IngredientMatchProps> = observer(({ allowReplay,
                 </div>
             </div>
             <div className={styles.controls_container}>
-                <Button onClick={onClose}>Close</Button>
+                {allowClose && onClose && <Button onClick={onClose}>Close</Button>}
                 {allowReplay && <Button onClick={() => {
                     startGame()
                 }}>Replay</Button>}

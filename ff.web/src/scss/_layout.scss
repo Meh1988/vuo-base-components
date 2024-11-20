@@ -3,6 +3,7 @@
   --space-2: #{$space-2}; // xxs
   --space-4: #{$space-4}; // xs
   --space-8: #{$space-8}; // sm
+  --space-10: #{$space-10}; // sm
   --space-12: #{$space-12}; // md
   --space-16: #{$space-16}; // lg
   --space-24: #{$space-24}; // xl
@@ -32,6 +33,9 @@
   --font-size-18: #{$font-size-18}; // md
   --font-size-20: #{$font-size-20}; // lg
   --font-size-24: #{$font-size-24}; // xl
+  --font-size-32: #{$font-size-32}; // 2xl
+  --font-size-40: #{$font-size-40}; // h2
+  --font-size-48: #{$font-size-48}; // h1
 }
 
 html {

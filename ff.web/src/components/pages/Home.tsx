@@ -1,34 +1,44 @@
 // @ts-nocheck
 
+import { observer } from 'mobx-react-lite';
 import Button from "../atoms/Button";
-import Page from "../templates/Page";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import mockProgressionPathData from "@static/mockProgressionPathData";
+import { ProgressionPathQuest } from "@vuo/models/ProgressionPathTypes";
+import Page from "../templates/Page";
+import ProgressionPath from "../organisms/ProgressionPath";
 import Section from "../atoms/Section";
-import { useAppContext } from "@vuo/context/AppContext";
 import QuestBrowseViewModel from "@vuo/viewModels/QuestBrowseViewModel";
-import { useState } from "react";
+import OnboardingViewModel from "@vuo/viewModels/OnboardingViewModel";
+import LoginViewModel from "../../viewModels/LoginViewModel";
+import LoginModal from "../organisms/LoginModal";
 
-const Home = () => {
-
-    const { navigateWithState } = useStackNavigator();  // Initialize navigateWithState function
-    const { isOnboardingComplete } = useAppContext()
-    const [viewModel] = useState<QuestBrowseViewModel>(
-        () => new QuestBrowseViewModel(),
-      );
-
-    const userAccount = JSON.parse(localStorage.getItem('SessionDataStore')).user
-
+    
+    
+const Home = observer(() => {
+    const navigate = useNavigate();
+    const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([])     
+    const { navigateWithState } = useStackNavigator();
+    const [viewModel] = useState<QuestBrowseViewModel>(() => new QuestBrowseViewModel());
+    const [loginViewModel] = useState<LoginViewModel>(() => new LoginViewModel());
+    const [onboardingViewModel] = useState<OnboardingViewModel>(() => new OnboardingViewModel());
     const goToQuest = () => {
-        // Save the target route to session storage before navigating
         navigateWithState('/home/quests');
     };
 
-    const goToOnboading = () => {  
+    const userAccount = loginViewModel.sessionDataStore?.user;
+    const userAccountId = localStorage.getItem("SessionDataStore")
+
+    console.log("useraccount from home", JSON.stringify(userAccount))
+    const goToOnboading = () => {
+        // Add conditional navigation logic
         //creating shadow account
         //check if sessiondatastore has shadowuser account 
         //if yes then navigate to onboarding
         // Save the target route to session storage before navigating
-        if(
+        if (
             userAccount?.shadowAccount === true
         ) {
             navigateWithState('/onboarding');
@@ -36,22 +46,61 @@ const Home = () => {
             alert("creating shadow account")
             navigateWithState('/onboarding');
             viewModel.createShadowAccount()
-            .then((shadowAccountUserId) => {
-                //use the shadowAccountUserId to create an empty profile
-                viewModel.createUserProfile(shadowAccountUserId)
-            })
-            .catch((error: Error) => {
-                console.error(error)
-            })
-            .finally(() => {
-                //TODO handle loading state, then navigatie
-                navigateWithState('/onboarding');
-            })
+                .then((shadowAccountUserId) => {
+                    // use the shadowAccountUserId to create an empty profile
+                    viewModel.createUserProfile(shadowAccountUserId)
+                })
+                .catch((error: Error) => {
+                    console.error(error)
+                })
+                .finally(() => {
+                    // TODO handle loading state, then navigatie
+                    navigateWithState('/onboarding');
+                })
         }
-        //if no then
+        // if no then
 
     }
-  
+
+    useEffect(() => {
+        const storedCompletedQuestIds = localStorage.getItem('completedQuestIds');
+        if (storedCompletedQuestIds) {
+            setCompletedQuestIds(JSON.parse(storedCompletedQuestIds));
+        }
+    }, []);
+
+    const onQuestClick = (quest: ProgressionPathQuest) => {
+        switch (quest.type) {
+            case 'minigame-quiz':
+                navigate(`/minigames/play/quiz`, { 
+                    state: { questId: quest.id, quizId: quest.quizId, allowClose: true }
+                });
+                break;
+            case 'minigame-cut-guessr':
+                navigate(`/minigames/play/cut-guessr`, {
+                    state: { questId: quest.id, animal: quest.animal, allowClose: true }
+                });
+                break;
+            case 'minigame-ingredient-match':
+                navigate(`/minigames/play/ingredient-match`, {
+                    state: { questId: quest.id, allowClose: true }
+                });
+                break;
+            case 'minigame-virtual-sear':
+                navigate(`/minigames/play/virtual-sear`, {
+                    state: { questId: quest.id, allowClose: true }
+                });
+                break;
+            case 'minigame-conversation-starter':
+                navigate(`/minigames/play/conversation-starter`, {
+                    state: { questId: quest.id, allowClose: true }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
     return (
         <Page>
             <Section>
@@ -60,29 +109,46 @@ const Home = () => {
                 <Button onClick={goToQuest}>Start Quest</Button>
             </Section>
             {
-                !isOnboardingComplete && <Section>
+                !viewModel.isOnboardingComplete && <Section>
                     {
-                        localStorage.getItem('onboardingData') 
-                        ? (
-                            <>
-                            <h2>Finish your onboarding process!</h2>
-                            {/* <h3>some progress bar here</h3> */}
-                            <Button onClick={goToOnboading}>Continue</Button>
-                            </>
-                        )
-                        : (
-                            <div>
-                                <h2>Start onboarding here</h2>
-                                <Button onClick={goToOnboading}>Start</Button>
-                            </div>
-                        )
+                        localStorage.getItem('onboardingData')
+                            ? (
+                                <>
+                                    <h2>Finish your onboarding process!</h2>
+                                    {/* <h3>some progress bar here</h3> */}
+                                    <Button onClick={goToOnboading}>Continue</Button>
+                                </>
+                            )
+                            : (
+                                <>
+                                    <h2>Start onboarding here</h2>
+                                    <Button onClick={goToOnboading}>Start</Button>
+                                </>
+                            )
                     }
                 </Section>
-
             }
-
+            <div style={{ height: '20px' }} />
+            {!viewModel.sessionDataStore.user && (
+                <Section>
+                    <Button onClick={() => {
+                        loginViewModel.toggleLoginModal();
+                        console.log("Modal state:", loginViewModel.isLoginModalOpen);
+                    }}>
+                        Login / Register
+                    </Button>
+                </Section>
+            )}
+            <LoginModal
+                isOpen={loginViewModel.isLoginModalOpen}
+                onClose={() => loginViewModel.toggleLoginModal()}
+            />
+            <Section>
+                <h2>Progression Path</h2>
+                <ProgressionPath units={mockProgressionPathData[0].units} onQuestClick={onQuestClick} completedQuestIds={completedQuestIds} />
+            </Section>
         </Page>
     );
-  };
+})
 
 export default Home;

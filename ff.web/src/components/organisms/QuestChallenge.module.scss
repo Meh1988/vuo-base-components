@@ -9,7 +9,8 @@
   background-color: #2a2a41 !important;
   padding: 20px;
   height: 100%;
-  width: 100%;
+  width: 80vw;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
@@ -28,6 +29,25 @@
 
   &:hover {
     transform: translateY(-5px);
+  }
+
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.completed {
+  animation-name: bounceOutLeft;
+}
+
+@keyframes bounceOutLeft {
+  20% {
+    opacity: 1;
+    transform: translate3d(20px, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(-2000px, 0, 0);
   }
 }
 

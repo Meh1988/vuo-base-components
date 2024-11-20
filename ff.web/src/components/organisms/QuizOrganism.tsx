@@ -7,7 +7,7 @@ import { QuizData, UserAnswer } from '@vuo/models/QuizTypes';
 
 import styles from './Quiz.module.scss';
 
-export default function QuizOrganism({ quiz }: { quiz: QuizData }) {
+export default function QuizOrganism({ quiz, allowClose, onClose }: { quiz: QuizData, allowClose: boolean, onClose: () => void }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -55,7 +55,7 @@ export default function QuizOrganism({ quiz }: { quiz: QuizData }) {
   if (quizCompleted) {
     return (
       <div className={styles.quizOrganism}>
-        <QuizResult quizData={quiz} userAnswers={userAnswers} />
+        <QuizResult quizData={quiz} userAnswers={userAnswers} allowClose={allowClose} onClose={onClose} />
       </div>
     );
   }
@@ -63,7 +63,7 @@ export default function QuizOrganism({ quiz }: { quiz: QuizData }) {
   const currentQuestion = quiz.questions[currentQuestionIndex];
 
   if (showingFeedback) {
-    const givenAnswerIndex = currentQuestion.options?.findIndex(option => option === userAnswers[currentQuestionIndex].answer);
+    const givenAnswerIndex = currentQuestion.options?.findIndex(option => option === userAnswers[currentQuestionIndex].answer[0]);
     return (
       <div className={styles.quizOrganism}>
         <h2 className={styles.quizTitle}>{quiz.title}</h2>
@@ -73,7 +73,7 @@ export default function QuizOrganism({ quiz }: { quiz: QuizData }) {
 */}
           <h3 className={styles.questionTitle}>
             {(() => {
-              if (currentQuestion.feedbackTitle && Array.isArray(currentQuestion.feedbackTitle) && givenAnswerIndex! >= 0) {
+              if (currentQuestion.feedbackTitle && Array.isArray(currentQuestion.feedbackTitle) && currentQuestion.feedbackTitle.length > 0 && givenAnswerIndex! >= 0) {
                 return currentQuestion.feedbackTitle[givenAnswerIndex!];
               }
               return isCorrect ? 'Correct!' : 'Incorrect!';
@@ -83,10 +83,8 @@ export default function QuizOrganism({ quiz }: { quiz: QuizData }) {
           <div className={styles.optionsContainer}>
             <p>
               {(() => {
-                if (currentQuestion.feedbackMessage && Array.isArray(currentQuestion.feedbackMessage) && givenAnswerIndex! >= 0) {
+                if (currentQuestion.feedbackMessage && Array.isArray(currentQuestion.feedbackMessage) && currentQuestion.feedbackMessage.length > 0 && givenAnswerIndex! >= 0) {
                   return currentQuestion.feedbackMessage[givenAnswerIndex!];
-                } if (currentQuestion.feedbackMessage && !isCorrect) {
-                  return currentQuestion.feedbackMessage;
                 }
                 return isCorrect ? 'You are correct!' : 'But worry not, you\'ll get it right next time.';
               })()}

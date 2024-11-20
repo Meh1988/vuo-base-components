@@ -21,7 +21,7 @@ const createUserProfile = async (req: Request, res: Response) => {
 // Get user profile
 const getUserProfile = async (req: Request, res: Response) => {
   try {
-    const userId = req.user.id;
+    const userId = req.params.id;
     const userProfile = await Onboarding.findOne({ userId });
 
     if (!userProfile) {
@@ -34,29 +34,35 @@ const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-// Update user profile
+
 const updateUserProfile = async (req: Request, res: Response) => {
   try {
-    const userId = req.user.id;
-    const updateData = req.body;
+    const userId = req.params.id;
+    const updateData = req.body.pathData || req.body; // Handle both pathData and direct updates
 
-    const updatedUserProfile = await Onboarding.findOneAndUpdate(
-      { userId },
-      { $set: updateData },
-      { new: true, runValidators: true }
-    );
+    console.log('Update attempt for userId:', userId);
+    console.log('Update data:', updateData);
 
-    if (!updatedUserProfile) {
+    // Use findOne first to check if document exists
+    const existingProfile = await Onboarding.findOne({ userId });
+    
+    if (!existingProfile) {
       return res.status(404).json({ message: 'User profile not found' });
     }
 
-    res.json(updatedUserProfile);
+    // Apply updates to existing document
+    Object.assign(existingProfile, updateData);
+    await existingProfile.save();
+
+    res.json(existingProfile);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Error updating user profile:', error);
+    res.status(500).json({ 
+      message: 'Server error', 
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 };
-
-
 // Delete user profile
 const deleteUserProfile = async (req: Request, res: Response) => {
   try {

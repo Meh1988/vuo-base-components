@@ -8,6 +8,7 @@ enum OnboardingStatus {
 
 interface IOnboarding extends Document {
   userId: mongoose.Types.ObjectId;
+  userName?: string;
   sex?: string;
   age?: number;
   height?: number;
@@ -30,6 +31,7 @@ interface IOnboarding extends Document {
 
 const OnboardingSchema: Schema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  userName: { type: String, default: '' }, // TODO some LLM generated names as deafult maybe?
   sex: { type: String, default: '' },
   age: { type: Number, default: 0 },
   height: { type: Number, default: 0 },
