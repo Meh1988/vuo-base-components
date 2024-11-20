@@ -24,11 +24,15 @@ import {
   goals,
   pantry,
 } from "./constants/OnboardingSteps";
+import LoginViewModel from "@vuo/viewModels/LoginViewModel";
 
 // TODO add the status of the steps to the formData object, (you may need to modify the rendering of the steps)
 const OnboardingFlow = observer(() => {
   const { navigateWithState } = useStackNavigator();
-  const [viewModel] = useState(() => new OnboardingViewModel());
+
+  //Injecting LoginViewModel to OnboardingViewModel as a dependency
+  const [loginViewModel] = useState(() => new LoginViewModel());
+  const [viewModel] = useState(() => new OnboardingViewModel(loginViewModel));
 
   useEffect(() => {
     const sessionDataString = localStorage.getItem("SessionDataStore");
