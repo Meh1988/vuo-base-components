@@ -1,5 +1,6 @@
 export enum OnboardingStatus {
   notStarted = "notStarted",
+  inProgress = "inProgress",
   completed = "completed",
 }
 
@@ -30,4 +31,5 @@ export interface FormData {
     [key: string]: "like" | "dislike" | null;
   };
   image: string;
+  onboardingStatus: OnboardingStatus;
 }

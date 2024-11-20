@@ -9,7 +9,7 @@ import Button from "@vuo/atoms/Button";
 import { initialOnboardingData } from "@vuo/constants/Onboarding";
 import { Modal } from "@vuo/molecules/Modal";
 import { UserPreferences } from "@vuo/organisms/userPreferences";
-import shadowAvatar from "../../../assets/images/shadow-account.jpeg";
+import shadowAvatar from "../../../assets/images/chef_hat.jpeg";
 
 import styles from "./EditProfile.module.scss";
 

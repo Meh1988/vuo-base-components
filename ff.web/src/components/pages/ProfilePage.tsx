@@ -3,7 +3,7 @@ import useStackNavigator from "@vuo/hooks/StackNavigator";
 import Page from "@vuo/templates/Page";
 import { useContext, useEffect, useState } from "react";
 
-import { FormData } from "@models/Onboarding";
+import { FormData, OnboardingStatus } from "@models/Onboarding";
 import Button from "@vuo/atoms/Button";
 import { ThemeContext } from "@vuo/context/ThemeContext";
 import LoginViewModel from "../../viewModels/LoginViewModel";
@@ -13,10 +13,11 @@ import { Tabs } from "../molecules/Tabs";
 import { UserFoodProfile } from "../organisms/userFoodProfile";
 import { UserProfile } from "../organisms/userProfile";
 import styles from "./ProfilePage.module.scss";
-import shadowAvatar from "../../assets/images/cooking_hat.jpeg";
+import shadowAvatar from "../../assets/images/chef_hat.jpeg";
 // import Section from "../atoms/Section";
 // import LoginModal from "../organisms/LoginModal";
 import LoginComponent from "../organisms/LoginComponent";
+import FinishOnboardingPrompt from "../molecules/FinishOnboardingPrompt/FinishOnboardingPrompt";
 
 const ProfilePage = () => {
   const { toggleTheme } = useContext(ThemeContext);
@@ -30,6 +31,9 @@ const ProfilePage = () => {
     await loginViewModel.logout();
     navigateWithState("/home");
   };
+
+  const isOnboardingComplete = loginViewModel.sessionDataStore.profile?.onboardingStatus === OnboardingStatus.completed;
+  const isOnboardingInProgress = loginViewModel.sessionDataStore.profile?.onboardingStatus === OnboardingStatus.inProgress;
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -100,8 +104,12 @@ const ProfilePage = () => {
           </p>
         )}
       </div>
-
-      <Button
+      {isOnboardingInProgress && 
+        <FinishOnboardingPrompt handleContinue={() => {
+          navigateWithState("/onboarding");
+        }} />
+      }
+     {isOnboardingComplete && <Button
         variant="small"
         color="primary"
         onClick={() => {
@@ -110,10 +118,10 @@ const ProfilePage = () => {
         className="w-100"
       >
         Edit Profile
-      </Button>
+      </Button>}
     
       <LoginComponent />
-      <Tabs
+      {isOnboardingComplete && <Tabs
         tabs={[
           {
             id: "tab1",
@@ -122,7 +130,7 @@ const ProfilePage = () => {
           },
           { id: "tab2", label: "FOOD PROFILE", content: <UserFoodProfile /> },
         ]}
-      />
+      />}
 
       <div className={styles.profilePage__footer}>
         <Button
