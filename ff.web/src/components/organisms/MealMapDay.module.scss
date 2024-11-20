@@ -25,12 +25,39 @@
     border-radius: var(--radius-8);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 33%;
+    height: 100%;
+}
+
+.dayHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.dayWeekday {
+    color: var(--text-primary);
+}
+
+.dayDate {
+    font-size: var(--font-size-18);
+    color: var(--text-secondary);
 }
 
 .mealType {
     font-size: 1.2rem;
     color: var(--text-secondary);
     margin-bottom: 1rem;
+}
+
+.mealInfoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background: var(--color-dark-gray);
+    padding: var(--space-8);
+    margin-bottom: var(--space-16);
+    border-radius: var(--radius-8);
 }
 
 .mealImageContainer {
@@ -63,20 +90,98 @@
     background: var(--surface-brand-blue);
     color: var(--text-primary);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-4);
     width: 100%;
     cursor: pointer;
 }
 
-.cycleButton, .cancelButton {
+.cycleButton,
+.cancelButton,
+.editButton {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 60px;
     border-radius: var(--radius-4);
-    background: var(--surface-primary);
-    cursor: pointer;
+    padding: 8px;
+    margin-bottom: 10px;
+    background: var(--color-dark-gray);
+    box-shadow: var(--shadow-inner-shadow-x, 0px) var(--shadow-inner-shadow-y, -4px) 0px 0px var(--color-grey-black-25, rgba(0, 0, 0, 0.25)) inset;
 }
 
-.cancelButton {
-    color: red;
+.mealActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100%;
+    gap: var(--space-8);
+    color: var(--text-secondary);
+
+    span {
+        font-size: var(--font-size-18);
+    }
+}
+
+.mealStatus {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: var(--space-8);
+    gap: var(--space-4);
+    font-size: var(--font-size-14);
+}
+
+.checkIcon {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+    stroke: var(--text-secondary);
+}
+
+.editButton {
+    background: var(--color-dark-gray);
+}
+
+.penIcon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+    stroke: var(--text-secondary);
+}
+
+.addMealButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.addMealButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;    
+    width: 100%;
+    gap: var(--space-4);
+    background: var(--color-dark-gray);
+    padding: var(--space-32);
+    border-radius: var(--radius-8);
+    cursor: pointer;
+
+    p {
+        font-size: var(--font-size-18);
+        color: var(--text-primary);
+    }
+}
+
+.plusIcon {
+    width: 40px;
+    height: 40px;
 }

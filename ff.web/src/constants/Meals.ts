@@ -1,4 +1,4 @@
-import { MealTime } from "@vuo/models/Meals";
+import { MealTime, MealStatus } from "@vuo/models/Meals";
 
 export const initialMealMap = [
   {
@@ -12,6 +12,7 @@ export const initialMealMap = [
         image:
           "https://recipemedia.fra1.cdn.digitaloceanspaces.com/KetoPictures/KetoCookieDoughBites_6672c32af6298d5adb6288d3.webp",
         time: MealTime.Breakfast,
+        status: MealStatus.Pending,
       },
     ],
   },
@@ -26,6 +27,7 @@ export const initialMealMap = [
         description:
           "A delicious and creamy cheesy garlic parmesan spinach spaghetti squash dish, perfect for a healthy and comforting meal. Warning: this recipe makes enough food for the rest of the day and possibly to the next day. Side effects may include an inexplicable desire to invite random neighbors over and the sudden need to purchase a larger set of food containers.",
         time: MealTime.Lunch,
+        status: MealStatus.Pending,
       },
     ],
   },
@@ -41,6 +43,7 @@ export const initialMealMap = [
         description:
           "Warning: This Recipe Makes Enough to Feed a Small Army! Proceed with caution: May cause fridge overcrowding, leftovers overload, and unsolicited guests showing up at your door. Make at your own risk!",
         time: MealTime.Dinner,
+        status: MealStatus.Pending,
       },
     ],
   },

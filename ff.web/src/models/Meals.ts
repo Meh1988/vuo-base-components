@@ -11,6 +11,14 @@ export interface MealMapMeal {
     image?: string;
   };
   time: MealTime;
+  status: MealStatus;
+}
+
+export enum MealStatus {
+  Pending = "pending",
+  Confirmed = "confirmed",
+  Refreshed = "refreshed",
+  Denied = "denied",
 }
 
 export enum MealTime {
