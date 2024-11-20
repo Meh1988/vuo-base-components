@@ -24,6 +24,9 @@ const QuestSelection = observer(() => {
   const onSelectQuest = (questId: string) => {
     if (!JSON.parse(localStorage.getItem("SessionDataStore") ?? "").token) {
       viewModel.createShadowAccount()
+      .then((shadowAccountUserId) => {
+        viewModel.createUserProfile(shadowAccountUserId)
+      })
       .then(() => {
         navigate (`${questId}/intro`); // TODO make the stacknavigator handle cases, when the url contains questid
         // save id to local storage

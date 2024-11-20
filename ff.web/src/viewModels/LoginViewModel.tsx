@@ -5,6 +5,7 @@ import {
   makeObservable,
   observable,
   runInAction,
+  reaction
 } from "mobx";
 
 import {
@@ -62,6 +63,32 @@ export default class LoginViewModel extends BaseViewModel {
       toggleLoginModal: action,
       getProfile: action,
     });
+
+    //TODO cache this out
+    reaction(
+      () => this.sessionDataStore.user?.id,
+      async (userId) => {
+        if (userId) {
+          try {
+            const response = await this.fetchData<any>({
+              url: `v1/profile/${userId}`,
+              method: "GET"
+            });
+            
+            if (response) {
+              runInAction(() => {
+                console.log("response", JSON.stringify(response));
+                sessionDataStore.profile = response;
+              });
+            }
+          } catch (error) {
+            console.error("Error loading initial data:", error);
+            this.setErrors(error instanceof Error ? error : new Error("Failed to load profile"));
+          }
+        }
+      },
+      { fireImmediately: true } // This makes it run right away if user exists
+    );
   }
 
   // setIsOnboardingComplete(value: boolean): void {
@@ -76,6 +103,8 @@ export default class LoginViewModel extends BaseViewModel {
   get session(): boolean {
     return !!this.sessionDataStore.token;
   }
+
+  
 
   async startAuthentication(): Promise<void> {
     if (
