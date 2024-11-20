@@ -17,7 +17,7 @@ interface Unit {
   quests: Quest[];
 }
 
-interface Progress {
+export interface Progress {
   unitNumber: number;
   questNumber: number;
 }
@@ -33,7 +33,7 @@ export interface PlayerProgressionPathDocument extends Document {
   units: Unit[];
   official: boolean;
   user: mongoose.Types.ObjectId;
-  progress: Progress;
+  progress: Progress[];
 }
 
 const QuestSchema = new Schema<Quest>({
@@ -67,7 +67,7 @@ const PlayerProgressionPathSchema = new Schema<PlayerProgressionPathDocument>({
   units: { type: [UnitSchema], required: true },
   official: { type: Boolean, required: true, default: false },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  progress: { type: ProgressSchema, required: true },
+  progress: { type: [ProgressSchema], required: true },
 });
 
 export const PlayerProgressionPathModel =
