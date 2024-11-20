@@ -47,7 +47,9 @@ export const initialOnboardingData: FormData = {
   sex: "",
   age: "",
   userId: "-",
+  likes: [],
   userName: "",
+  diets: [],
   description: "",
   height: "",
   currentWeight: "",
@@ -55,7 +57,7 @@ export const initialOnboardingData: FormData = {
   motivation: "",
   activityLevel: "",
   mindset: "",
-  speed: "moderate",
+  speed: "4",
   dietPlan: "",
   pastExperience: "",
   format: "",
@@ -64,6 +66,7 @@ export const initialOnboardingData: FormData = {
   cuisinePreferences: {},
   pantry: "",
   cookingSkills: "",
+  image: "",
 };
 
 export const steps = [

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useEffect, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { Quest } from '@vuo/models/Quest';
@@ -8,7 +6,7 @@ import { Resource } from '@vuo/models/Resource';
 import Button from '@vuo/atoms/Button';
 import Space from '@vuo/atoms/Space';
 // import Icon from '@vuo/atoms/Icon';
-import IconNames from "@vuo/models/IconTypes";
+// import IconNames from "@vuo/models/IconTypes";
 import { ChannelUser } from '@vuo/stores/WebSocketStore';
 // import ShareIcon from "@vuo/assets/fixfood/icons/share-link.svg?react";
 import QuestPrepTask from './QuestPrepTask';
@@ -137,23 +135,23 @@ function QuestCard(props: QuestTaskProps) {
   }, [])
 
   return (
-    <div className='box card-container' style={{ display: 'flex', flexDirection: 'column', backgroundColor: "var(--gray-900)" }}>
-      <div className="recipe-thumb"
+    <div className={styles.card_container}>
+      <div
+        className={styles.card_thumb}
         style={{
           backgroundImage: `url(${imageUrl()})`
         }}>
-        <div className={`${styles.intro_recipe_name_chip} font-h4`}>
+        <div className={`${styles.intro_recipe_name_chip}`}>
           {quest.name ? quest.name : quest.recipe.name}
         </div>
         <Button
-          className='btn btn-large btn-raised'
           style={{
-            "--background-color": "black",
-            "--border-width": "0",
-            "--text-color": "white",
+            backgroundColor: "black",
+            borderWidth: "0",
+            color: "var(--text-primary)",
             position: 'absolute',
-            bottom: '16px',
-            right: '16px',
+            bottom: 'var(--space-16)',
+            right: 'var(--space-16)',
             display: "none" // DISABLED MOMENTARILY
           }}
           onClick={() => setShowMiniGameSelector(true)}
@@ -167,26 +165,23 @@ function QuestCard(props: QuestTaskProps) {
           {quest.recipe?.description}
         </div>
         {multiplayerSessionURL && (
-          <div className='flex-col flex gap-small'>
-            <div className='text-align-center'>
-              { }
+          <div >
+            <div >
               <Button
                 block
-                className='btn btn-large btn-raised mt16'
                 onClick={() => isCurrentUserHost ? onCloseSession?.() : onLeaveSession?.()}
               >{isCurrentUserHost ? 'Close lobby' : 'Leave lobby'}</Button>
             </div>
-            <div className="card-container flex flex-col gap-small padding-16"
+            <div
               style={{ backgroundColor: 'var(--gray-800)', color: 'white' }}>
-              <div className="flex gap-small align-items-center">
-                {/* <Icon name={IconNames.PeopleCards} size={36} /> */}
+              <div >
                 <h2 style={{ color: 'white' }}>Multiplayer lobby</h2>
               </div>
-              <div className='flex flex-col gap-small'>
+              <div >
                 {isCurrentUserHost && (
-                  <div className='flex gap-small'>
+                  <div >
                     <input
-                      className="width100 largeInput"
+
                       type="text"
                       aria-labelledby="username-label"
                       placeholder="Nickname"
@@ -194,14 +189,13 @@ function QuestCard(props: QuestTaskProps) {
                       onChange={(event) => setMembershipName(event.target.value)}
                     />
                     <Button
-                      className='btn btn-large btn-raised'
                       onClick={() => {
                         setMembershipName("")
                         onAddGroupMembership?.(membershipName)
                       }}>Add user</Button>
                   </div>
                 )}
-                <div className='flex gap-small'>
+                <div >
                   {mergeUserGroupAndChannel(groupMembers, multiplayerUsers).map(user => {
                     const title = (username: string, nickname?: string) => nickname || username
                     return (
@@ -216,37 +210,32 @@ function QuestCard(props: QuestTaskProps) {
                 </div>
               </div>
               {isCurrentUserHost && (
-                <div className="card-container text-align-center gap-small padding-16 flex flex-col margin8p"
+                <div
                   style={{ backgroundColor: 'var(--gray-1000)' }}>
                   <h2>Invite players</h2>
                   <span>Share this link or QR code to invite friends for family to this Quest.</span>
                   <span>They don&apos;t even need a Fix Food account!</span>
-                  <div className='text-center'>
+                  <div >
                     <QRCode
                       value={shareUrl(multiplayerSessionURL)}
                       style={{ borderRadius: '10px' }} />
                   </div>
                   <Button
-                    className="btn btn-large btn-raised btn-blue"
                     onClick={() => copyToClipboard(multiplayerSessionURL)}>
-                    <div className='flex align-items-center gap-small'>
+                    <div >
                       <span>Invite with a link</span>
-                      {/* <ShareIcon /> */}
                     </div>
                   </Button>
                 </div>
               )}
             </div>
           </div>
-        )
-        }
+        )}
         {
           !multiplayerSessionURL && (
-            <div className='text-align-center mt16'>
+            <div className={styles.enable_multiplayer_container}>
               <Button
-                className='btn btn-large btn-raised'
-                color='primary'
-                block
+                style={{ backgroundColor: 'var(--surface-secondary)' }}
                 onClick={() => onCreateSession?.()}
               >Enable Multiplayer Mode</Button>
             </div>
@@ -260,19 +249,16 @@ function QuestCard(props: QuestTaskProps) {
         {
           !hideStartButton && (
             <Button
-              block
-              className='btn btn-large btn-raised'
-              color='primary'
-              size='large'
+              style={{ width: '100%' }}
               onClick={() => { onStartQuest?.() }}
             >Get Cooking!</Button>
           )
         }
-      </Space >
-      <dialog className='dialog' ref={miniGameDialog} open={showMiniGameSelector}>
+      </Space>
+      <dialog ref={miniGameDialog} open={showMiniGameSelector}>
         {/* <QuestMinigameSelector miniGames={availableMiniGames} onMiniGamesSelected={onMiniGamesSelected} /> */}
       </dialog>
-    </div >
+    </div>
   );
 };
 

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,14 +11,17 @@ import {
 } from "@vuo/models/PlayerQuest";
 import Page from "@vuo/templates/Page";
 import QuestPlayViewModel from "@vuo/viewModels/QuestPlayViewModel";
-import doneSoundFile from '@assets/sounds/done2.mp3';
-import challengeDoneSoundFile from '@assets/sounds/challenge_done.mp3';
+import doneSoundFile from '@assets/sounds/card_slide.mp3';
+import challengeDoneSoundFile from '@assets/sounds/card_shuffle_ding.mp3';
 import questDoneSoundFile from '@assets/sounds/mission_completed.mp3'
 
 import QuestTask from "../organisms/QuestTask";
 import QuestProgressBar from "../molecules/QuestProgressBar";
+import QuestChallenge from "../organisms/QuestChallenge";
 // import QuestChallenge from "../organisms/QuestChallenge";
 
+import { analytics } from '../../config/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const QuestPlay = observer(() => {
   const { id } = useParams();
@@ -68,6 +69,17 @@ const QuestPlay = observer(() => {
         });
       }
     }
+
+    if (viewModel.playerQuest) {
+      // Track quest start
+      logEvent(analytics, 'quest_started', {
+        quest_id: viewModel.playerQuest.id,
+        quest_name: viewModel.playerQuest.name,
+        // player_level: viewModel.playerLevel, // You'll need to add this to your viewModel
+        // player_total_xp: viewModel.playerTotalXP, // You'll need to add this to your viewModel
+        // is_retry: viewModel.isRetry // You'll need to add this to your viewModel
+      });
+    }
   }, [
     viewModel.playerQuest?.state,
     viewModel.playerQuest?.id,
@@ -90,8 +102,55 @@ const QuestPlay = observer(() => {
   }
 
   const onSubStepDone = (stepId: string) => {
-    viewModel.updateSubStepState(stepId)
-    challengeDoneSound.play()
+    const currentStep = viewModel.playerQuest?.recipe.steps.find(step =>
+      step.subSteps?.some(ss => ss.id === stepId)
+    );
+
+    // Check if this is the last uncompleted substep
+    const isAllSubstepsCompleted = currentStep?.subSteps?.every(
+      ss => ss.id === stepId || ss.state === StepState.completed || ss.state === StepState.skipped
+    );
+
+    viewModel.updateSubStepState(stepId);
+
+    // Play different sounds based on completion status
+    if (isAllSubstepsCompleted) {
+      challengeDoneSound.play();
+    } else {
+      doneSounds.play();
+    }
+  }
+
+  const onPrepPalPress = async (step: PlayerQuestStep) => {
+    console.log("onPrepPalPress")
+    
+    // Simulate API call delay (2 seconds)
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    
+    const mockSubSteps: PlayerQuestStep[] = [
+      {
+        id: "le id le fishe 1",
+        attachable: false,
+        text: "Step 1",
+        state: StepState.notStarted
+      },
+      {
+        id: "le id le fishe 2",
+        attachable: false,
+        text: "Step 2",
+        state: StepState.notStarted
+      },
+      {
+        id: "le id le fishe 3",
+        attachable: false,
+        text: "Step 3",
+        state: StepState.notStarted
+      }
+    ]
+
+    if (step) {
+      viewModel.addSubStep(step.id, mockSubSteps)
+    }
   }
 
   const onClose = () => {
@@ -131,7 +190,7 @@ const QuestPlay = observer(() => {
       <div ref={scrollableContainerRef} style={{ flex: 1, overflowY: 'auto' }}>
         <Page>
           {/* {id} */}
-          <div className="mt48">
+          <div style={{ marginTop: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {viewModel.playerQuest?.recipe.steps.map((step, index) => {
               const isLastStep = !viewModel.playerQuest?.recipe.steps[index + 1];
               const isCurrentStep = viewModel.currentStep?.id === step.id;
@@ -149,10 +208,10 @@ const QuestPlay = observer(() => {
                 >
                   {step.claimedBy && step.claimedBy?.id === viewModel.currentUser?.id && step.state === StepState.challengeAccepted ? (
                     <div>
-                      {/* <QuestChallenge
+                      <QuestChallenge
                         steps={step.subSteps || []}
                         onStepDone={onSubStepDone}
-                      /> */}
+                      />
                     </div>
                   ) : (
                     <QuestTask
@@ -161,7 +220,8 @@ const QuestPlay = observer(() => {
                       step={step}
                       onChallengeAccepted={onChallengeAccepted}
                       onStepDone={onStepDone}
-                      onStepClaimed={onStepClaimed} />
+                      onStepClaimed={onStepClaimed} 
+                      onPrepPalPress={onPrepPalPress}/>
                   )}
                 </div>
               );

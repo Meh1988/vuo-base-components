@@ -9,14 +9,14 @@ const mockQuizData: QuizData[] = [
         id: 'q1',
         type: 'slider',
         question: 'How many minutes does it typically take to cook spaghetti?',
-        correctAnswer: 10,
+        correctAnswer: ['10'],
       },
       {
         id: 'q2',
         type: 'single-choice',
         question: 'Which cuisine is sushi from?',
         options: ['Chinese', 'Japanese', 'Korean', 'Thai'],
-        correctAnswer: 'Japanese',
+        correctAnswer: ['Japanese'],
       },
       {
         id: 'q3',
@@ -29,7 +29,7 @@ const mockQuizData: QuizData[] = [
         id: 'q4',
         type: 'text-input',
         question: 'What is the main ingredient in guacamole?',
-        correctAnswer: 'avocado',
+        correctAnswer: ['avocado'],
       }
 
     ],
@@ -65,7 +65,7 @@ const mockQuizData: QuizData[] = [
           'Right by the bone',
           'Thickest part'
         ],
-        correctAnswer: 'Thickest part',
+        correctAnswer: ['Thickest part'],
         feedbackTitle: [
           'The inside skinny',
           'Shallow answer',
@@ -89,7 +89,7 @@ const mockQuizData: QuizData[] = [
           "It's the most accurate",
           'You can leave it in during cooking'
         ],
-        correctAnswer: 'You can leave it in during cooking',
+        correctAnswer: ['You can leave it in during cooking'],
         feedbackTitle: [
           'Not quite',
           'Everyone is different',
@@ -119,7 +119,7 @@ const mockQuizData: QuizData[] = [
           'Bad chef',
           'Dull Knife'
         ],
-        correctAnswer: 'Dull Knife',
+        correctAnswer: ['Dull Knife'],
         feedbackMessage: [
           "The tomato looks fresh, unblemished and with the right color. That tomato did not missbehave!",
           'Although some cutting boards might be better for certain tasks, this cutting board is perfect for this job.',
@@ -143,7 +143,7 @@ const mockQuizData: QuizData[] = [
           '30 degrees',
           '45 degrees'
         ],
-        correctAnswer: '15 degrees',
+        correctAnswer: ['15 degrees'],
         feedbackMessage: [
           'Too shallow for effective sharpening.',
           'Correct! 15 degrees is ideal for a sharp edge.',
@@ -168,7 +168,7 @@ const mockQuizData: QuizData[] = [
           'Requires more force to cut'
         ],
         correctAnswer: ['Difficulty cutting through tomatoes', 'Slipping off the surface of vegetables', 'Requires more force to cut'],
-        feedbackMessage: 'A dull knife struggles with soft foods, slips, and requires more force.',
+        feedbackMessage: ['A dull knife struggles with soft foods, slips, and requires more force.'],
       },
       {
         id: 'q11',
@@ -180,7 +180,7 @@ const mockQuizData: QuizData[] = [
           'In a knife block',
           'Loose in a utensil holder'
         ],
-        correctAnswer: 'In a knife block',
+        correctAnswer: ['In a knife block'],
         feedbackMessage: [
           'This can damage the blade and is unsafe.',
           'Magnetic strips are safe but can be risky if not mounted securely.',
@@ -204,7 +204,7 @@ const mockQuizData: QuizData[] = [
           'They are too slippery',
           'They are hard to clean'
         ],
-        correctAnswer: 'They dull knives quickly',
+        correctAnswer: ['They dull knives quickly'],
         feedbackMessage: [
           'Weight is not the main issue.',
           'Correct! Glass surfaces dull knives faster.',
@@ -232,7 +232,7 @@ const mockQuizData: QuizData[] = [
           'True',
           'False'
         ],
-        correctAnswer: 'False',
+        correctAnswer: ['False'],
         feedbackMessage: [
           'Different whisking techniques are needed in different recipes.',
           'You need different types of movement and speeds depending on the desired outcome.'
@@ -252,7 +252,7 @@ const mockQuizData: QuizData[] = [
           'To change color',
           'To make them heavier'
         ],
-        correctAnswer: 'To incorporate air',
+        correctAnswer: ['To incorporate air'],
         feedbackMessage: [
           'Whisking doesn\'t add flavor.',
           'Correct! Whisking incorporates air, making them light and fluffy.',
@@ -277,7 +277,7 @@ const mockQuizData: QuizData[] = [
           'Rolling pin'
         ],
         correctAnswer: ['Fork', 'Balloon whisk', 'Electric mixer'],
-        feedbackMessage: 'A fork, balloon whisk, or electric mixer can be used for whisking, but a rolling pin is not suitable.',
+        feedbackMessage: ['A fork, balloon whisk, or electric mixer can be used for whisking, but a rolling pin is not suitable.'],
       },
       {
         id: 'q15',
@@ -289,7 +289,7 @@ const mockQuizData: QuizData[] = [
           'Wipe with a damp cloth',
           'Leave it unwashed'
         ],
-        correctAnswer: 'Hand wash with warm soapy water',
+        correctAnswer: ['Hand wash with warm soapy water'],
         feedbackMessage: [
           'Dishwashers can damage some whisks.',
           'Correct! Hand washing ensures thorough cleaning.',
@@ -313,7 +313,7 @@ const mockQuizData: QuizData[] = [
           'To change their color',
           'To add flavor'
         ],
-        correctAnswer: 'To ensure even distribution',
+        correctAnswer: ['To ensure even distribution'],
         feedbackMessage: [
           'Whisking doesn\'t change weight.',
           'Correct! It ensures even distribution of ingredients.',
@@ -343,7 +343,7 @@ const mockQuizData: QuizData[] = [
           'Pinch the blade near the handle with thumb and forefinger',
           'Hold it like a tennis racket'
         ],
-        correctAnswer: 'Pinch the blade near the handle with thumb and forefinger',
+        correctAnswer: ['Pinch the blade near the handle with thumb and forefinger'],
         feedbackMessage: [
           'A tight grip reduces control and can cause hand fatigue quickly.',
           'This grip is unsafe and gives you very little control over the knife.',
@@ -368,7 +368,7 @@ const mockQuizData: QuizData[] = [
           'Catch a falling knife'
         ],
         correctAnswer: ['Always cut away from yourself', 'Keep your blade sharp', 'Use a stable cutting board'],
-        feedbackMessage: 'A sharp knife on a stable surface, used with proper technique, is the safest way to cut. Never try to catch a falling knife!'
+        feedbackMessage: ['A sharp knife on a stable surface, used with proper technique, is the safest way to cut. Never try to catch a falling knife!']
       },
       {
         id: 'k3',
@@ -380,7 +380,7 @@ const mockQuizData: QuizData[] = [
           'Scraping food off the cutting board',
           'Opening cans'
         ],
-        correctAnswer: 'Protecting your fingers while cutting',
+        correctAnswer: ['Protecting your fingers while cutting'],
         feedbackMessage: [
           'Sharpening requires different techniques.',
           'The claw grip protects your fingertips by keeping them curled while guiding the knife.',
@@ -398,8 +398,8 @@ const mockQuizData: QuizData[] = [
         id: 'k4',
         type: 'text-input',
         question: 'What cutting technique creates very thin, matchstick-sized pieces?',
-        correctAnswer: 'julienne',
-        feedbackMessage: 'Julienne is a classic French cutting technique that creates long, thin strips about 1/8 inch thick.'
+        correctAnswer: ['julienne'],
+        feedbackMessage: ['Julienne is a classic French cutting technique that creates long, thin strips about 1/8 inch thick.']
       },
       {
         id: 'k5',
@@ -411,7 +411,7 @@ const mockQuizData: QuizData[] = [
           'It adds more flavor',
           'It makes you cry less'
         ],
-        correctAnswer: 'It holds the layers together while cutting',
+        correctAnswer: ['It holds the layers together while cutting'],
         feedbackMessage: [
           'The root end serves a practical purpose.',
           'The root acts as a natural handle and keeps the onion layers together for more controlled cuts.',
@@ -435,8 +435,8 @@ const mockQuizData: QuizData[] = [
         id: 'fs1',
         type: 'slider',
         question: 'What is the minimum safe internal temperature (°F) for cooking chicken?',
-        correctAnswer: 165,
-        feedbackMessage: '165°F (74°C) is the safe minimum internal temperature for chicken to kill harmful bacteria.'
+        correctAnswer: ['165'],
+        feedbackMessage: ['165°F (74°C) is the safe minimum internal temperature for chicken to kill harmful bacteria.']
       },
       {
         id: 'fs2',
@@ -449,7 +449,7 @@ const mockQuizData: QuizData[] = [
           'Bread'
         ],
         correctAnswer: ['Open soy sauce', 'Open mayonnaise'],
-        feedbackMessage: 'Condiments with eggs (like mayo) and opened fermented products should be refrigerated. Fruits and bread are better stored at room temperature.'
+        feedbackMessage: ['Condiments with eggs (like mayo) and opened fermented products should be refrigerated. Fruits and bread are better stored at room temperature.']
       },
       {
         id: 'fs3',
@@ -461,7 +461,7 @@ const mockQuizData: QuizData[] = [
           'Up to 6 hours',
           'Overnight'
         ],
-        correctAnswer: 'Up to 2 hours',
+        correctAnswer: ['Up to 2 hours'],
         feedbackMessage: [
           'After 2 hours in the danger zone (40-140°F), bacteria can multiply to dangerous levels.',
           'Food can become unsafe after 2 hours at room temperature.',
@@ -486,7 +486,7 @@ const mockQuizData: QuizData[] = [
           'Tasting food with cooking spoons'
         ],
         correctAnswer: ['Using separate cutting boards for raw meat', 'Washing hands after handling raw meat', 'Using different utensils for raw and cooked foods'],
-        feedbackMessage: 'Keeping raw and cooked foods separate, along with proper hand washing, are key to preventing foodborne illness.'
+        feedbackMessage: ['Keeping raw and cooked foods separate, along with proper hand washing, are key to preventing foodborne illness.']
       },
       {
         id: 'fs5',
@@ -498,7 +498,7 @@ const mockQuizData: QuizData[] = [
           'In hot water',
           'In the microwave on high'
         ],
-        correctAnswer: 'In the refrigerator',
+        correctAnswer: ['In the refrigerator'],
         feedbackMessage: [
           'This puts food in the danger zone for too long.',
           'Slow thawing in the fridge is the safest method.',
@@ -528,7 +528,7 @@ const mockQuizData: QuizData[] = [
           'Broiling takes longer',
           'There is no difference'
         ],
-        correctAnswer: 'Broiling uses direct heat from above',
+        correctAnswer: ['Broiling uses direct heat from above'],
         feedbackMessage: [
           'Actually, broiling uses very high heat!',
           'Correct! Broiling uses intense direct heat from above, while baking uses ambient heat all around.',
@@ -537,7 +537,7 @@ const mockQuizData: QuizData[] = [
         ],
         feedbackTitle: [
           'High Heat is Key',
-          'Correct!', 
+          'Correct!',
           'Speed vs Quality',
           'Important Distinction'
         ]
@@ -553,7 +553,7 @@ const mockQuizData: QuizData[] = [
           'Braising'
         ],
         correctAnswer: ['Roasting', 'Grilling'],
-        feedbackMessage: 'Dry-heat cooking methods like roasting and grilling don\'t use water or moisture as the primary heat transfer method.'
+        feedbackMessage: ['Dry-heat cooking methods like roasting and grilling don\'t use water or moisture as the primary heat transfer method.'],
       },
       {
         id: 'cm3',
@@ -565,7 +565,7 @@ const mockQuizData: QuizData[] = [
           'To kill bacteria',
           'To reduce cooking time'
         ],
-        correctAnswer: 'To create flavor through browning',
+        correctAnswer: ['To create flavor through browning'],
         feedbackMessage: [
           'Common myth! Searing doesn\'t actually seal in juices.',
           'Correct! The Maillard reaction during searing creates complex flavors and aromas.',
@@ -589,7 +589,7 @@ const mockQuizData: QuizData[] = [
           'Slow braising',
           'Steaming'
         ],
-        correctAnswer: 'Slow braising',
+        correctAnswer: ['Slow braising'],
         feedbackMessage: [
           'Tough cuts need time to break down.',
           'This works better for tender cuts.',
@@ -614,7 +614,7 @@ const mockQuizData: QuizData[] = [
           'Adds flavor'
         ],
         correctAnswer: ['Preserves color', 'Softens texture', 'Makes them last longer in the freezer'],
-        feedbackMessage: 'Blanching helps maintain quality in vegetables by setting color, partially cooking them, and preparing them for freezing.',
+        feedbackMessage: ['Blanching helps maintain quality in vegetables by setting color, partially cooking them, and preparing them for freezing.'],
       }
     ]
   },
@@ -632,7 +632,7 @@ const mockQuizData: QuizData[] = [
           '16 tablespoons',
           '20 tablespoons'
         ],
-        correctAnswer: '16 tablespoons',
+        correctAnswer: ['16 tablespoons'],
         feedbackMessage: [
           'That\'s a half cup!',
           'Not quite enough.',
@@ -644,8 +644,8 @@ const mockQuizData: QuizData[] = [
         id: 'km2',
         type: 'text-input',
         question: 'What\'s the standard weight of 1 cup of all-purpose flour in grams?',
-        correctAnswer: '120',
-        feedbackMessage: '120 grams is the standard weight for 1 cup of all-purpose flour when using the spoon-and-level method.'
+        correctAnswer: ['120'],
+        feedbackMessage: ['120 grams is the standard weight for 1 cup of all-purpose flour when using the spoon-and-level method.']
       },
       {
         id: 'km3',
@@ -657,7 +657,7 @@ const mockQuizData: QuizData[] = [
           'They\'re equally accurate',
           'Depends on the ingredient'
         ],
-        correctAnswer: 'Weight (grams, ounces)',
+        correctAnswer: ['Weight (grams, ounces)'],
         feedbackMessage: [
           'Volume can vary based on how ingredients are packed.',
           'Correct! Weight measurements are always consistent and precise.',
@@ -676,7 +676,7 @@ const mockQuizData: QuizData[] = [
           '8 ounces = 1 cup'
         ],
         correctAnswer: ['3 teaspoons = 1 tablespoon', '4 cups = 1 quart', '2 cups = 1 pint'],
-        feedbackMessage: 'These are standard U.S. measurement conversions. Note that 8 fluid ounces = 1 cup, but weight ounces vary by ingredient.',
+        feedbackMessage: ['These are standard U.S. measurement conversions. Note that 8 fluid ounces = 1 cup, but weight ounces vary by ingredient.'],
       },
       {
         id: 'km5',
@@ -688,7 +688,7 @@ const mockQuizData: QuizData[] = [
           'It\'s traditional',
           'Scales are cheaper'
         ],
-        correctAnswer: 'It\'s more consistent',
+        correctAnswer: ['It\'s more consistent'],
         feedbackMessage: [
           'Weight can actually take longer than volume measurements.',
           'Correct! Weight measurements ensure exact amounts every time, leading to consistent results.',
@@ -718,7 +718,7 @@ const mockQuizData: QuizData[] = [
           'To make the kitchen warm',
           'To sterilize the oven'
         ],
-        correctAnswer: 'To ensure even cooking',
+        correctAnswer: ['To ensure even cooking'],
         feedbackMessage: [
           'Preheating actually uses more energy initially.',
           'Correct! Preheating ensures that food cooks evenly from the start.',
@@ -743,7 +743,7 @@ const mockQuizData: QuizData[] = [
           'Sugar'
         ],
         correctAnswer: ['Baking soda', 'Yeast'],
-        feedbackMessage: 'Leavening agents like baking soda and yeast help dough rise by producing gas.',
+        feedbackMessage: ['Leavening agents like baking soda and yeast help dough rise by producing gas.'],
       },
       {
         id: 'b3',
@@ -755,7 +755,7 @@ const mockQuizData: QuizData[] = [
           'To enhance flavor',
           'To increase shelf life'
         ],
-        correctAnswer: 'To provide structure',
+        correctAnswer: ['To provide structure'],
         feedbackMessage: [
           'Gluten doesn\'t add sweetness.',
           'Correct! Gluten provides structure and elasticity to baked goods.',
@@ -779,7 +779,7 @@ const mockQuizData: QuizData[] = [
           'To use fewer ingredients',
           'To make it look professional'
         ],
-        correctAnswer: 'To ensure consistent results',
+        correctAnswer: ['To ensure consistent results'],
         feedbackMessage: [
           'Accuracy doesn\'t necessarily save time.',
           'Correct! Accurate measurements ensure the desired outcome in baking.',
@@ -804,7 +804,7 @@ const mockQuizData: QuizData[] = [
           'Rice flour'
         ],
         correctAnswer: ['All-purpose flour', 'Bread flour', 'Rice flour'],
-        feedbackMessage: 'Different flours are used for different textures and flavors in baking.',
+        feedbackMessage: ['Different flours are used for different textures and flavors in baking.'],
       }
     ]
   },
@@ -822,7 +822,7 @@ const mockQuizData: QuizData[] = [
           'Mint',
           'Rosemary'
         ],
-        correctAnswer: 'Basil',
+        correctAnswer: ['Basil'],
         feedbackMessage: [
           'Basil is a staple in Italian dishes like pesto.',
           'Cilantro is more common in Mexican and Asian cuisines.',
@@ -847,7 +847,7 @@ const mockQuizData: QuizData[] = [
           'Paprika'
         ],
         correctAnswer: ['Cinnamon', 'Ginger', 'Turmeric'],
-        feedbackMessage: 'Warming spices like cinnamon, ginger, and turmeric are often used in winter dishes.',
+        feedbackMessage: ['Warming spices like cinnamon, ginger, and turmeric are often used in winter dishes.'],
       },
       {
         id: 'hs3',
@@ -859,7 +859,7 @@ const mockQuizData: QuizData[] = [
           'Savory',
           'Earthy'
         ],
-        correctAnswer: 'Earthy',
+        correctAnswer: ['Earthy'],
         feedbackMessage: [
           'Saffron has a unique earthy flavor.',
           'It\'s not typically bitter.',
@@ -883,7 +883,7 @@ const mockQuizData: QuizData[] = [
           'Clove',
           'Cardamom'
         ],
-        correctAnswer: 'Cinnamon',
+        correctAnswer: ['Cinnamon'],
         feedbackMessage: [
           'Nutmeg is a seed.',
           'Correct! Cinnamon is made from the inner bark of trees.',
@@ -908,7 +908,7 @@ const mockQuizData: QuizData[] = [
           'Sage'
         ],
         correctAnswer: ['Thyme', 'Tarragon'],
-        feedbackMessage: 'Thyme and tarragon are staples in French cooking, often used in sauces and stews.',
+        feedbackMessage: ['Thyme and tarragon are staples in French cooking, often used in sauces and stews.'],
       }
     ]
   },
@@ -926,7 +926,7 @@ const mockQuizData: QuizData[] = [
           'Greece',
           'France'
         ],
-        correctAnswer: 'Spain',
+        correctAnswer: ['Spain'],
         feedbackMessage: [
           'Paella is not an Italian dish.',
           'Correct! Paella is a traditional Spanish dish.',
@@ -951,7 +951,7 @@ const mockQuizData: QuizData[] = [
           'Soy sauce'
         ],
         correctAnswer: ['Rice', 'Seaweed', 'Soy sauce'],
-        feedbackMessage: 'Rice, seaweed, and soy sauce are key components of sushi.',
+        feedbackMessage: ['Rice, seaweed, and soy sauce are key components of sushi.'],
       },
       {
         id: 'ic3',
@@ -963,7 +963,7 @@ const mockQuizData: QuizData[] = [
           'Lamb',
           'Fish'
         ],
-        correctAnswer: 'Paneer',
+        correctAnswer: ['Paneer'],
         feedbackMessage: [
           'Paneer Tikka is a vegetarian dish.',
           'Correct! Paneer is the main ingredient.',
@@ -987,7 +987,7 @@ const mockQuizData: QuizData[] = [
           'Chinese',
           'Thai'
         ],
-        correctAnswer: 'Korean',
+        correctAnswer: ['Korean'],
         feedbackMessage: [
           'Kimchi is not a staple in Japanese cuisine.',
           'Correct! Kimchi is a traditional Korean dish.',
@@ -1012,7 +1012,111 @@ const mockQuizData: QuizData[] = [
           'Chili powder'
         ],
         correctAnswer: ['Cumin', 'Chili powder'],
-        feedbackMessage: 'Cumin and chili powder are frequently used in Mexican dishes.',
+        feedbackMessage: ['Cumin and chili powder are frequently used in Mexican dishes.'],
+      }
+    ]
+  },
+  {
+    id: 'international-cuisines-002',
+    title: 'International Cuisines Quiz Part 2',
+    questions: [
+      {
+        id: 'ic6',
+        type: 'single-choice',
+        question: 'Which country is famous for "Pad Thai"?',
+        options: [
+          'Vietnam',
+          'Thailand',
+          'Malaysia',
+          'Indonesia'
+        ],
+        correctAnswer: ['Thailand'],
+        feedbackMessage: [
+          'Pad Thai is not a Vietnamese dish.',
+          'Correct! Pad Thai is a traditional Thai street food.',
+          'Pad Thai is not Malaysian.',
+          'Pad Thai is not Indonesian.'
+        ],
+        feedbackTitle: [
+          'Not Vietnamese',
+          'Thai Classic',
+          'Not Malaysian',
+          'Not Indonesian'
+        ]
+      },
+      {
+        id: 'ic7',
+        type: 'multiple-choice',
+        question: 'Which ingredients are essential in Italian pesto?',
+        options: [
+          'Basil',
+          'Pine nuts',
+          'Parmesan',
+          'Tomatoes'
+        ],
+        correctAnswer: ['Basil', 'Pine nuts', 'Parmesan'],
+        feedbackMessage: ['Basil, pine nuts, and Parmesan are the key components of traditional pesto.'],
+      },
+      {
+        id: 'ic8',
+        type: 'single-choice',
+        question: 'What is the main ingredient in Greek "Moussaka"?',
+        options: [
+          'Potato',
+          'Eggplant',
+          'Zucchini',
+          'Carrot'
+        ],
+        correctAnswer: ['Eggplant'],
+        feedbackMessage: [
+          'Potato is sometimes used but not the main ingredient.',
+          'Correct! Eggplant is the key ingredient in Moussaka.',
+          'Zucchini is not traditionally used in Moussaka.',
+          'Carrot is not used in traditional Moussaka.'
+        ],
+        feedbackTitle: [
+          'Secondary Ingredient',
+          'Main Component',
+          'Not Traditional',
+          'Not Used'
+        ]
+      },
+      {
+        id: 'ic9',
+        type: 'single-choice',
+        question: 'Which cuisine is known for "Couscous"?',
+        options: [
+          'Greek',
+          'Turkish',
+          'Moroccan',
+          'Lebanese'
+        ],
+        correctAnswer: ['Moroccan'],
+        feedbackMessage: [
+          'Couscous is not traditionally Greek.',
+          'While used in Turkish cuisine, it\'s not its origin.',
+          'Correct! Couscous is a staple of Moroccan cuisine.',
+          'While used in Lebanese cuisine, it\'s not its origin.'
+        ],
+        feedbackTitle: [
+          'Not Greek',
+          'Not Original',
+          'North African Staple',
+          'Not Original'
+        ]
+      },
+      {
+        id: 'ic10',
+        type: 'multiple-choice',
+        question: 'Which ingredients are essential in French "Ratatouille"?',
+        options: [
+          'Eggplant',
+          'Zucchini',
+          'Tomatoes',
+          'Carrots'
+        ],
+        correctAnswer: ['Eggplant', 'Zucchini', 'Tomatoes'],
+        feedbackMessage: ['Eggplant, zucchini, and tomatoes are the key vegetables in traditional Ratatouille.'],
       }
     ]
   },
@@ -1030,7 +1134,7 @@ const mockQuizData: QuizData[] = [
           'Tequila',
           'Gin'
         ],
-        correctAnswer: 'Rum',
+        correctAnswer: ['Rum'],
         feedbackMessage: [
           'Mojito is not made with vodka.',
           'Correct! Rum is the main ingredient in a Mojito.',
@@ -1055,7 +1159,7 @@ const mockQuizData: QuizData[] = [
           'Milk'
         ],
         correctAnswer: ['Tomato juice', 'Vodka', 'Worcestershire sauce'],
-        feedbackMessage: 'A Bloody Mary is made with tomato juice, vodka, and Worcestershire sauce.',
+        feedbackMessage: ['A Bloody Mary is made with tomato juice, vodka, and Worcestershire sauce.'],
       },
       {
         id: 'bb3',
@@ -1067,7 +1171,7 @@ const mockQuizData: QuizData[] = [
           'Lemon',
           'Vanilla'
         ],
-        correctAnswer: 'Bergamot',
+        correctAnswer: ['Bergamot'],
         feedbackMessage: [
           'Earl Grey is not mint-flavored.',
           'Correct! Bergamot gives Earl Grey its distinctive flavor.',
@@ -1091,7 +1195,7 @@ const mockQuizData: QuizData[] = [
           'Drip Coffee',
           'Cold Brew'
         ],
-        correctAnswer: 'French Press',
+        correctAnswer: ['French Press'],
         feedbackMessage: [
           'Espresso machines do not use a plunger.',
           'Correct! French Press uses a plunger to separate grounds from the liquid.',
@@ -1116,7 +1220,7 @@ const mockQuizData: QuizData[] = [
           'Lemonade'
         ],
         correctAnswer: ['Cappuccino', 'Hot Chocolate'],
-        feedbackMessage: 'Cappuccino and hot chocolate are traditionally served hot.',
+        feedbackMessage: ['Cappuccino and hot chocolate are traditionally served hot.'],
       }
     ]
   },
@@ -1134,7 +1238,7 @@ const mockQuizData: QuizData[] = [
           'It smells fishy',
           'It becomes hard'
         ],
-        correctAnswer: 'It turns pink and opaque',
+        correctAnswer: ['It turns pink and opaque'],
         feedbackMessage: [
           'Correct! Cooked shrimp turns pink and opaque.',
           'Floating is not a reliable indicator.',
@@ -1159,7 +1263,7 @@ const mockQuizData: QuizData[] = [
           'Baking'
         ],
         correctAnswer: ['Grilling', 'Poaching', 'Baking'],
-        feedbackMessage: 'Salmon can be grilled, poached, or baked for delicious results.',
+        feedbackMessage: ['Salmon can be grilled, poached, or baked for delicious results.'],
       },
       {
         id: 'sc3',
@@ -1171,7 +1275,7 @@ const mockQuizData: QuizData[] = [
           'It makes the fish crispy',
           'It shortens cooking time'
         ],
-        correctAnswer: 'It keeps the fish moist',
+        correctAnswer: ['It keeps the fish moist'],
         feedbackMessage: [
           'En papillote does not add a smoky flavor.',
           'Correct! Cooking en papillote traps moisture, keeping the fish tender.',
@@ -1195,7 +1299,7 @@ const mockQuizData: QuizData[] = [
           'Crab',
           'Mussels'
         ],
-        correctAnswer: 'Mussels',
+        correctAnswer: ['Mussels'],
         feedbackMessage: [
           'Lobster is not typically used in Bouillabaisse.',
           'Clams are sometimes used, but mussels are more common.',
@@ -1220,7 +1324,7 @@ const mockQuizData: QuizData[] = [
           'Mussels'
         ],
         correctAnswer: ['Clams', 'Mussels'],
-        feedbackMessage: 'Clams and mussels should be cooked until their shells open, indicating they are done.',
+        feedbackMessage: ['Clams and mussels should be cooked until their shells open, indicating they are done.'],
       }
     ]
   },
@@ -1238,7 +1342,7 @@ const mockQuizData: QuizData[] = [
           'Beef',
           'Fish'
         ],
-        correctAnswer: 'Tofu',
+        correctAnswer: ['Tofu'],
         feedbackMessage: [
           'Chicken is not vegetarian.',
           'Correct! Tofu is a popular protein source for vegetarians.',
@@ -1263,7 +1367,7 @@ const mockQuizData: QuizData[] = [
           'Bell peppers'
         ],
         correctAnswer: ['Broccoli', 'Carrots', 'Bell peppers'],
-        feedbackMessage: 'Broccoli, carrots, and bell peppers are popular in vegetarian stir-fry dishes.',
+        feedbackMessage: ['Broccoli, carrots, and bell peppers are popular in vegetarian stir-fry dishes.'],
       },
       {
         id: 'vc3',
@@ -1275,7 +1379,7 @@ const mockQuizData: QuizData[] = [
           'Cucumber',
           'Spinach'
         ],
-        correctAnswer: 'Tomato',
+        correctAnswer: ['Tomato'],
         feedbackMessage: [
           'Lettuce is not the main ingredient.',
           'Correct! Tomato is a key component of Caprese Salad.',
@@ -1299,7 +1403,7 @@ const mockQuizData: QuizData[] = [
           'Barley',
           'Oats'
         ],
-        correctAnswer: 'Quinoa',
+        correctAnswer: ['Quinoa'],
         feedbackMessage: [
           'Rice is not particularly high in protein.',
           'Correct! Quinoa is a high-protein grain.',
@@ -1324,7 +1428,7 @@ const mockQuizData: QuizData[] = [
           'Pork'
         ],
         correctAnswer: ['Lentils', 'Chickpeas'],
-        feedbackMessage: 'Lentils and chickpeas are versatile legumes used in many vegetarian dishes.',
+        feedbackMessage: ['Lentils and chickpeas are versatile legumes used in many vegetarian dishes.'],
       }
     ]
   },
@@ -1342,7 +1446,7 @@ const mockQuizData: QuizData[] = [
           'Vanilla',
           'Strawberries'
         ],
-        correctAnswer: 'Mascarpone cheese',
+        correctAnswer: ['Mascarpone cheese'],
         feedbackMessage: [
           'Chocolate is used, but not the main ingredient.',
           'Correct! Mascarpone cheese is essential for Tiramisu.',
@@ -1367,7 +1471,7 @@ const mockQuizData: QuizData[] = [
           'Pavlova'
         ],
         correctAnswer: ['Ice cream', 'Cheesecake'],
-        feedbackMessage: 'Ice cream and cheesecake are usually served cold.',
+        feedbackMessage: ['Ice cream and cheesecake are usually served cold.'],
       },
       {
         id: 'dd3',
@@ -1379,7 +1483,7 @@ const mockQuizData: QuizData[] = [
           'Lemon',
           'Almond'
         ],
-        correctAnswer: 'Cherry',
+        correctAnswer: ['Cherry'],
         feedbackMessage: [
           'Vanilla is not the main flavor.',
           'Correct! Cherry is the signature flavor of Black Forest Cake.',
@@ -1403,7 +1507,7 @@ const mockQuizData: QuizData[] = [
           'Butter',
           'Flour'
         ],
-        correctAnswer: 'Egg whites',
+        correctAnswer: ['Egg whites'],
         feedbackMessage: [
           'Egg yolks are not used in meringue.',
           'Correct! Egg whites are whipped to create meringue.',
@@ -1428,7 +1532,7 @@ const mockQuizData: QuizData[] = [
           'Pineapple'
         ],
         correctAnswer: ['Berries', 'Apples'],
-        feedbackMessage: 'Berries and apples are popular choices for fruit tarts.',
+        feedbackMessage: ['Berries and apples are popular choices for fruit tarts.'],
       }
     ]
   },
@@ -1446,7 +1550,7 @@ const mockQuizData: QuizData[] = [
           'Peeler',
           'Serrated knife'
         ],
-        correctAnswer: 'Peeler',
+        correctAnswer: ['Peeler'],
         feedbackMessage: [
           'A chef\'s knife is too large for precise peeling.',
           'A paring knife can work, but a peeler is more efficient.',
@@ -1471,7 +1575,7 @@ const mockQuizData: QuizData[] = [
           'Grapes'
         ],
         correctAnswer: ['Banana', 'Orange'],
-        feedbackMessage: 'Bananas and oranges are typically peeled before eating.',
+        feedbackMessage: ['Bananas and oranges are typically peeled before eating.'],
       },
       {
         id: 'pt3',
@@ -1483,7 +1587,7 @@ const mockQuizData: QuizData[] = [
           'Changes color',
           'Increases sweetness'
         ],
-        correctAnswer: 'Loosens the skin',
+        correctAnswer: ['Loosens the skin'],
         feedbackMessage: [
           'Blanching doesn\'t add flavor.',
           'Correct! Blanching loosens the skin for easy peeling.',
@@ -1507,7 +1611,7 @@ const mockQuizData: QuizData[] = [
           'Eggplant',
           'Potato'
         ],
-        correctAnswer: 'Eggplant',
+        correctAnswer: ['Eggplant'],
         feedbackMessage: [
           'Carrots are usually peeled for texture.',
           'Cucumbers are peeled for preference, not bitterness.',
@@ -1532,7 +1636,7 @@ const mockQuizData: QuizData[] = [
           'Grater'
         ],
         correctAnswer: ['Spoon', 'Peeler', 'Paring knife'],
-        feedbackMessage: 'A spoon, peeler, or paring knife can be used to peel ginger effectively.',
+        feedbackMessage: ['A spoon, peeler, or paring knife can be used to peel ginger effectively.'],
       }
     ]
   },
@@ -1550,7 +1654,7 @@ const mockQuizData: QuizData[] = [
           'Oil',
           'Salt'
         ],
-        correctAnswer: 'Soap',
+        correctAnswer: ['Soap'],
         feedbackMessage: [
           'Water is necessary but not the main ingredient.',
           'Correct! Soap is essential for creating bubbles.',
@@ -1575,7 +1679,7 @@ const mockQuizData: QuizData[] = [
           'Baking soda'
         ],
         correctAnswer: ['Glycerin', 'Corn syrup'],
-        feedbackMessage: 'Glycerin and corn syrup can help bubbles last longer.',
+        feedbackMessage: ['Glycerin and corn syrup can help bubbles last longer.'],
       },
       {
         id: 'hb3',
@@ -1587,7 +1691,7 @@ const mockQuizData: QuizData[] = [
           'Blow quickly',
           'Blow slowly'
         ],
-        correctAnswer: 'Use a large wand',
+        correctAnswer: ['Use a large wand'],
         feedbackMessage: [
           'A small wand creates smaller bubbles.',
           'Correct! A large wand helps create large bubbles.',
@@ -1611,7 +1715,7 @@ const mockQuizData: QuizData[] = [
           'Wind',
           'All of the above'
         ],
-        correctAnswer: 'All of the above',
+        correctAnswer: ['All of the above'],
         feedbackMessage: [
           'Evaporation weakens the bubble film.',
           'Gravity pulls the liquid down, thinning the top.',
@@ -1636,7 +1740,7 @@ const mockQuizData: QuizData[] = [
           'Calm weather'
         ],
         correctAnswer: ['Humid weather', 'Calm weather'],
-        feedbackMessage: 'Humid and calm weather are ideal for bubble making.',
+        feedbackMessage: ['Humid and calm weather are ideal for bubble making.'],
       }
     ]
   },
@@ -1654,7 +1758,7 @@ const mockQuizData: QuizData[] = [
           'Rubbing with salt',
           'All of the above'
         ],
-        correctAnswer: 'All of the above',
+        correctAnswer: ['All of the above'],
         feedbackMessage: [
           'Lemon can neutralize odors.',
           'Soap helps remove oils.',
@@ -1679,7 +1783,7 @@ const mockQuizData: QuizData[] = [
           'Plastic wrap'
         ],
         correctAnswer: ['Stainless steel', 'Baking soda'],
-        feedbackMessage: 'Stainless steel and baking soda are effective in removing garlic smell.',
+        feedbackMessage: ['Stainless steel and baking soda are effective in removing garlic smell.'],
       },
       {
         id: 'rgs3',
@@ -1691,7 +1795,7 @@ const mockQuizData: QuizData[] = [
           'It masks the smell',
           'It doesn\'t help'
         ],
-        correctAnswer: 'It neutralizes sulfur compounds',
+        correctAnswer: ['It neutralizes sulfur compounds'],
         feedbackMessage: [
           'Stainless steel doesn\'t absorb smells.',
           'Correct! It neutralizes sulfur compounds responsible for the smell.',
@@ -1715,7 +1819,7 @@ const mockQuizData: QuizData[] = [
           'Eating bread',
           'All of the above'
         ],
-        correctAnswer: 'Chewing parsley',
+        correctAnswer: ['Chewing parsley'],
         feedbackMessage: [
           'Parsley can help neutralize odors.',
           'Water doesn\'t effectively remove garlic breath.',
@@ -1740,7 +1844,7 @@ const mockQuizData: QuizData[] = [
           'Chocolate'
         ],
         correctAnswer: ['Mint', 'Apple'],
-        feedbackMessage: 'Mint and apple can help mask garlic breath.',
+        feedbackMessage: ['Mint and apple can help mask garlic breath.'],
       }
     ]
   },
@@ -1758,7 +1862,7 @@ const mockQuizData: QuizData[] = [
           'Depends on the amount',
           'Only with a lid'
         ],
-        correctAnswer: 'No',
+        correctAnswer: ['No'],
         feedbackMessage: [
           'Salt actually raises the boiling point slightly.',
           'Correct! Salt doesn\'t make water boil faster.',
@@ -1783,7 +1887,7 @@ const mockQuizData: QuizData[] = [
           'Type of stove'
         ],
         correctAnswer: ['Altitude', 'Water volume', 'Type of stove'],
-        feedbackMessage: 'Altitude, water volume, and stove type can affect boiling time.',
+        feedbackMessage: ['Altitude, water volume, and stove type can affect boiling time.'],
       },
       {
         id: 'bmb3',
@@ -1795,7 +1899,7 @@ const mockQuizData: QuizData[] = [
           'Adds flavor',
           'Prevents evaporation'
         ],
-        correctAnswer: 'Decreases boiling time',
+        correctAnswer: ['Decreases boiling time'],
         feedbackMessage: [
           'A lid doesn\'t change the boiling point.',
           'Correct! A lid helps retain heat, reducing boiling time.',
@@ -1819,7 +1923,7 @@ const mockQuizData: QuizData[] = [
           'No, it has no effect',
           'Only if it\'s salted'
         ],
-        correctAnswer: 'No, it has no effect',
+        correctAnswer: ['No, it has no effect'],
         feedbackMessage: [
           'Stirring doesn\'t speed up boiling.',
           'Stirring doesn\'t slow down boiling.',
@@ -1844,7 +1948,7 @@ const mockQuizData: QuizData[] = [
           'Boiling makes water safe to drink'
         ],
         correctAnswer: ['Cold water boils faster', 'Salt makes water boil faster', 'Boiling removes all impurities'],
-        feedbackMessage: 'Cold water doesn\'t boil faster, salt doesn\'t speed up boiling, and boiling doesn\'t remove all impurities.',
+        feedbackMessage: ['Cold water doesn\'t boil faster, salt doesn\'t speed up boiling, and boiling doesn\'t remove all impurities.'],
       }
     ]
   },
@@ -1862,7 +1966,7 @@ const mockQuizData: QuizData[] = [
           'Water evaporating instantly',
           'Water freezing instantly'
         ],
-        correctAnswer: 'Water skittering on a hot surface',
+        correctAnswer: ['Water skittering on a hot surface'],
         feedbackMessage: [
           'The Leidenfrost effect doesn\'t lower boiling temperature.',
           'Correct! It describes water skittering on a hot surface.',
@@ -1887,7 +1991,7 @@ const mockQuizData: QuizData[] = [
           'Oil droplets'
         ],
         correctAnswer: ['High surface temperature', 'Water droplets'],
-        feedbackMessage: 'A high surface temperature and water droplets are necessary for the Leidenfrost effect.',
+        feedbackMessage: ['A high surface temperature and water droplets are necessary for the Leidenfrost effect.'],
       },
       {
         id: 'le3',
@@ -1899,7 +2003,7 @@ const mockQuizData: QuizData[] = [
           'They freeze',
           'They boil'
         ],
-        correctAnswer: 'They form a vapor layer',
+        correctAnswer: ['They form a vapor layer'],
         feedbackMessage: [
           'They don\'t evaporate instantly.',
           'Correct! A vapor layer forms, allowing droplets to skitter.',
@@ -1923,7 +2027,7 @@ const mockQuizData: QuizData[] = [
           'Boiling water',
           'Freezing food'
         ],
-        correctAnswer: 'Testing pan heat',
+        correctAnswer: ['Testing pan heat'],
         feedbackMessage: [
           'The effect isn\'t used in cooking pancakes.',
           'Correct! It\'s used to test if a pan is hot enough.',
@@ -1948,7 +2052,7 @@ const mockQuizData: QuizData[] = [
           'Mercury'
         ],
         correctAnswer: ['Water', 'Alcohol'],
-        feedbackMessage: 'Water and alcohol can demonstrate the Leidenfrost effect.',
+        feedbackMessage: ['Water and alcohol can demonstrate the Leidenfrost effect.'],
       }
     ]
   },
@@ -1966,7 +2070,7 @@ const mockQuizData: QuizData[] = [
           'Add butter',
           'Add herbs'
         ],
-        correctAnswer: 'Deglaze the pan',
+        correctAnswer: ['Deglaze the pan'],
         feedbackMessage: [
           'Cream is added later.',
           'Correct! Deglazing the pan is the first step.',
@@ -1991,7 +2095,7 @@ const mockQuizData: QuizData[] = [
           'Juice'
         ],
         correctAnswer: ['Wine', 'Broth', 'Water'],
-        feedbackMessage: 'Wine, broth, and water are commonly used to deglaze a pan.',
+        feedbackMessage: ['Wine, broth, and water are commonly used to deglaze a pan.'],
       },
       {
         id: 'ps3',
@@ -2003,7 +2107,7 @@ const mockQuizData: QuizData[] = [
           'Add color',
           'Add aroma'
         ],
-        correctAnswer: 'Add flavor',
+        correctAnswer: ['Add flavor'],
         feedbackMessage: [
           'Correct! Deglazing adds flavor by incorporating browned bits.',
           'Deglazing doesn\'t thicken sauce.',
@@ -2027,7 +2131,7 @@ const mockQuizData: QuizData[] = [
           'Salt',
           'Vinegar'
         ],
-        correctAnswer: 'Flour',
+        correctAnswer: ['Flour'],
         feedbackMessage: [
           'Correct! Flour is often used to thicken pan sauces.',
           'Sugar isn\'t used for thickening.',
@@ -2052,7 +2156,7 @@ const mockQuizData: QuizData[] = [
           'Butter'
         ],
         correctAnswer: ['Herbs', 'Spices', 'Cream', 'Butter'],
-        feedbackMessage: 'Herbs, spices, cream, and butter can enhance the flavor of a pan sauce.',
+        feedbackMessage: ['Herbs, spices, cream, and butter can enhance the flavor of a pan sauce.'],
       }
     ]
   },
@@ -2070,7 +2174,7 @@ const mockQuizData: QuizData[] = [
           'Color',
           'Aroma'
         ],
-        correctAnswer: 'Texture',
+        correctAnswer: ['Texture'],
         feedbackMessage: [
           'Flavor is similar between the two.',
           'Correct! Texture is the main difference.',
@@ -2095,7 +2199,7 @@ const mockQuizData: QuizData[] = [
           'Epsom salt'
         ],
         correctAnswer: ['Table salt', 'Kosher salt', 'Sea salt'],
-        feedbackMessage: 'Table salt, kosher salt, and sea salt are commonly used in cooking.',
+        feedbackMessage: ['Table salt, kosher salt, and sea salt are commonly used in cooking.'],
       },
       {
         id: 'sd3',
@@ -2107,7 +2211,7 @@ const mockQuizData: QuizData[] = [
           'Sweet flavor',
           'No minerals'
         ],
-        correctAnswer: 'Large crystals',
+        correctAnswer: ['Large crystals'],
         feedbackMessage: [
           'Sea salt typically has larger crystals.',
           'Correct! Sea salt is known for its large crystals.',
@@ -2131,7 +2235,7 @@ const mockQuizData: QuizData[] = [
           'Sea salt',
           'Himalayan salt'
         ],
-        correctAnswer: 'Table salt',
+        correctAnswer: ['Table salt'],
         feedbackMessage: [
           'Correct! Table salt is best for baking due to its fine texture.',
           'Kosher salt is better for seasoning.',
@@ -2156,7 +2260,7 @@ const mockQuizData: QuizData[] = [
           'Kosher salt'
         ],
         correctAnswer: ['Fleur de sel', 'Maldon salt'],
-        feedbackMessage: 'Fleur de sel and Maldon salt are used for finishing dishes.',
+        feedbackMessage: ['Fleur de sel and Maldon salt are used for finishing dishes.'],
       }
     ]
   },
@@ -2174,7 +2278,7 @@ const mockQuizData: QuizData[] = [
           'Adds color',
           'Adds aroma'
         ],
-        correctAnswer: 'Adds flavor',
+        correctAnswer: ['Adds flavor'],
         feedbackMessage: [
           'Correct! Even salting ensures consistent flavor.',
           'Even salting doesn\'t enhance texture.',
@@ -2199,7 +2303,7 @@ const mockQuizData: QuizData[] = [
           'Using a spoon'
         ],
         correctAnswer: ['Sprinkling from a height', 'Using a salt shaker'],
-        feedbackMessage: 'Sprinkling from a height and using a salt shaker help achieve even salting.',
+        feedbackMessage: ['Sprinkling from a height and using a salt shaker help achieve even salting.'],
       },
       {
         id: 'es3',
@@ -2211,7 +2315,7 @@ const mockQuizData: QuizData[] = [
           'Salting unevenly',
           'All of the above'
         ],
-        correctAnswer: 'All of the above',
+        correctAnswer: ['All of the above'],
         feedbackMessage: [
           'Using too much salt is a common mistake.',
           'Using too little salt is a common mistake.',
@@ -2235,7 +2339,7 @@ const mockQuizData: QuizData[] = [
           'Ensures even distribution',
           'Adds aroma'
         ],
-        correctAnswer: 'Ensures even distribution',
+        correctAnswer: ['Ensures even distribution'],
         feedbackMessage: [
           'Salting from a height doesn\'t add flavor.',
           'Salting from a height doesn\'t enhance texture.',
@@ -2260,7 +2364,7 @@ const mockQuizData: QuizData[] = [
           'Bread'
         ],
         correctAnswer: ['Steak', 'Salad', 'Soup'],
-        feedbackMessage: 'Steak, salad, and soup benefit from even salting.',
+        feedbackMessage: ['Steak, salad, and soup benefit from even salting.'],
       }
     ]
   },
@@ -2278,7 +2382,7 @@ const mockQuizData: QuizData[] = [
           'Adds color',
           'Adds aroma'
         ],
-        correctAnswer: 'Adds flavor',
+        correctAnswer: ['Adds flavor'],
         feedbackMessage: [
           'Correct! Finishing salt adds a burst of flavor.',
           'Finishing salt doesn\'t enhance texture.',
@@ -2303,7 +2407,7 @@ const mockQuizData: QuizData[] = [
           'Kosher salt'
         ],
         correctAnswer: ['Fleur de sel', 'Maldon salt'],
-        feedbackMessage: 'Fleur de sel and Maldon salt are used as finishing salts.',
+        feedbackMessage: ['Fleur de sel and Maldon salt are used as finishing salts.'],
       },
       {
         id: 'fst3',
@@ -2315,7 +2419,7 @@ const mockQuizData: QuizData[] = [
           'Sweet flavor',
           'No minerals'
         ],
-        correctAnswer: 'Large crystals',
+        correctAnswer: ['Large crystals'],
         feedbackMessage: [
           'Finishing salt typically has large crystals.',
           'Correct! Finishing salt is known for its large crystals.',
@@ -2339,7 +2443,7 @@ const mockQuizData: QuizData[] = [
           'Soup',
           'All of the above'
         ],
-        correctAnswer: 'All of the above',
+        correctAnswer: ['All of the above'],
         feedbackMessage: [
           'Steak benefits from finishing salt.',
           'Salad benefits from finishing salt.',
@@ -2364,7 +2468,7 @@ const mockQuizData: QuizData[] = [
           'Aroma'
         ],
         correctAnswer: ['Texture', 'Flavor'],
-        feedbackMessage: 'Texture and flavor affect the choice of finishing salt.',
+        feedbackMessage: ['Texture and flavor affect the choice of finishing salt.'],
       }
     ]
   },
@@ -2382,7 +2486,7 @@ const mockQuizData: QuizData[] = [
           'Stir constantly',
           'Add oil'
         ],
-        correctAnswer: 'Use a larger pot',
+        correctAnswer: ['Use a larger pot'],
         feedbackMessage: [
           'Salt doesn\'t prevent boil over.',
           'Correct! A larger pot helps prevent boil over.',
@@ -2407,7 +2511,7 @@ const mockQuizData: QuizData[] = [
           'Add a pinch of salt'
         ],
         correctAnswer: ['Use a wooden spoon', 'Reduce heat'],
-        feedbackMessage: 'Using a wooden spoon and reducing heat help prevent boil over.',
+        feedbackMessage: ['Using a wooden spoon and reducing heat help prevent boil over.'],
       },
       {
         id: 'bop3',
@@ -2419,7 +2523,7 @@ const mockQuizData: QuizData[] = [
           'Steam',
           'All of the above'
         ],
-        correctAnswer: 'Foaming',
+        correctAnswer: ['Foaming'],
         feedbackMessage: [
           'Bubbling is normal.',
           'Correct! Foaming indicates a boil over is imminent.',
@@ -2443,7 +2547,7 @@ const mockQuizData: QuizData[] = [
           'Prevents sticking',
           'All of the above'
         ],
-        correctAnswer: 'Prevents sticking',
+        correctAnswer: ['Prevents sticking'],
         feedbackMessage: [
           'Oil doesn\'t prevent boil over.',
           'Oil doesn\'t add flavor.',
@@ -2468,7 +2572,7 @@ const mockQuizData: QuizData[] = [
           'Soup'
         ],
         correctAnswer: ['Pasta', 'Rice', 'Soup'],
-        feedbackMessage: 'Pasta, rice, and soup are prone to boil over.',
+        feedbackMessage: ['Pasta, rice, and soup are prone to boil over.'],
       }
     ]
   },
@@ -2486,7 +2590,7 @@ const mockQuizData: QuizData[] = [
           'Adds color',
           'Adds aroma'
         ],
-        correctAnswer: 'Ensures even coating',
+        correctAnswer: ['Ensures even coating'],
         feedbackMessage: [
           'Bag mixing doesn\'t add flavor.',
           'Correct! It ensures even coating of ingredients.',
@@ -2511,7 +2615,7 @@ const mockQuizData: QuizData[] = [
           'Pasta'
         ],
         correctAnswer: ['Chicken', 'Vegetables', 'Fish'],
-        feedbackMessage: 'Chicken, vegetables, and fish are commonly mixed in a bag.',
+        feedbackMessage: ['Chicken, vegetables, and fish are commonly mixed in a bag.'],
       },
       {
         id: 'bm3',
@@ -2523,7 +2627,7 @@ const mockQuizData: QuizData[] = [
           'Adds texture',
           'Adds aroma'
         ],
-        correctAnswer: 'Reduces mess',
+        correctAnswer: ['Reduces mess'],
         feedbackMessage: [
           'Correct! Bag mixing reduces mess.',
           'Bag mixing doesn\'t add flavor.',
@@ -2547,7 +2651,7 @@ const mockQuizData: QuizData[] = [
           'Over-mixing',
           'Under-mixing'
         ],
-        correctAnswer: 'Using too much liquid',
+        correctAnswer: ['Using too much liquid'],
         feedbackMessage: [
           'Correct! Using too much liquid can dilute flavors.',
           'Using too little liquid isn\'t a common mistake.',
@@ -2572,7 +2676,7 @@ const mockQuizData: QuizData[] = [
           'Tongs'
         ],
         correctAnswer: ['Hands', 'Tongs'],
-        feedbackMessage: 'Hands and tongs are commonly used for bag mixing.',
+        feedbackMessage: ['Hands and tongs are commonly used for bag mixing.'],
       }
     ]
   },
@@ -2590,7 +2694,7 @@ const mockQuizData: QuizData[] = [
           'Adds color',
           'Adds aroma'
         ],
-        correctAnswer: 'Enhances efficiency',
+        correctAnswer: ['Enhances efficiency'],
         feedbackMessage: [
           'Switching tools doesn\'t add flavor.',
           'Correct! It enhances efficiency in the kitchen.',
@@ -2615,7 +2719,7 @@ const mockQuizData: QuizData[] = [
           'Tongs'
         ],
         correctAnswer: ['Knife', 'Spoon', 'Whisk', 'Tongs'],
-        feedbackMessage: 'Knife, spoon, whisk, and tongs are commonly switched during cooking.',
+        feedbackMessage: ['Knife, spoon, whisk, and tongs are commonly switched during cooking.'],
       },
       {
         id: 'ts3',
@@ -2627,7 +2731,7 @@ const mockQuizData: QuizData[] = [
           'Adds texture',
           'Adds aroma'
         ],
-        correctAnswer: 'Reduces mess',
+        correctAnswer: ['Reduces mess'],
         feedbackMessage: [
           'Correct! Using the right tool reduces mess.',
           'Using the right tool doesn\'t add flavor.',
@@ -2651,7 +2755,7 @@ const mockQuizData: QuizData[] = [
           'Using too few tools',
           'Not switching tools'
         ],
-        correctAnswer: 'Using the wrong tool',
+        correctAnswer: ['Using the wrong tool'],
         feedbackMessage: [
           'Correct! Using the wrong tool can lead to inefficiency.',
           'Using too many tools isn\'t a common mistake.',
@@ -2676,7 +2780,7 @@ const mockQuizData: QuizData[] = [
           'Skill level'
         ],
         correctAnswer: ['Task', 'Ingredient', 'Skill level'],
-        feedbackMessage: 'Task, ingredient, and skill level affect tool choice in cooking.',
+        feedbackMessage: ['Task, ingredient, and skill level affect tool choice in cooking.'],
       }
     ]
   },
@@ -2694,7 +2798,7 @@ const mockQuizData: QuizData[] = [
           'Adds texture',
           'Adds aroma'
         ],
-        correctAnswer: 'Enhances presentation',
+        correctAnswer: ['Enhances presentation'],
         feedbackMessage: [
           'Sauce decoration doesn\'t add flavor.',
           'Correct! It enhances the presentation of a dish.',
@@ -2719,7 +2823,7 @@ const mockQuizData: QuizData[] = [
           'Soy sauce'
         ],
         correctAnswer: ['Chocolate sauce', 'Caramel sauce'],
-        feedbackMessage: 'Chocolate sauce and caramel sauce are commonly used for decoration.',
+        feedbackMessage: ['Chocolate sauce and caramel sauce are commonly used for decoration.'],
       },
       {
         id: 'msd3',
@@ -2731,7 +2835,7 @@ const mockQuizData: QuizData[] = [
           'Knife',
           'Piping bag'
         ],
-        correctAnswer: 'Piping bag',
+        correctAnswer: ['Piping bag'],
         feedbackMessage: [
           'A spoon is not precise enough for decoration.',
           'A whisk is not used for decoration.',
@@ -2755,7 +2859,7 @@ const mockQuizData: QuizData[] = [
           'Enhances texture',
           'Adds aroma'
         ],
-        correctAnswer: 'Increases precision',
+        correctAnswer: ['Increases precision'],
         feedbackMessage: [
           'A squeeze bottle doesn\'t add flavor.',
           'Correct! It increases precision in decoration.',
@@ -2780,7 +2884,7 @@ const mockQuizData: QuizData[] = [
           'Steaks'
         ],
         correctAnswer: ['Desserts', 'Salads'],
-        feedbackMessage: 'Desserts and salads benefit from the visual appeal of sauce decoration.',
+        feedbackMessage: ['Desserts and salads benefit from the visual appeal of sauce decoration.'],
       }
     ]
   },
@@ -2798,7 +2902,7 @@ const mockQuizData: QuizData[] = [
           'Enhances texture',
           'Adds aroma'
         ],
-        correctAnswer: 'Ensures accurate temperature',
+        correctAnswer: ['Ensures accurate temperature'],
         feedbackMessage: [
           'Oven calibration doesn\'t add flavor.',
           'Correct! It ensures the oven is at the correct temperature.',
@@ -2823,7 +2927,7 @@ const mockQuizData: QuizData[] = [
           'Candy thermometer'
         ],
         correctAnswer: ['Oven thermometer', 'Digital thermometer'],
-        feedbackMessage: 'An oven thermometer and digital thermometer are used for oven calibration.',
+        feedbackMessage: ['An oven thermometer and digital thermometer are used for oven calibration.'],
       },
       {
         id: 'oc3',
@@ -2835,7 +2939,7 @@ const mockQuizData: QuizData[] = [
           'Every six months',
           'Every two years'
         ],
-        correctAnswer: 'Once a year',
+        correctAnswer: ['Once a year'],
         feedbackMessage: [
           'Once a month is too frequent.',
           'Correct! Once a year is a good practice.',
@@ -2859,7 +2963,7 @@ const mockQuizData: QuizData[] = [
           'Longer cooking times',
           'All of the above'
         ],
-        correctAnswer: 'All of the above',
+        correctAnswer: ['All of the above'],
         feedbackMessage: [
           'Uneven cooking can indicate calibration issues.',
           'Burnt food can indicate calibration issues.',
@@ -2884,7 +2988,7 @@ const mockQuizData: QuizData[] = [
           'Type of food cooked'
         ],
         correctAnswer: ['Age of the oven', 'Type of oven', 'Frequency of use'],
-        feedbackMessage: 'The age, type, and frequency of use can affect oven calibration.',
+        feedbackMessage: ['The age, type, and frequency of use can affect oven calibration.'],
       }
     ]
   },
@@ -2902,7 +3006,7 @@ const mockQuizData: QuizData[] = [
           'Enhances texture',
           'Adds aroma'
         ],
-        correctAnswer: 'Ensures proper cooking',
+        correctAnswer: ['Ensures proper cooking'],
         feedbackMessage: [
           'Checking oil temperature doesn\'t add flavor.',
           'Correct! It ensures food is cooked properly.',
@@ -2927,7 +3031,7 @@ const mockQuizData: QuizData[] = [
           'Oven thermometer'
         ],
         correctAnswer: ['Candy thermometer', 'Digital thermometer'],
-        feedbackMessage: 'A candy thermometer and digital thermometer can be used to check oil temperature.',
+        feedbackMessage: ['A candy thermometer and digital thermometer can be used to check oil temperature.'],
       },
       {
         id: 'otc3',
@@ -2939,7 +3043,7 @@ const mockQuizData: QuizData[] = [
           '400-450°F',
           '475-500°F'
         ],
-        correctAnswer: '325-375°F',
+        correctAnswer: ['325-375°F'],
         feedbackMessage: [
           '250-300°F is too low for frying.',
           'Correct! 325-375°F is ideal for frying.',
@@ -2963,7 +3067,7 @@ const mockQuizData: QuizData[] = [
           'Food is burnt',
           'All of the above'
         ],
-        correctAnswer: 'All of the above',
+        correctAnswer: ['All of the above'],
         feedbackMessage: [
           'Food cooking too quickly can indicate high oil temperature.',
           'Smoking oil can indicate high temperature.',
@@ -2988,9 +3092,80 @@ const mockQuizData: QuizData[] = [
           'Type of food'
         ],
         correctAnswer: ['Type of oil', 'Amount of oil', 'Size of pot'],
-        feedbackMessage: 'The type, amount, and size of the pot can affect oil temperature.',
+        feedbackMessage: ['The type, amount, and size of the pot can affect oil temperature.'],
       }
     ]
+  },
+
+  {
+    id: "67334bb63711d8e7d6350dff",
+    title: "Grilling Techniques Quiz",
+    questions: [
+      {
+        "type": "slider",
+        "question": "How many minutes per side should you grill a 1-inch thick beefsteak for medium-rare?",
+        "options": [],
+        "min": 1,
+        "max": 10,
+        "correctAnswer": [
+          "4"
+        ],
+        "feedbackTitle": [],
+        "feedbackMessage": [],
+        id: "67334bb63711d8e7d6350e01"
+      },
+      {
+        "type": "single-choice",
+        "question": "What is the ideal internal temperature for a medium-rare beefsteak?",
+        "options": [
+          "120°F",
+          "130°F",
+          "140°F",
+          "150°F"
+        ],
+        "min": 0,
+        "max": 0,
+        "correctAnswer": [
+          "130°F"
+        ],
+        "feedbackTitle": [],
+        feedbackMessage: [],
+        id: "67334bb63711d8e7d6350e02"
+      },
+      {
+        "type": "multiple-choice",
+        "question": "Which of the following are important steps in grilling a beefsteak?",
+        "options": [
+          "Preheat the grill",
+          "Season the steak",
+          "Use a meat thermometer",
+          "Boil the steak"
+        ],
+        "min": 0,
+        "max": 0,
+        "correctAnswer": [
+          "Preheat the grill",
+          "Season the steak",
+          "Use a meat thermometer"
+        ],
+        "feedbackTitle": [],
+        feedbackMessage: [],
+        id: "67334bb63711d8e7d6350e03"
+      },
+      {
+        "type": "text-input",
+        "question": "What is the term for the dark, flavorful crust that forms on a steak when grilled?",
+        "options": [],
+        "min": 0,
+        "max": 0,
+        "correctAnswer": [
+          "sear"
+        ],
+        "feedbackTitle": [],
+        "feedbackMessage": [],
+        id: "67334bb63711d8e7d6350e04"
+      }
+    ],
   }
 ];
 

@@ -1,9 +1,7 @@
-// @ts-nocheck
-
 import DOMPurify from 'dompurify';
 import { PlayerQuestStep, StepState } from "@vuo/models/PlayerQuest";
 import Button from "../atoms/Button";
-import InfoCard from "../molecyles/InfoCard";
+import InfoCard from "../molecules/InfoCard";
 import Space from "../atoms/Space";
 import styles from "./QuestChallenge.module.scss";
 
@@ -32,8 +30,9 @@ function QuestChallenge(props: Props) {
       <div className={styles.challengeContainer}>
         {steps.map((step, index) => (
           <div
-            className={`animate__animated ${styles.step_container} ${styles.current} ${step.state === StepState.completed ? `animate__bounceOutLeft` : ""
-              }`}
+            className={`${styles.step_container} ${styles.current} ${
+              step.state === StepState.completed ? styles.completed : ""
+            }`}
             role="button"
             style={{ zIndex: steps.length - index, transform: `translate(0, ${4 * index}px)` }}
             tabIndex={0}
@@ -117,8 +116,7 @@ function QuestChallenge(props: Props) {
                   block
                   className="btn btn-blue btn-large btn-raised"
                   color="primary"
-                  fill="solid"
-                  size="large"
+                  style={{ width: "100%" }}
                   onClick={() => onStepDone?.(step.id)}
                 >
                   Done!

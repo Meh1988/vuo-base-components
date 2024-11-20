@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,6 +15,8 @@ import { ChannelUser } from "@vuo/stores/WebSocketStore";
 import PlayerItem from '@vuo/organisms/PlayerItem';
 
 import soundFile from '@vuo/assets/sounds/swishh.mp3';
+import { analytics } from '../../config/firebase';
+import { logEvent } from 'firebase/analytics';
 
 const QuestIntro = observer(() => {
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ const QuestIntro = observer(() => {
     randomSkills.forEach((skill, index) => {
       titles.push({
         title: skill.name,
-        backgroundColor: index % 2 ? "var(--red)" : "var(--yellow)",
+        backgroundColor: index % 2 ? "var(--surface-brand-red)" : "var(--surface-brand-orange)",
       });
     });
 
@@ -153,7 +153,7 @@ const QuestIntro = observer(() => {
       )}
       {/* {viewModel.loading && <Loading />} */}
       {!showCountdown && viewModel.quest && (
-        <div style={{ color: 'black' }}>
+        <div style={{ color: 'var(--text-primary)', maxWidth: '400px' }}>
           {currentBanner && (
             <Banner
               title={currentBanner.title}

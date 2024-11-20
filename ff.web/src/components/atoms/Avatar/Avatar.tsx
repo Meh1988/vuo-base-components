@@ -5,10 +5,8 @@ interface AvatarProps {
   alt: string;
 }
 
-export const Avatar = ({ src, alt }: AvatarProps) => {
-  return (
-    <div className={styles.avatar}>
-      <img className={styles.avatar__image} src={src} alt={alt} />
-    </div>
-  );
-};
+export const Avatar = ({ src, alt }: AvatarProps) => (
+  <div className={styles.avatar}>
+    <img className={styles.avatar__image} src={src} alt={alt} />
+  </div>
+);

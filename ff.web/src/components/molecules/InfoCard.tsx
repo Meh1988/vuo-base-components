@@ -1,6 +1,8 @@
 import { Space } from "antd-mobile";
 // import Icon from "../atoms/Icon";
 import styles from './InfoCard.module.scss'
+import BasketSvg from "../atoms/BasketSvg";
+import ForkAndKnifeSvg from "../atoms/ForAndKnifeSvg";
 
 interface InfoCardItem {
   icon?: string;
@@ -20,15 +22,18 @@ function InfoCard(props: InfoCardProps) {
       <Space direction="vertical">
         <h3 className={styles.title}>{title}</h3>
         {items.map((item) => (
-          <div key={item.title} className="flex gap-16">
-            {item.icon && 
-            <p>icon</p>
-            // <Icon
-            //   name={item.icon === "ingredient" ? "ingredient" : "chef-knife"}
-            //   size="24"
-            //   color={item.icon === "ingredient" ? "indigo-400" : "white"} 
-            //   />
-            }
+          <div key={item.title} className={styles.item}>
+            <div className={styles.icon}>
+              {item.icon &&
+                item.icon === "ingredient" ? <BasketSvg />
+              : <ForkAndKnifeSvg />
+              // <Icon
+              //   name={item.icon === "ingredient" ? "ingredient" : "chef-knife"}
+              //   size="24"
+              //   color={item.icon === "ingredient" ? "indigo-400" : "white"} 
+              //   />
+              }
+            </div>
             <div className={`flex-one ${styles.text}`}>{item.title}</div>
           </div>
         ))}

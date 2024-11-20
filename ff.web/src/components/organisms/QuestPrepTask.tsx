@@ -14,7 +14,7 @@ export type QuestPrepTaskProps = {
 }
 
 export default function QuestPrepTask(props: QuestPrepTaskProps) {
-  const { resources, servingSize } = props;
+  const { resources, servingSize = '1' } = props; // REMOVE THIS MFING ONE GRAAAAAAAAAAAA
 
   const [selectedResources, setSelectedResources] = useState<string[]>([])
 
@@ -29,8 +29,10 @@ export default function QuestPrepTask(props: QuestPrepTaskProps) {
   const title = (resource: Resource) => resource.quantity ? `${resource.quantity} ${resource.unit}` : ''
 
   return (
-    <div className={`${styles.step}`}>
-      <div>
+    <div className={`${styles.container}`}>
+      <div
+        style={{ display: 'none' }} // DISABLED FOR NOW
+      >
         <Chip backgroundColor='blue' className={styles.skill_chip}>
           {/* <Icon name={IconNames.Preparing} size={16} /> */}
           Preparing
@@ -39,8 +41,8 @@ export default function QuestPrepTask(props: QuestPrepTaskProps) {
           +25XP
         </Chip>
       </div>
-      <div className={`${styles.step_text} mt-large mb_small`}>Servings <div className={styles.serving_size}>{servingSize}</div></div>
-      <div className='flex flex-col gap-small'>
+      <div className={styles.servings_text}>Servings: <div className={styles.serving_size}>{servingSize}</div></div>
+      <div className={styles.checklist_container}>
         {resources.map((resource) =>
           <CheckListItem
             checked={selectedResources.includes(resource.name)}

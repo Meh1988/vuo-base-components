@@ -19,6 +19,8 @@ import "./workers/extractStepSkillsWorker";
 import "./workers/extractStepResourcesWorker";
 import "./workers/extractStepToolsWorker";
 
+import './config/firebase-admin';
+
 // console.log(myQueue)
 
 // Initialize dotenv to use .env file variables
@@ -28,9 +30,14 @@ dotenv.config();
 const corsConfig = {
   //TODO ENABLE THIS ASAP
   // origin: `https://${process.env.VITE_PASSKEY_RPID!}`,
-  origin: "https://http://localhost:7701",
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+  origin: [
+    'http://localhost:7701',
+    'https://goldfish-app-xz6p5.ondigitalocean.app',
+    'https://api-core-app-a2l5n.ondigitalocean.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', "PATCH", 'DELETE', 'OPTIONS'],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 };
 
 const serverAdapter = new ExpressAdapter();
@@ -65,11 +72,10 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
 const app = express();
 
 // Use CORS middleware with the defined configuration
-// app.use(cors(corsConfig));
-app.use(cors(corsConfig)); //TODO FIX CORS
+app.use(cors(corsConfig)); 
 
 // Handle OPTIONS requests globally
-// app.options('*', cors(corsConfig));
+app.options('*', cors(corsConfig));
 
 // Middleware to parse JSON and URL-encoded bodies
 app.use(express.json());

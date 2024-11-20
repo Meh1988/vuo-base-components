@@ -21,7 +21,12 @@
 # CMD ["npm", "run", "start"]
 
 # Use the official Node.js image
-FROM node:16-alpine
+
+ARG FIREBASE_PROJECT_ID
+ARG FIREBASE_PRIVATE_KEY
+ARG FIREBASE_CLIENT_EMAIL
+
+FROM node:20-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -42,4 +47,4 @@ EXPOSE 8080
 
 # Start the app
 # CMD ["node", "dist/index.js"]
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
