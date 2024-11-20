@@ -67,7 +67,7 @@ import {
   updateUserProfile,
 } from "../controllers/userProfileController";
 
-import { getStepBreakdown } from "../controllers/stepBreakDownController";
+import { getStepBreakdown, updateStepBreakdown } from "../controllers/stepBreakDownController";
 
 import {
   createChallenge,
@@ -205,6 +205,7 @@ router.patch("/profile/update/:id", updateUserProfile);
 
 //PrepPal routes
 router.post("/prepPal/stepBreakdown", errorHandler, getStepBreakdown);
+router.patch("/prepPal/stepBreakdown/update", errorHandler, updateStepBreakdown);
 
 //Challenge routes
 router.post("/challenges/create", errorHandler, createChallenge);
