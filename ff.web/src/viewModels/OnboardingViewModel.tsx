@@ -11,8 +11,10 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import LoginViewModel from "@vuo/viewModels/LoginViewModel";
 
 export default class OnboardingViewModel extends BaseViewModel {
+  private loginViewModel: LoginViewModel;
   formData: Record<string, any> = initialOnboardingData;
   currentStep = 0;
   progress = 0;
@@ -20,8 +22,10 @@ export default class OnboardingViewModel extends BaseViewModel {
   loading = false;
   onboardingComplete: boolean;
 
-  constructor() {
+  constructor(loginViewModel: LoginViewModel) {
     super();
+    this.loginViewModel = loginViewModel;
+    console.log('Constructor - Initial userId:', this.formData.userId);
     this.onboardingComplete =
       localStorage.getItem("onboardingComplete") === "true";
     makeObservable(this, {
@@ -70,22 +74,21 @@ export default class OnboardingViewModel extends BaseViewModel {
   }
 
   async loadInitialData() {
-    const sessionData = JSON.parse(
-      localStorage.getItem("SessionDataStore") || "{}",
-    );
-    if (sessionData?.user?.id) {
-      runInAction(() => {
-        this.formData = { ...this.formData, userId: sessionData.user.id };
-      });
-    }
-
+    // Get the session userId first
+    const sessionUserId = this.loginViewModel.sessionDataStore.profile?.userId;
+    
     if (localStorage.getItem("onboardingData")) {
       const data = JSON.parse(localStorage.getItem("onboardingData") || "{}");
       runInAction(() => {
-        this.formData = data;
+        // Ensure we use session userId instead of stored one
+        this.formData = { ...data, userId: sessionUserId };
         this.calculateProgress();
       });
     } else {
+      runInAction(() => {
+        // Set correct userId in initial data
+        this.formData = { ...this.formData, userId: sessionUserId };
+      });
       this.calculateProgress();
     }
   }
@@ -140,7 +143,10 @@ export default class OnboardingViewModel extends BaseViewModel {
 
   handleNext = async () => {
     if (this.hasFormDataChanged) {
-      const { userId } = this.formData;
+      if(this.formData.onboardingStatus === OnboardingStatus.notStarted) {
+        this.formData.onboardingStatus = OnboardingStatus.inProgress;
+      }
+      const { userId } = this.loginViewModel.sessionDataStore.profile;
       try {
         await this.fetchData({
           url: `v1/profile/update/${userId}`,
@@ -196,7 +202,7 @@ export default class OnboardingViewModel extends BaseViewModel {
   handleFinish = async () => {
     //TODO CALL RECOMMENDER API TO UPDATE USER
     const { userId } = this.formData;
-    const data = { ...this.formData, onboardingComplete: true };
+    const data = { ...this.formData, onboardingStatus: OnboardingStatus.completed, onboardingComplete: true };
     try {
       await this.fetchData({
         url: `v1/profile/update/${userId}`,
