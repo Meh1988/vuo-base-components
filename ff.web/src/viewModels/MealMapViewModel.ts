@@ -10,6 +10,7 @@ export class MealMapViewModel extends BaseViewModel {
 
   recipes: MealMapMeal[] = [];
   mealPlan: DayPlan[] = [];
+  recommendedMeals: MealMapMeal[] = [];
   isLoading = false;
   error: string | null = null;
   empty = false;
@@ -19,6 +20,7 @@ export class MealMapViewModel extends BaseViewModel {
     makeObservable(this, {
       recipes: observable,
       mealPlan: observable,
+      recommendedMeals: observable,
       isLoading: observable,
       error: observable,
       empty: observable,
@@ -29,12 +31,14 @@ export class MealMapViewModel extends BaseViewModel {
       confirmMeal: action,
       denyMeal: action,
       editMeal: action,
+      addMeal: action,
     });
 
     this.currentWeekIndex = MealMapViewModel.calculateCurrentWeekIndex(new Date());
 
     // Automatically fetch recipes when instance is created
     this.fetchRecipes();
+    this.fetchRecommendedMeals();
   }
 
   private static calculateCurrentWeekIndex(currentDay: Date): number {
@@ -48,37 +52,45 @@ export class MealMapViewModel extends BaseViewModel {
     this.currentWeekIndex = weekIndex;
   }
 
-  reselectMeal(meal: MealMapMeal) {
+  reselectMeal(date: Date, meal: MealMapMeal) {
+    console.log('Reselecting meal', JSON.stringify(meal, null, 2));
+    console.log('Date', date.toDateString());
     // Find the day plan containing this meal
     const dayPlan = this.mealPlan.find(plan =>
-      plan.meals.some(m => m.id === meal.id)
+      plan.date.toDateString() === date.toDateString() && plan.meals.some(m => m.id === meal.id)
     );
 
     if (!dayPlan) {
+      console.log('Day plan not found');
       return;
     }
 
     // Find the meal within that day's meals
     const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id);
     if (mealIndex === -1) {
+      console.log('Meal not found');
       return;
     }
 
-    // Update the meal's status to refreshed
-    dayPlan.meals[mealIndex].status = MealStatus.Refreshed;
+    // Create a new array to trigger MobX reactivity
+    dayPlan.meals = dayPlan.meals.map(m =>
+      m.id === meal.id ? { ...m, status: MealStatus.Refreshed } : m
+    );
+
+    console.log('Day plan', JSON.stringify(dayPlan, null, 2));
 
     // Check if all the meals in the same mealTime of the day are refreshed
     const allRefreshed = dayPlan.meals.filter(m => m.time === meal.time).every(m => m.status === MealStatus.Refreshed);
     if (allRefreshed) {
       // TODO: make it do something xd, for now just treat as if denied
-      this.denyMeal(meal);
+
     }
   }
 
-  confirmMeal(meal: MealMapMeal) {
+  confirmMeal(date: Date, meal: MealMapMeal) {
     // Find the day plan containing this meal
     const dayPlan = this.mealPlan.find(plan =>
-      plan.meals.some(m => m.id === meal.id)
+      plan.date.toDateString() === date.toDateString() && plan.meals.some(m => m.id === meal.id)
     );
 
     if (!dayPlan) {
@@ -92,49 +104,74 @@ export class MealMapViewModel extends BaseViewModel {
     }
 
     // Create a new array to trigger MobX reactivity
-    dayPlan.meals = dayPlan.meals.map((m, index) => 
+    dayPlan.meals = dayPlan.meals.map((m, index) =>
       index === mealIndex ? { ...m, status: MealStatus.Confirmed } : m
     );
   }
 
-  denyMeal(meal: MealMapMeal) {
-    // Find the day plan containing this meal
+  denyMeal(date: Date, meal: MealMapMeal) {
     const dayPlan = this.mealPlan.find(plan =>
-      plan.meals.some(m => m.id === meal.id)
+      plan.date.toDateString() === date.toDateString() && plan.meals.some(m => m.id === meal.id && m.time === meal.time)
     );
 
     if (!dayPlan) {
       return;
     }
 
-    // Make all meals that have the same time as the denied meal to denied
-    // This efectively hides the meals for that time
-    dayPlan.meals = dayPlan.meals.map(m => ({
-      ...m,
-      status: m.time === meal.time ? MealStatus.Denied : m.status
-    }));
+    // Change the status of the other meals at the same time to refreshed
+    dayPlan.meals = dayPlan.meals.map(m =>
+      m.time === meal.time && m.status !== MealStatus.Denied ? { ...m, status: MealStatus.Refreshed } : m
+    );
+
+    // Only change the status of the specific meal at the specific time
+    dayPlan.meals = dayPlan.meals.map(m =>
+      m.id === meal.id && m.time === meal.time ? { ...m, status: MealStatus.Denied } : m
+    );
   }
 
-  editMeal(meal: MealMapMeal) {
+  editMeal(date: Date, meal: MealMapMeal) {
     // Find the day plan containing this meal
     const dayPlan = this.mealPlan.find(plan =>
-        plan.meals.some(m => m.id === meal.id)
+      plan.date.toDateString() === date.toDateString() && plan.meals.some(m => m.id === meal.id)
     );
 
     if (!dayPlan) {
-        return;
+      return;
     }
 
     // Find the meal within that day's meals
     const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id);
     if (mealIndex === -1) {
-        return;
+      return;
     }
 
     // Create a new array to trigger MobX reactivity
-    dayPlan.meals = dayPlan.meals.map((m, index) => 
-        index === mealIndex ? { ...m, status: MealStatus.Pending } : m
+    dayPlan.meals = dayPlan.meals.map((m, index) =>
+      index === mealIndex ? { ...m, status: MealStatus.Pending } : m
     );
+  }
+
+  addMeal(meal: MealMapMeal, mealDate: Date, mealTime: MealTime) {
+    runInAction(() => {
+      let dayPlan = this.mealPlan.find(plan => plan.date.toDateString() === mealDate.toDateString());
+
+      if (!dayPlan) {
+        // Create new day plan if it doesn't exist
+        dayPlan = {
+          date: mealDate,
+          meals: []
+        };
+        // Create a new array reference for mealPlan to ensure reactivity
+        this.mealPlan = [...this.mealPlan, dayPlan];
+      }
+
+      // Find the dayPlan again from the updated array
+      const updatedDayPlan = this.mealPlan.find(plan => plan.date.toDateString() === mealDate.toDateString());
+      if (updatedDayPlan) {
+        // Create new array reference for meals
+        updatedDayPlan.meals = [{ ...meal, time: mealTime, status: MealStatus.Pending }, ...updatedDayPlan.meals];
+      }
+    });
   }
 
   async fetchRecipes(): Promise<void> {
@@ -172,6 +209,27 @@ export class MealMapViewModel extends BaseViewModel {
     }
   }
 
+  async fetchRecommendedMeals(): Promise<void> {
+    const data = await this.fetchData<MealMapMeal[]>({
+      url: "v1/mealmap/recipes",
+      method: "GET",
+    });
+
+    const recommendedMeals = data?.map((recipe, index) => ({
+      id: recipe.id,
+      name: recipe.name || `Meal ${index + 1}`,
+      description: recipe.description || `Description for Meal ${index + 1}`,
+      media: { image: recipe?.media?.image },
+      time: MealTime.Breakfast,
+      status: MealStatus.Pending,
+    })) || [];
+
+    runInAction(() => {
+      this.recommendedMeals = recommendedMeals;
+    });
+
+  }
+
   private organizeMeals(recipes: MealMapMeal[]): DayPlan[] {
     if (!this.recipes) {
       return [];
@@ -205,6 +263,7 @@ export class MealMapViewModel extends BaseViewModel {
           meals
         });
       }
+
     }
 
     return mealPlan;

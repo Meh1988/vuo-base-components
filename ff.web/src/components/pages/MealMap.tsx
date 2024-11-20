@@ -91,31 +91,30 @@ const MealMap = observer(() => {
         />
 
         {Array.from({ length: 7 }, (_, index) => {
-          const currentDate = new Date(new Date().getFullYear(), 0, 1);
+          const currentDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
           const daysToAdd = ((viewModel.currentWeekIndex - 1) * 7) +
             (WEEK_STARTS_ON_MONDAY ? index : (index - 1) % 7);
 
-          currentDate.setDate(currentDate.getDate() + daysToAdd);
+          const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysToAdd);
 
-          // Find the meal plan for this day
           const dayPlan = viewModel.mealPlan.find(plan => {
             const planDate = new Date(plan.date);
-            const isMatchingDate = planDate.toDateString() === currentDate.toDateString();
-            return isMatchingDate;
+            return planDate.setHours(0, 0, 0, 0) === date.setHours(0, 0, 0, 0);
           }) || null;
           const meals = dayPlan?.meals || [];
 
           return (
             <MealMapDay
-              key={currentDate.toDateString()}
+              key={date.toDateString()}
               ref={null}
-              date={currentDate}
+              date={date}
               meals={meals}
-              onReselectMeal={(meal) => viewModel.reselectMeal(meal)}
-              onConfirmMeal={(meal) => viewModel.confirmMeal(meal)}
-              onDenyMeal={(meal) => viewModel.denyMeal(meal)}
-              onEditMeal={(meal) => viewModel.editMeal(meal)}
-              onAddMeal={(mealDate, mealTime) => console.log("mealDate", mealDate, "mealTime", mealTime)}
+              recommendedMeals={viewModel.recommendedMeals}
+              onReselectMeal={(meal) => viewModel.reselectMeal(date, meal)}
+              onConfirmMeal={(meal) => viewModel.confirmMeal(date, meal)}
+              onDenyMeal={(meal) => viewModel.denyMeal(date, meal)}
+              onEditMeal={(meal) => viewModel.editMeal(date, meal)}
+              onAddMeal={(meal, mealTime) => viewModel.addMeal(meal, date, mealTime)}
             />
           );
         })}
@@ -124,32 +123,32 @@ const MealMap = observer(() => {
   }
   if (!WEEKLY_VIEW) {
     const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 2);
-
-    const endDate = new Date(today);
-    endDate.setDate(today.getDate() + 14);
+    today.setHours(0, 0, 0, 0);
+    
+    const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2);
+    const endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
 
     const days = [];
 
-    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+    for (let date = new Date(startDate); date <= endDate; date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)) {
       const dayPlan = viewModel.mealPlan.find(plan => {
         const planDate = new Date(plan.date);
-        return planDate.toDateString() === date.toDateString();
+        return planDate.setHours(0, 0, 0, 0) === date.setHours(0, 0, 0, 0);
       }) || null;
       const meals = dayPlan?.meals || [];
 
       days.push(
         <MealMapDay
           key={date.toDateString()}
-          ref={date.toDateString() === today.toDateString() ? todayRef : null}
+          ref={date.getTime() === today.getTime() ? todayRef : null}
           date={new Date(date)}
           meals={meals}
-          onReselectMeal={(meal) => viewModel.reselectMeal(meal)}
-          onConfirmMeal={(meal) => viewModel.confirmMeal(meal)}
-          onDenyMeal={(meal) => viewModel.denyMeal(meal)}
-          onEditMeal={(meal) => viewModel.editMeal(meal)}
-          onAddMeal={(mealDate, mealTime) => console.log("mealDate", mealDate, "mealTime", mealTime)}
+          recommendedMeals={viewModel.recommendedMeals}
+          onReselectMeal={(meal) => viewModel.reselectMeal(date, meal)}
+          onConfirmMeal={(meal) => viewModel.confirmMeal(date, meal)}
+          onDenyMeal={(meal) => viewModel.denyMeal(date, meal)}
+          onEditMeal={(meal) => viewModel.editMeal(date, meal)}
+          onAddMeal={(meal, mealTime) => viewModel.addMeal(meal, date, mealTime)}
         />
       );
     }

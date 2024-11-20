@@ -3,19 +3,24 @@ import Button from "@vuo/components/atoms/Button";
 import { useState, forwardRef } from "react";
 import styles from "./MealMapDay.module.scss";
 import { CheckSVG, CloseSVG, PenSVG, PlusSVG, RefreshSVG } from "../atoms/SVGComponents";
+import AddMealModal from "../molecules/AddMealModal";
 
 interface MealMapDayProps {
     date: Date;
     meals: MealMapMeal[];
+    recommendedMeals: MealMapMeal[];
     onReselectMeal: (meal: MealMapMeal) => void;
     onConfirmMeal: (meal: MealMapMeal) => void;
     onDenyMeal: (meal: MealMapMeal) => void;
     onEditMeal: (meal: MealMapMeal) => void;
-    onAddMeal: (mealDate: Date, mealTime: MealTime) => void;
+    onAddMeal: (meal: MealMapMeal, mealTime: MealTime) => void;
 }
 
 const MealMapDay = forwardRef<HTMLDivElement, MealMapDayProps>(
-    ({ date, meals, onReselectMeal, onConfirmMeal, onDenyMeal, onEditMeal, onAddMeal }: MealMapDayProps, ref) => {
+    ({ date, meals, recommendedMeals, onReselectMeal, onConfirmMeal, onDenyMeal, onEditMeal, onAddMeal }: MealMapDayProps, ref) => {
+        const [addMealModalOpen, setAddMealModalOpen] = useState(false);
+        const [mealTime, setMealTime] = useState<MealTime>(MealTime.Breakfast);
+
         // Sort meals into slots
         const mealsByType: Record<MealTime, MealMapMeal[] | undefined> = {
             Breakfast: meals.filter(m => m.time === MealTime.Breakfast),
@@ -35,12 +40,6 @@ const MealMapDay = forwardRef<HTMLDivElement, MealMapDayProps>(
             day: 'numeric',
         });
 
-        const [mealIndices, setMealIndices] = useState<Record<MealTime, number>>({
-            [MealTime.Breakfast]: 0,
-            [MealTime.Lunch]: 0,
-            [MealTime.Dinner]: 0,
-        });
-
         return <div className={styles.dayPlan} key={date.toDateString()} ref={ref}>
 
             <div className={styles.dayHeader}>
@@ -50,13 +49,12 @@ const MealMapDay = forwardRef<HTMLDivElement, MealMapDayProps>(
 
             <div className={styles.mealsGrid}>
                 {Object.entries(mealsByType).map(([mealType, mealsList]) => {
-                    const meal = mealsList?.[mealIndices[mealType as MealTime]];
+                    const meal = mealsList?.find(m => m.status !== MealStatus.Refreshed && m.status !== MealStatus.Denied);
 
                     return (
                         <div key={`${date.toDateString()}-${mealType}`} className={styles.mealBox}>
                             <h2 className={styles.mealType}>{mealType.toUpperCase()}</h2>
 
-                            {/* Meal Pending Confirmation */}
                             {meal && meal.status === MealStatus.Pending && (
                                 <>
                                     <div className={styles.mealInfoContainer}>
@@ -78,13 +76,7 @@ const MealMapDay = forwardRef<HTMLDivElement, MealMapDayProps>(
                                         <button
                                             type="button"
                                             className={styles.cycleButton}
-                                            onClick={() => {
-                                                onReselectMeal(meal);
-                                                setMealIndices(prevIndices => ({
-                                                    ...prevIndices,
-                                                    [mealType]: prevIndices[mealType as MealTime] + 1
-                                                }));
-                                            }}
+                                            onClick={() => onReselectMeal(meal)}
                                         >
                                             <RefreshSVG className={styles.refreshIcon} />
                                         </button>
@@ -99,7 +91,6 @@ const MealMapDay = forwardRef<HTMLDivElement, MealMapDayProps>(
                                 </>
                             )}
 
-                            {/* Meal Confirmed */}
                             {meal && meal.status === MealStatus.Confirmed && (
                                 <>
                                     <div className={styles.mealInfoContainer}>
@@ -116,31 +107,31 @@ const MealMapDay = forwardRef<HTMLDivElement, MealMapDayProps>(
                                         <h3 className={styles.mealName}>{meal.name}</h3>
                                     </div>
 
-                                    <div className={styles.mealActions}>
+                                    <div className={styles.actionButtons}>
                                         <div className={styles.mealStatus}>
                                             <span>Confirmed</span>
                                             <CheckSVG className={styles.checkIcon} />
                                         </div>
 
-                                        <div className={styles.actionButtons}>
-                                            <button
-                                                type="button"
-                                                className={styles.editButton}
-                                                onClick={() => onEditMeal(meal)}
-                                            >
-                                                <PenSVG className={styles.penIcon} />
-                                            </button>
-                                        </div>
+                                        <button
+                                            type="button"
+                                            className={styles.editButton}
+                                            onClick={() => onEditMeal(meal)}
+                                        >
+                                            <PenSVG className={styles.penIcon} />
+                                        </button>
                                     </div>
 
 
                                 </>
                             )}
 
-
                             {(!meal || meal.status === MealStatus.Denied) && (
                                 <div className={styles.addMealButtonContainer}>
-                                    <div className={styles.addMealButton} onClick={() => onAddMeal(date, mealType as MealTime)}>
+                                    <div className={styles.addMealButton} onClick={() => {
+                                        setAddMealModalOpen(true);
+                                        setMealTime(mealType as MealTime);
+                                    }}>
                                         <PlusSVG className={styles.plusIcon} strokeWidth="4" />
                                         <p>Add {mealType}</p>
                                     </div>
@@ -150,6 +141,19 @@ const MealMapDay = forwardRef<HTMLDivElement, MealMapDayProps>(
                     );
                 })}
             </div>
+
+            {addMealModalOpen && (
+                <AddMealModal
+                    open={addMealModalOpen}
+                    onClose={() => setAddMealModalOpen(false)}
+                    mealTime={mealTime}
+                    meals={[...recommendedMeals.filter(meal => meal.status !== MealStatus.Denied)]}
+                    onAddMeal={(meal) => {
+                        onAddMeal(meal, mealTime);
+                        setAddMealModalOpen(false);
+                    }}
+                />
+            )}
         </div>;
     }
 );
