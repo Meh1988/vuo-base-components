@@ -4,10 +4,11 @@ import styles from './Modal.module.scss';
 interface ModalProps {
     open: boolean;
     onClose: () => void;
+    title?: string;
     children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ open, onClose, title, children }) => {
     useEffect(() => {
         if (open) {
             document.body.style.overflow = 'hidden';
@@ -32,6 +33,7 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
                 >
                     ×
                 </button>
+                {title && <h2>{title}</h2>}
                 {children}
             </div>
         </div>
