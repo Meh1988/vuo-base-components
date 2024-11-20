@@ -14,24 +14,25 @@ import QuestBrowseViewModel from "@vuo/viewModels/QuestBrowseViewModel";
 import OnboardingViewModel from "@vuo/viewModels/OnboardingViewModel";
 import LoginViewModel from "../../viewModels/LoginViewModel";
 import LoginModal from "../organisms/LoginModal";
-
+import { OnboardingStatus } from "@models/Onboarding";
+import FinishOnboardingPrompt from '../molecules/FinishOnboardingPrompt/FinishOnboardingPrompt';
     
     
 const Home = observer(() => {
     const navigate = useNavigate();
     const [completedQuestIds, setCompletedQuestIds] = useState<string[]>([])     
     const { navigateWithState } = useStackNavigator();
+    //TODO combine loginviewModels
     const [viewModel] = useState<QuestBrowseViewModel>(() => new QuestBrowseViewModel());
     const [loginViewModel] = useState<LoginViewModel>(() => new LoginViewModel());
-    const [onboardingViewModel] = useState<OnboardingViewModel>(() => new OnboardingViewModel());
+    const [onboardingViewModel] = useState<OnboardingViewModel>(() => new OnboardingViewModel(loginViewModel));
     const goToQuest = () => {
         navigateWithState('/home/quests');
     };
 
     const userAccount = loginViewModel.sessionDataStore?.user;
     const userAccountId = localStorage.getItem("SessionDataStore")
-
-    console.log("useraccount from home", JSON.stringify(userAccount))
+    
     const goToOnboading = () => {
         // Add conditional navigation logic
         //creating shadow account
@@ -109,24 +110,20 @@ const Home = observer(() => {
                 <Button onClick={goToQuest}>Start Quest</Button>
             </Section>
             {
-                !viewModel.isOnboardingComplete && <Section>
-                    {
-                        localStorage.getItem('onboardingData')
-                            ? (
-                                <>
-                                    <h2>Finish your onboarding process!</h2>
-                                    {/* <h3>some progress bar here</h3> */}
-                                    <Button onClick={goToOnboading}>Continue</Button>
-                                </>
-                            )
-                            : (
-                                <>
-                                    <h2>Start onboarding here</h2>
-                                    <Button onClick={goToOnboading}>Start</Button>
-                                </>
-                            )
-                    }
+                !loginViewModel.sessionDataStore.user && 
+                <Section>
+                    <>
+                        <h2>Start onboarding here</h2>
+                        <Button onClick={goToOnboading}>Start</Button>
+                    </>
+                            
                 </Section>
+            }
+            {
+                viewModel.sessionDataStore.user && loginViewModel.sessionDataStore.profile?.onboardingStatus !== OnboardingStatus.completed  && 
+                <FinishOnboardingPrompt handleContinue={() => {
+                    goToOnboading()
+                }} />
             }
             <div style={{ height: '20px' }} />
             {!viewModel.sessionDataStore.user && (

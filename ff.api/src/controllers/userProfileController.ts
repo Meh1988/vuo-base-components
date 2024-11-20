@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Onboarding, { OnboardingStatus } from '../models/userProfile';
+import pickRandomUserName from '../utils/randomName';
 
 // Create user profile
 const createUserProfile = async (req: Request, res: Response) => {
@@ -9,6 +10,7 @@ const createUserProfile = async (req: Request, res: Response) => {
 
     const newUserProfile = new Onboarding({
       userId,
+      userName: pickRandomUserName(),
     });
     await newUserProfile.save();
 

@@ -133,6 +133,8 @@ export default class QuestBrowseViewModel extends BaseViewModel {
     this.sessionDataStore.username = response!.username;
     this.sessionDataStore.user = response!.user;
     this.sessionDataStore.shadowAccount = true;
+
+    // await this.createUserProfile(response!.user.id);
     return response?.user.id
   }
 
@@ -142,7 +144,7 @@ export default class QuestBrowseViewModel extends BaseViewModel {
     };
     const userProfile = await this.postData<ProfileResponse>(config.url, {userId: shadowAccountUserId});
     if (userProfile) {
-      this.sessionDataStore.userProfile = userProfile;
+      this.sessionDataStore.profile = userProfile;
     }
   }
 
