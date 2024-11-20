@@ -28,6 +28,7 @@ export class MealMapViewModel extends BaseViewModel {
       reselectMeal: action,
       confirmMeal: action,
       denyMeal: action,
+      editMeal: action,
     });
 
     this.currentWeekIndex = MealMapViewModel.calculateCurrentWeekIndex(new Date());
@@ -117,21 +118,23 @@ export class MealMapViewModel extends BaseViewModel {
   editMeal(meal: MealMapMeal) {
     // Find the day plan containing this meal
     const dayPlan = this.mealPlan.find(plan =>
-      plan.meals.some(m => m.id === meal.id)
+        plan.meals.some(m => m.id === meal.id)
     );
 
     if (!dayPlan) {
-      return;
+        return;
     }
 
     // Find the meal within that day's meals
     const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id);
     if (mealIndex === -1) {
-      return;
+        return;
     }
 
-    // Update the meal's status to pending
-    dayPlan.meals[mealIndex].status = MealStatus.Pending;
+    // Create a new array to trigger MobX reactivity
+    dayPlan.meals = dayPlan.meals.map((m, index) => 
+        index === mealIndex ? { ...m, status: MealStatus.Pending } : m
+    );
   }
 
   async fetchRecipes(): Promise<void> {
