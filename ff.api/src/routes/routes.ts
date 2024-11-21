@@ -1,3 +1,4 @@
+// @ts-ignore
 import express from "express";
 import multer from "multer";
 
@@ -22,7 +23,7 @@ import {
   getCurrentPlayerQuests,
   getPlayerQuest,
   claimStep,
-  updatePlayerQuestStepSubSteps
+  updatePlayerQuestStepSubSteps,
 } from "../controllers/playerQuestsController";
 import {
   getCurrentUserAchievement,
@@ -31,6 +32,7 @@ import {
 } from "../controllers/playerAchievementsController";
 import { getAchievements } from "../controllers/AchievementsController";
 import authMiddleware from "../middleware/authMiddleware";
+import errorHandler from "../middleware/errorHandler";
 import {
   getCurrentPlayerProfile,
   updateCurrentPlayerProfile,
@@ -65,7 +67,34 @@ import {
   updateUserProfile,
 } from "../controllers/userProfileController";
 
-import { getStepBreakdown } from "../controllers/stepBreakDownController";
+import {
+  getStepBreakdown,
+  updateStepBreakdown,
+} from "../controllers/stepBreakDownController";
+
+import {
+  createChallenge,
+  generateChallenge,
+  getChallengeById,
+} from "../controllers/challengesController";
+
+import {
+  createProgressionPath,
+  generateProgressionPath,
+  getAllProgressionPaths,
+  getProgressionPathById,
+  updateProgressionPath,
+} from "../controllers/progressionPathController";
+
+import {
+  createPlayerProgressionPath,
+  getPlayerProgressionPathById,
+  getPlayerProgressionPaths,
+  updatePlayerProgressionPath,
+} from "../controllers/playerProgressionPathController";
+
+import { addExperiencePoints, setExperiencePoints } from "../controllers/experienceController";
+
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
@@ -87,7 +116,7 @@ router.post("/authenticate/verify", authenticateVerify);
 router.post("/logout", authMiddleware, logoutUser);
 router.delete("/users/delete/me", authMiddleware, deleteUserAndProfile); //DELETES user account and profile TODO: implement full clean up
 //Firebase routes
-router.post('/authenticate/verify-firebase', verifyFirebaseToken);
+router.post("/authenticate/verify-firebase", verifyFirebaseToken);
 
 // Landing page quests routes
 router.get("/landing-page-questlines/:url", getQuestLinesForLandingPage);
@@ -104,7 +133,11 @@ router.get("/playerQuests/:id", authMiddleware, getPlayerQuest);
 router.post("/playerQuests", authMiddleware, createPlayerQuest);
 router.patch("/playerQuests/:id", authMiddleware, updatePlayerQuestProgress);
 router.patch("/playerQuests/:id/:stepId/claim", authMiddleware, claimStep);
-router.patch("/playerQuests/:id/:stepId/subSteps", authMiddleware, updatePlayerQuestStepSubSteps);
+router.patch(
+  "/playerQuests/:id/:stepId/subSteps",
+  authMiddleware,
+  updatePlayerQuestStepSubSteps
+);
 
 // Achievement routes
 router.get("/achievements", authMiddleware, getAchievements);
@@ -180,6 +213,60 @@ router.post("/profile/create", createUserProfile);
 router.patch("/profile/update/:id", updateUserProfile);
 
 //PrepPal routes
-router.post("/prepPal/stepBreakdown", getStepBreakdown);
+router.post("/prepPal/stepBreakdown", errorHandler, getStepBreakdown);
+router.patch(
+  "/prepPal/stepBreakdown/update",
+  errorHandler,
+  updateStepBreakdown
+);
+
+//Challenge routes
+router.post("/challenges/create", errorHandler, createChallenge);
+router.get("/challenges/challenge/:id", errorHandler, getChallengeById);
+router.post("/challenges/generate", errorHandler, generateChallenge);
+
+//Progression Path routes
+router.post("/progressionPaths/create", errorHandler, createProgressionPath);
+router.post(
+  "/progressionPaths/generate",
+  errorHandler,
+  generateProgressionPath
+);
+router.get("/progressionPaths", errorHandler, getAllProgressionPaths);
+router.get(
+  "/progressionPaths/progressionPath/:id",
+  errorHandler,
+  getProgressionPathById
+);
+router.patch(
+  "/progressionPaths/progressionPath/:id",
+  errorHandler,
+  updateProgressionPath
+);
+
+//Player Progression Path routes
+router.post(
+  "/playerProgressionPaths/create",
+  errorHandler,
+  createPlayerProgressionPath
+);
+router.get(
+  "/playerProgressionPaths/byUser/:userId",
+  errorHandler,
+  getPlayerProgressionPaths
+);
+router.get(
+  "/playerProgressionPaths/playerProgressionPath/:id",
+  getPlayerProgressionPathById
+);
+router.patch(
+  "/playerProgressionPaths/playerProgressionPath/:id",
+  errorHandler,
+  updatePlayerProgressionPath
+);
+
+//Experience routes
+router.post("/experience/add", errorHandler, addExperiencePoints);
+router.post("/experience/set", errorHandler, setExperiencePoints);
 
 export default router;
