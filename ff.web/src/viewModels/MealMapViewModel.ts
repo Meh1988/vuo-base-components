@@ -53,22 +53,18 @@ export class MealMapViewModel extends BaseViewModel {
   }
 
   reselectMeal(date: Date, meal: MealMapMeal) {
-    console.log('Reselecting meal', JSON.stringify(meal, null, 2));
-    console.log('Date', date.toDateString());
     // Find the day plan containing this meal
     const dayPlan = this.mealPlan.find(plan =>
       plan.date.toDateString() === date.toDateString() && plan.meals.some(m => m.id === meal.id)
     );
 
     if (!dayPlan) {
-      console.log('Day plan not found');
       return;
     }
 
     // Find the meal within that day's meals
     const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id && m.time === meal.time);
     if (mealIndex === -1) {
-      console.log('Meal not found');
       return;
     }
 
@@ -76,8 +72,6 @@ export class MealMapViewModel extends BaseViewModel {
     dayPlan.meals = dayPlan.meals.map((m, index) =>
       index === mealIndex ? { ...m, status: MealStatus.Refreshed } : m
     );
-
-    console.log('Day plan', JSON.stringify(dayPlan, null, 2));
 
     // Check if all the meals in the same mealTime of the day are refreshed
     const allRefreshed = dayPlan.meals.filter(m => m.time === meal.time).every(m => m.status === MealStatus.Refreshed);
