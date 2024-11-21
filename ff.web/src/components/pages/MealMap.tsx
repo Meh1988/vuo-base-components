@@ -24,6 +24,29 @@ const MealMap = observer(() => {
     }
   }, [viewModel.isLoading]);
 
+  const renderMealMapDay = (date: Date, ref: React.RefObject<HTMLDivElement> | null = null) => {
+    const dayPlan = viewModel.mealPlan.find(plan => {
+      const planDate = new Date(plan.date);
+      return planDate.setHours(0, 0, 0, 0) === date.setHours(0, 0, 0, 0);
+    }) || null;
+    const meals = dayPlan?.meals || [];
+
+    return (
+      <MealMapDay
+        key={date.toDateString()}
+        ref={ref}
+        date={date}
+        meals={meals}
+        recommendedMeals={viewModel.recommendedMeals}
+        onReselectMeal={(meal) => viewModel.reselectMeal(date, meal)}
+        onConfirmMeal={(meal) => viewModel.confirmMeal(date, meal)}
+        onDenyMeal={(meal) => viewModel.denyMeal(date, meal)}
+        onEditMeal={(meal) => viewModel.editMeal(date, meal)}
+        onAddMeal={(meal, mealTime) => viewModel.addMeal(meal, date, mealTime)}
+      />
+    );
+  };
+
   if (viewModel.empty) {
     return (
       <Page>
@@ -89,78 +112,37 @@ const MealMap = observer(() => {
           startingOnMonday={WEEK_STARTS_ON_MONDAY}
           onWeekChange={(weekIndex) => viewModel.setCurrentWeekIndex(weekIndex)}
         />
-
         {Array.from({ length: 7 }, (_, index) => {
           const currentDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0);
           const daysToAdd = ((viewModel.currentWeekIndex - 1) * 7) +
             (WEEK_STARTS_ON_MONDAY ? index : (index - 1) % 7);
-
           const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysToAdd);
-
-          const dayPlan = viewModel.mealPlan.find(plan => {
-            const planDate = new Date(plan.date);
-            return planDate.setHours(0, 0, 0, 0) === date.setHours(0, 0, 0, 0);
-          }) || null;
-          const meals = dayPlan?.meals || [];
-
-          return (
-            <MealMapDay
-              key={date.toDateString()}
-              ref={null}
-              date={date}
-              meals={meals}
-              recommendedMeals={viewModel.recommendedMeals}
-              onReselectMeal={(meal) => viewModel.reselectMeal(date, meal)}
-              onConfirmMeal={(meal) => viewModel.confirmMeal(date, meal)}
-              onDenyMeal={(meal) => viewModel.denyMeal(date, meal)}
-              onEditMeal={(meal) => viewModel.editMeal(date, meal)}
-              onAddMeal={(meal, mealTime) => viewModel.addMeal(meal, date, mealTime)}
-            />
-          );
+          return renderMealMapDay(date);
         })}
       </Page>
     );
   }
-  if (!WEEKLY_VIEW) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2);
-    const endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
 
-    const days = [];
+  // Daily view: 2 days before + today + 14 days ahead
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2);
+  const endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
+  const days = [];
 
-    for (let date = new Date(startDate); date <= endDate; date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)) {
-      const dayPlan = viewModel.mealPlan.find(plan => {
-        const planDate = new Date(plan.date);
-        return planDate.setHours(0, 0, 0, 0) === date.setHours(0, 0, 0, 0);
-      }) || null;
-      const meals = dayPlan?.meals || [];
-
-      days.push(
-        <MealMapDay
-          key={date.toDateString()}
-          ref={date.getTime() === today.getTime() ? todayRef : null}
-          date={new Date(date)}
-          meals={meals}
-          recommendedMeals={viewModel.recommendedMeals}
-          onReselectMeal={(meal) => viewModel.reselectMeal(date, meal)}
-          onConfirmMeal={(meal) => viewModel.confirmMeal(date, meal)}
-          onDenyMeal={(meal) => viewModel.denyMeal(date, meal)}
-          onEditMeal={(meal) => viewModel.editMeal(date, meal)}
-          onAddMeal={(meal, mealTime) => viewModel.addMeal(meal, date, mealTime)}
-        />
-      );
-    }
-
-    return (
-      <Page className={styles.scrollContainer}>
-        {days}
-      </Page>
-    );
+  for (let date = new Date(startDate); date <= endDate; date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)) {
+    days.push(renderMealMapDay(
+      date,
+      date.getTime() === today.getTime() ? todayRef : null
+    ));
   }
 
-  return null;
+  return (
+    <Page className={styles.scrollContainer}>
+      {days}
+    </Page>
+  );
 });
 
 export default MealMap;
