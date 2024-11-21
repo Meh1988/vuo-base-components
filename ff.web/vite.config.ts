@@ -33,6 +33,7 @@ export default () => {
       'import.meta.env.VITE_FIREBASE_APP_ID': JSON.stringify(process.env.VITE_FIREBASE_APP_ID),
       'import.meta.env.VITE_FIREBASE_MEASUREMENT_ID': JSON.stringify(process.env.VITE_FIREBASE_MEASUREMENT_ID),
       'import.meta.env.VITE_FFAPI_BASE_URL': JSON.stringify(process.env.VITE_FFAPI_BASE_URL),
+      'import.meta.env.VITE_SENTRY_DSN': JSON.stringify(process.env.VITE_SENTRY_DSN),
     },
     server: {
       port: PORT,
