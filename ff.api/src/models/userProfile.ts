@@ -46,6 +46,7 @@ const OnboardingSchema: Schema = new Schema({
   format: { type: String, default: '' },
   allergies: { type: [String], default: [] },
   dislikes: { type: [String], default: [] },
+  favouriteIngredients: { type: [String], default: [] },
   cuisines: { type: [String], default: [] },
   pantry: { type: [String], default: [] },
   cookingSkills: { type: String, default: '' },

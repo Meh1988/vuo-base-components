@@ -32,6 +32,7 @@ export interface ProfileResponse {
   format: string;
   allergies: string[];
   dislikes: string[];
+  favouriteIngredients: string[];
   cuisines: string[];
   pantry: string[];
   cookingSkills: string;

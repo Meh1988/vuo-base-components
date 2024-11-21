@@ -33,6 +33,9 @@ export const UserPreferences = ({
   const [userDislikesList, setUserDislikesList] = useState<Set<string>>(
     new Set(userData.dislikes || []),
   );
+  const [userFavouriteIngredientsList, setUserFavouriteIngredientsList] = useState<Set<string>>(
+    new Set(userData.favouriteIngredients || []),
+  );
 
   const itemAnimation = {
     initial: { opacity: 0, scale: 0.8 },
@@ -44,7 +47,8 @@ export const UserPreferences = ({
   useEffect(() => {
     setUserDislikesList(new Set(userData.dislikes || []));
     setUserLikesList(new Set(userData.likes || []));
-  }, [userData.dislikes, userData.likes]);
+    setUserFavouriteIngredientsList(new Set(userData.favouriteIngredients || []));
+  }, [userData.dislikes, userData.likes, userData.favouriteIngredients]);
 
   const Label = ({
     children,
