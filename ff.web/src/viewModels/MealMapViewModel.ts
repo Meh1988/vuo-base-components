@@ -192,7 +192,7 @@ export class MealMapViewModel extends BaseViewModel {
           this.isLoading = false;
           this.empty = data?.length === 0 || !data;
 
-          cacheService.set<Recipe[] | null>(MealMapViewModel.CACHE_KEY, data); // Cache the fetched data
+          cacheService.set<MealMapMeal[] | null>(MealMapViewModel.CACHE_KEY, data); // Cache the fetched data
         });
       } catch (err) {
         runInAction(() => {
