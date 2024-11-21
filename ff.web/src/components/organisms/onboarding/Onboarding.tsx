@@ -2,6 +2,7 @@ import {
   allergies,
   commonDislikes,
   cuisines,
+  favouriteIngredients,
   steps,
 } from "@constants/Onboarding";
 
@@ -10,7 +11,6 @@ import { observer } from "mobx-react-lite";
 
 import Button from "@vuo/atoms/Button";
 import ProgressBar from "@vuo/atoms/ProgressBar";
-import Slider from "@vuo/atoms/Slider";
 import useStackNavigator from "@vuo/hooks/StackNavigator";
 import ToggleSwitch from "@vuo/molecules/ToggleSwitch";
 
@@ -446,47 +446,6 @@ const OnboardingFlow = observer(() => {
             )}
           </>
         );
-
-      case "speed":
-        return (
-          <>
-            <div className={styles.onboardingStepPage}>
-              <h1>{step.title}</h1>
-              <p className={styles.description}>{step.description}</p>
-            </div>
-            <div className={styles.onboardingSlider}>
-              <span>🐢</span>
-              <Slider
-                defaultValue={1}
-                min={0}
-                max={2}
-                step={1}
-                onChange={(value: number) => {
-                  viewModel.handleInputChange({
-                    target: {
-                      name: "speed",
-                      value: value.toString(),
-                    },
-                  } as unknown as React.ChangeEvent<HTMLInputElement>);
-                }}
-              />
-              <span>⚡</span>
-            </div>
-            <p className={styles.onboardingSpeedLabel}>
-              {viewModel.formData.speed.charAt(0).toUpperCase() +
-                viewModel.formData.speed.slice(1)}
-            </p>
-            <p className={styles.onboardingSpeedDescription}>
-              {viewModel.formData.speed === "slow" &&
-                "Sustainable and gradual pace"}
-              {viewModel.formData.speed === "moderate" &&
-                "Sustainable and moderate pace"}
-              {viewModel.formData.speed === "fast" &&
-                "Ambitious and quick pace"}
-            </p>
-          </>
-        );
-
       case "diet-plan":
         return (
           <>
@@ -616,35 +575,88 @@ const OnboardingFlow = observer(() => {
           </>
         );
 
-      case "dislikes":
-        return (
-          <>
-            <div className={styles.onboardingStepPage}>
-              <h1>{step.title}</h1>
-              <p className={styles.description}>{step.description}</p>
-            </div>
-            <input
-              type="text"
-              placeholder="Add a food you dislike"
-              className={styles.onboardingInput}
-            />
-            <h4>Common Dislikes</h4>
-            <div className={styles.onboardingCommonItems}>
-              {commonDislikes.map((dislike) => (
-                <button
-                  type="button"
-                  key={dislike}
-                  className={`${styles.onboardingButton} ${viewModel.formData.dislikes.includes(dislike) ? styles.selected : ""}`}
-                  onClick={() =>
-                    viewModel.handleMultiSelect(dislike, "dislikes")
-                  }
-                >
-                  {dislike}
-                </button>
-              ))}
-            </div>
-          </>
-        );
+        case "dislikes":
+          return (
+            <>
+              <div className={styles.onboardingStepPage}>
+                <h1>{step.title}</h1>
+                <p className={styles.description}>{step.description}</p>
+              </div>
+              <div className={styles.onboardingInputContainer}>
+                <input
+                  type="text"
+                  placeholder="Add a food you dislike"
+                  className={styles.onboardingInput}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      viewModel.addCustomDislike(e.currentTarget.value);
+                      e.currentTarget.value = '';
+                    }
+                  }}
+                />
+                <Button onClick={(e) => {
+                  const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                  viewModel.addCustomDislike(input.value);
+                  input.value = '';
+                }}>Add</Button>
+              </div>
+              <h4>Common Dislikes</h4>
+              <div className={styles.onboardingCommonItems}>
+                {[...commonDislikes, ...viewModel.customDislikes].map((dislike) => (
+                  <button
+                    type="button"
+                    key={dislike}
+                    className={`${styles.onboardingButton} ${viewModel.formData.dislikes.includes(dislike) ? styles.selected : ""}`}
+                    onClick={() => viewModel.handleMultiSelect(dislike, "dislikes")}
+                  >
+                    {dislike}
+                  </button>
+                ))}
+              </div>
+            </>
+          );
+        case "favourite-ingredients":
+          return (
+            <>
+              <div className={styles.onboardingStepPage}>
+                <h1>{step.title}</h1>
+                <p className={styles.description}>{step.description}</p>
+              </div>
+              <div className={styles.onboardingInputContainer}>
+                <input
+                  type="text"
+                  placeholder="Add your favourite ingredient"
+                  className={styles.onboardingInput}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      viewModel.addCustomIngredient(e.currentTarget.value);
+                      e.currentTarget.value = '';
+                    }
+                  }}
+                />
+               <Button onClick={(e) => {
+                  const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                  viewModel.addCustomIngredient(input.value);
+                  input.value = '';  // Clear after adding
+                }}>Add</Button>
+              </div>
+              <h4>Common favourite ingredients</h4>
+              <div className={styles.onboardingCommonItems}>
+                {[...viewModel.customIngredients, ...favouriteIngredients].map((ingredient) => (
+                  <button
+                    type="button"
+                    key={ingredient}
+                    className={`${styles.onboardingButton} ${viewModel.formData.favouriteIngredients.includes(ingredient) ? styles.selected : ""}`}
+                    onClick={() =>
+                      viewModel.handleMultiSelect(ingredient, "favouriteIngredients")
+                    }
+                  >
+                    {ingredient}
+                  </button>
+                ))}
+              </div>
+            </>
+          );
 
       case "cuisines":
         return (

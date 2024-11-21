@@ -209,6 +209,12 @@
   min-width: 100px;
 }
 
+.onboardingInputContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
 @media (max-width: 768px) {
   .onboardingStep {
     max-width: 100%;
