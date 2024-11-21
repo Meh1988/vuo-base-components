@@ -29,3 +29,5 @@ dev-dist
 .env.dev
 .env
 *storybook.log
+# Sentry Config File
+.env.sentry-build-plugin
