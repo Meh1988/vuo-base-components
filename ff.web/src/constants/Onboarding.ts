@@ -31,6 +31,14 @@ export const commonDislikes = [
   "peas",
 ];
 
+export const favouriteIngredients = [
+  "garlic",
+  "cilantro",
+  "onion",
+  "tomatoe",
+  "olive oil",
+];
+
 export const cuisines = [
   "American",
   "Italian",
@@ -57,11 +65,11 @@ export const initialOnboardingData: FormData = {
   motivation: "",
   activityLevel: "",
   mindset: "",
-  speed: "4",
   dietPlan: "",
   pastExperience: "",
   format: "",
   allergies: [],
+  favouriteIngredients: [],
   dislikes: [],
   cuisinePreferences: {},
   pantry: "",
@@ -156,13 +164,6 @@ export const steps = [
     
   },
   {
-    id: "speed",
-    title: "Speed",
-    description:
-      "Based on your information, we recommend a moderate pace, but feel free to adjust!",
-    
-  },
-  {
     id: "diet-plan",
     title: "Diet plan",
     description:
@@ -181,6 +182,12 @@ export const steps = [
     title: "Format",
     description:
       "What meals would you like to plan? You can adjust this if you change your mind later!",
+    
+  },
+  {
+    id: "favourite-ingredients",
+    title: "Favourite ingredients",
+    description: "What are your favourite ingredients?",
     
   },
   {
