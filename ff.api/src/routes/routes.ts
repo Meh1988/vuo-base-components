@@ -23,7 +23,7 @@ import {
   getCurrentPlayerQuests,
   getPlayerQuest,
   claimStep,
-  updatePlayerQuestStepSubSteps
+  updatePlayerQuestStepSubSteps,
 } from "../controllers/playerQuestsController";
 import {
   getCurrentUserAchievement,
@@ -67,7 +67,10 @@ import {
   updateUserProfile,
 } from "../controllers/userProfileController";
 
-import { getStepBreakdown, updateStepBreakdown } from "../controllers/stepBreakDownController";
+import {
+  getStepBreakdown,
+  updateStepBreakdown,
+} from "../controllers/stepBreakDownController";
 
 import {
   createChallenge,
@@ -90,6 +93,8 @@ import {
   updatePlayerProgressionPath,
 } from "../controllers/playerProgressionPathController";
 
+import { addExperiencePoints, setExperiencePoints } from "../controllers/experienceController";
+
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
@@ -111,7 +116,7 @@ router.post("/authenticate/verify", authenticateVerify);
 router.post("/logout", authMiddleware, logoutUser);
 router.delete("/users/delete/me", authMiddleware, deleteUserAndProfile); //DELETES user account and profile TODO: implement full clean up
 //Firebase routes
-router.post('/authenticate/verify-firebase', verifyFirebaseToken);
+router.post("/authenticate/verify-firebase", verifyFirebaseToken);
 
 // Landing page quests routes
 router.get("/landing-page-questlines/:url", getQuestLinesForLandingPage);
@@ -128,7 +133,11 @@ router.get("/playerQuests/:id", authMiddleware, getPlayerQuest);
 router.post("/playerQuests", authMiddleware, createPlayerQuest);
 router.patch("/playerQuests/:id", authMiddleware, updatePlayerQuestProgress);
 router.patch("/playerQuests/:id/:stepId/claim", authMiddleware, claimStep);
-router.patch("/playerQuests/:id/:stepId/subSteps", authMiddleware, updatePlayerQuestStepSubSteps);
+router.patch(
+  "/playerQuests/:id/:stepId/subSteps",
+  authMiddleware,
+  updatePlayerQuestStepSubSteps
+);
 
 // Achievement routes
 router.get("/achievements", authMiddleware, getAchievements);
@@ -205,7 +214,11 @@ router.patch("/profile/update/:id", updateUserProfile);
 
 //PrepPal routes
 router.post("/prepPal/stepBreakdown", errorHandler, getStepBreakdown);
-router.patch("/prepPal/stepBreakdown/update", errorHandler, updateStepBreakdown);
+router.patch(
+  "/prepPal/stepBreakdown/update",
+  errorHandler,
+  updateStepBreakdown
+);
 
 //Challenge routes
 router.post("/challenges/create", errorHandler, createChallenge);
@@ -251,5 +264,9 @@ router.patch(
   errorHandler,
   updatePlayerProgressionPath
 );
+
+//Experience routes
+router.post("/experience/add", errorHandler, addExperiencePoints);
+router.post("/experience/set", errorHandler, setExperiencePoints);
 
 export default router;

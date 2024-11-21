@@ -76,6 +76,82 @@ export const generateProgressionPath = async (
   if (!prompt || typeof prompt !== "string") {
     return res.status(400).json({ message: "Invalid or missing prompt" });
   }
+  const guardMessage = [
+    {
+      role: "system",
+      content: [
+        {
+          type: "text",
+          text: "You are a helpful assistant that indicates if the user's prompt is related to food and cooking. Also, you should provide a short reason for your answer. Keep the tone for the reason human, interesting, friendly, descriptive and slightly humorous. Add variations to the reason to make it more interesting.",
+        },
+      ],
+    },
+    {
+      role: "assistant",
+      content: [
+        {
+          type: "text",
+          text: `{
+            isRelated: false,
+            reason: "Unless you're talking about a 'flavor bomb' in cooking, this sounds more like a chemistry class gone wrong!"
+          }`,
+        },
+      ],
+    },
+    {
+      role: "assistant",
+      content: [
+        {
+          type: "text",
+          text: `{
+            isRelated: false,
+            reason: "A bike certainly doesn't sound like a dish..."
+          }`,
+        },
+      ],
+    },
+    {
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: `Analyze the following prompt and determine if it is related to food and cooking: ${prompt}.
+          The answer should be in the following format:
+          {
+            isRelated: boolean,
+            reason: string
+          }
+          For isRelated, true means the prompt is related to food and cooking, and false means it is not.
+          The reason should be a short, friendly, descriptive and slightly humorous reason for your answer for isRelated.`,
+        },
+      ],
+    },
+  ] as OpenAI.ChatCompletionMessageParam[];
+
+  //Guard call for validating if the prompt is related to food and cooking
+  const guard_response_format = {
+    type: "json_schema",
+    json_schema: {
+      name: "guard_response",
+      schema: {
+        type: "object",
+        properties: {
+          isRelated: { type: "boolean" },
+          reason: { type: "string" },
+        },
+        required: ["isRelated", "reason"],
+      },
+    },
+  };
+
+  const guardResponse = await sendOpenAIRequest(
+    guardMessage,
+    guard_response_format
+  );
+  if (!guardResponse.isRelated) {
+    return res.status(400).json({ message: guardResponse.reason });
+  }
+
   const messages = [
     {
       role: "system",
