@@ -430,10 +430,10 @@
     }>;
     official: boolean;
     user: string; // MongoDB ObjectId of the user
-    progress: {
+    progress: [{
       unitNumber: number;
       questNumber: number;
-    }
+    }]
   }
   ```
 
@@ -459,10 +459,12 @@
     }>;
     official: boolean;
     user: string;
-    progress: {
-      unitNumber: number;
-      questNumber: number;
-    };
+    progress: [
+      {
+        unitNumber: number;
+        questNumber: number;
+      }
+    ];
   }>;
   ```
 
@@ -496,10 +498,10 @@
   }>;
   official: boolean;
   user: string; // MongoDB ObjectId of the user
-  progress: {
+  progress: [{
     unitNumber: number;
     questNumber: number;
-  }
+  }]
 }
 ```
 
@@ -543,9 +545,59 @@
   }>;
   official: boolean;
   user: string; // MongoDB ObjectId of the user
-  progress: {
+  progress: [{
     unitNumber: number;
     questNumber: number;
-  }
+  }]
 }
 ```
+
+# Experience Points API Documentation
+
+## Add Experience Points
+
+- **Method**: `POST`
+- **Route**: `/experience/add`
+- **Description**: Adds experience points to a user's total experience points. If the user doesn't have any experience points yet, initializes them to 0 before adding.
+
+- **Request Body**:
+
+  ```typescript
+  {
+    userId: string; // MongoDB ObjectId of the user
+    experiencePoints: number; // Number of experience points to add
+  }
+  ```
+
+- **Response Body**:
+  ```typescript
+  {
+    _id: string; // MongoDB ObjectId of the user
+    experiencePoints: number; // Updated total experience points
+    // ... other user fields
+  }
+  ```
+
+## Set Experience Points
+
+- **Method**: `POST`
+- **Route**: `/experience/set`
+- **Description**: Sets a user's experience points to a specific value, overwriting the current value.
+
+- **Request Body**:
+
+  ```typescript
+  {
+    userId: string; // MongoDB ObjectId of the user
+    experiencePoints: number; // New experience points value to set
+  }
+  ```
+
+- **Response Body**:
+  ```typescript
+  {
+    _id: string; // MongoDB ObjectId of the user
+    experiencePoints: number; // New experience points value
+    // ... other user fields
+  }
+  ```

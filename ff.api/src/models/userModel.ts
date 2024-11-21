@@ -67,6 +67,7 @@ export interface IUser extends Document {
   displayName?: string;
   photoURL?: string;
   authProvider?: 'firebase' | 'passkey';
+  experiencePoints?: number;
 }
 
 const CredentialSchema: Schema = new Schema({
@@ -87,7 +88,8 @@ const UserSchema: Schema = new Schema<IUser>(
     email: { type: String, sparse: true },
     displayName: { type: String },
     photoURL: { type: String },
-    authProvider: { type: String, enum: ['firebase', 'passkey'] }
+    authProvider: { type: String, enum: ['firebase', 'passkey'] },
+    experiencePoints: { type: Number, default: 0, required: true }
   },
   {
     timestamps: true,
