@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/react";
-console.log("env from sentry", import.meta.env.DEV);
+
 export const initSentry = () => {
-  if(true) Sentry.init({
+  if(import.meta.env.DEV) Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
       Sentry.browserTracingIntegration(),

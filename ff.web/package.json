@@ -20,6 +20,7 @@
     "@ant-design/icons": "^5.5.0",
     "@faker-js/faker": "^8.4.1",
     "@sentry/react": "^8.39.0",
+    "@sentry/vite-plugin": "^2.22.6",
     "@simplewebauthn/browser": "^11.0.0",
     "@storybook/addon-a11y": "^8.3.1",
     "@storybook/addon-storysource": "^8.3.1",

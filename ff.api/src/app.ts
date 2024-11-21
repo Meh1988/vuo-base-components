@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import routes from "./routes/routes"; // Changed to default import based on the instructions
-const cors = require("cors");
+import cors from "cors";
+require("./sentry.ts"); 
 
 import { createBullBoard } from "@bull-board/api";
 import { BullAdapter } from "@bull-board/api/bullAdapter";
@@ -18,7 +19,7 @@ import "./workers/generateTemplateLiteralWorker";
 import "./workers/extractStepSkillsWorker";
 import "./workers/extractStepResourcesWorker";
 import "./workers/extractStepToolsWorker";
-
+import Sentry from "@sentry/node";
 import './config/firebase-admin';
 
 // console.log(myQueue)
@@ -120,5 +121,6 @@ const basicAuthMiddleware = (
 app.use("/queues", basicAuthMiddleware, serverAdapter.getRouter());
 // Use the routes for authentication routes with the correct base path for API versioning
 app.use("/v1", routes);
+Sentry.setupExpressErrorHandler(app);
 
 export default app;
