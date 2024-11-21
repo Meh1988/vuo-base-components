@@ -21,13 +21,14 @@ export default class OnboardingViewModel extends BaseViewModel {
   isExitOnboarding = false;
   loading = false;
   onboardingComplete: boolean;
+  customIngredients: string[] = []; //TODO refactor this whole crap, keep the formadata on component level
+  customDislikes: string[] = [];
 
   constructor(loginViewModel: LoginViewModel) {
     super();
     this.loginViewModel = loginViewModel;
-    console.log('Constructor - Initial userId:', this.formData.userId);
     this.onboardingComplete =
-      localStorage.getItem("onboardingComplete") === "true";
+    localStorage.getItem("onboardingComplete") === "true";
     makeObservable(this, {
       ...BaseViewModelProps,
       formData: observable,
@@ -49,9 +50,30 @@ export default class OnboardingViewModel extends BaseViewModel {
       onboardingComplete: observable,
       setIsOnboardingComplete: action,
       isOnboardingComplete: computed,
+      customIngredients: observable,
+      addCustomIngredient: action,
+
+      customDislikes: observable,
+      addCustomDislike: action,
     });
 
     this.loadInitialData();
+    this.customIngredients = []
+    this.customDislikes = []
+  }
+
+  addCustomIngredient = (ingredient: string) => { 
+    if (ingredient.trim() && !this.customIngredients.includes(ingredient.trim())) {
+      this.customIngredients.push(ingredient.trim());
+      this.handleMultiSelect(ingredient.trim(), "favouriteIngredients");
+    }
+  }
+
+  addCustomDislike = (dislike: string) => {
+    if (dislike.trim() && !this.customDislikes.includes(dislike.trim())) {
+      this.customDislikes.push(dislike.trim());
+      this.handleMultiSelect(dislike.trim(), "dislikes");
+    }
   }
 
   setIsOnboardingComplete(value: boolean): void {
@@ -111,7 +133,7 @@ export default class OnboardingViewModel extends BaseViewModel {
 
   handleMultiSelect = (
     item: string,
-    field: "goals" | "allergies" | "dislikes",
+    field: "goals" | "allergies" | "dislikes" | "favouriteIngredients",
   ) => {
     runInAction(() => {
       this.formData = {

@@ -9,6 +9,7 @@ export interface FormData {
   allergies: string[];
   likes: string[];
   dislikes: string[];
+  favouriteIngredients: string[];
   diets: string[];
   userName: string;
   userId: string;
@@ -21,7 +22,6 @@ export interface FormData {
   motivation: string;
   activityLevel: string;
   mindset: string;
-  speed: string;
   dietPlan: string;
   pastExperience: string;
   format: string;
