@@ -66,15 +66,15 @@ export class MealMapViewModel extends BaseViewModel {
     }
 
     // Find the meal within that day's meals
-    const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id);
+    const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id && m.time === meal.time);
     if (mealIndex === -1) {
       console.log('Meal not found');
       return;
     }
 
     // Create a new array to trigger MobX reactivity
-    dayPlan.meals = dayPlan.meals.map(m =>
-      m.id === meal.id ? { ...m, status: MealStatus.Refreshed } : m
+    dayPlan.meals = dayPlan.meals.map((m, index) =>
+      index === mealIndex ? { ...m, status: MealStatus.Refreshed } : m
     );
 
     console.log('Day plan', JSON.stringify(dayPlan, null, 2));
@@ -98,7 +98,7 @@ export class MealMapViewModel extends BaseViewModel {
     }
 
     // Find the meal within that day's meals
-    const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id);
+    const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id && m.time === meal.time);
     if (mealIndex === -1) {
       return;
     }
@@ -140,7 +140,7 @@ export class MealMapViewModel extends BaseViewModel {
     }
 
     // Find the meal within that day's meals
-    const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id);
+    const mealIndex = dayPlan.meals.findIndex(m => m.id === meal.id && m.time === meal.time);
     if (mealIndex === -1) {
       return;
     }
