@@ -9,10 +9,9 @@ import recipeLanguageSimplifierWorker from "./src/workers/languageSimplifierWork
 import recipeExtractNameWorker from "./src/workers/extractNameWorker";
 import atomizeStepWorker from "./src/workers/atomizeStepWorker";
 import extractStepsWorker from "./src/workers/extractStepsWorker";
-import { initSentry } from "./sentry";
+
 
 beforeAll(async () => {
-  initSentry();
   const mongoUri = `${process.env.VITE_MONGODB_URI}-test`;
   if (!mongoUri) {
     console.error("VITE_MONGODB_URI environment variable is not set");
