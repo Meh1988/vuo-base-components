@@ -21,6 +21,7 @@
 # CMD ["npm", "run", "start"]
 
 # Use the official Node.js image
+<<<<<<< HEAD
 # FROM node:20.12-alpine3.18
 
 # ARG FIREBASE_PROJECT_ID
@@ -59,13 +60,27 @@
 # # Start the app
 # # CMD ["node", "dist/index.js"]
 # CMD ["npm", "run", "dev"]
+=======
+FROM node:20.12-alpine3.18
+>>>>>>> c4945afe26d39d8d16b4a4ca912d92e2edaaf892
 
 ARG FIREBASE_PROJECT_ID
 ARG FIREBASE_PRIVATE_KEY
+
 ARG FIREBASE_CLIENT_EMAIL
-ARG SENTRY_DSN
 ARG SENTRY_AUTH_TOKEN
+<<<<<<< HEAD
 ARG NODE_ENV=production
+=======
+ENV SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
+
+# Use build:dev for development builds without Sentry
+RUN if [ "$NODE_ENV" = "production" ]; then \
+      npm run build; \
+    else \
+      npm run build:dev; \
+    fi
+>>>>>>> c4945afe26d39d8d16b4a4ca912d92e2edaaf892
 
 FROM node:20-alpine
 
