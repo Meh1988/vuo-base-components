@@ -40,18 +40,18 @@ const BottomNavigation = observer(() => {
           icon: <CoffeeOutlined />,
           hidden: false
         },
-        {
-          key: '/shopping-cart',
-          title: 'ShoppingCart',
-          icon: <ShoppingCartOutlined />,
-          hidden: false
-        },
-        {
-          key: '/flavour-flow',
-          title: 'FlavourFlow',
-          icon: < QuestionOutlined/>,
-          hidden: !isAuthenticated()
-        },
+        // {
+        //   key: '/shopping-cart',
+        //   title: 'ShoppingCart',
+        //   icon: <ShoppingCartOutlined />,
+        //   hidden: false
+        // },
+        // {
+        //   key: '/flavour-flow',
+        //   title: 'FlavourFlow',
+        //   icon: < QuestionOutlined/>,
+        //   hidden: !isAuthenticated()
+        // },
         {
           key: '/profile',
           title: 'Profile',

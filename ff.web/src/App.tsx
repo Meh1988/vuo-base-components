@@ -79,10 +79,10 @@ function App() {
             <Route path="/home/quests/:id/outro" element={<QuestOutro />} />
             {/* TODO figuring out quest navigation */}
             <Route path="/meal-map" element={<MealMap />} />
-            <Route path="/shopping-cart" element={<ShoppingCart />} />
+            {/* <Route path="/shopping-cart" element={<ShoppingCart />} /> */}
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/profile/edit" element={<EditProfile />} />
-            <Route path="/flavour-flow" element={<FlavourFlowPage />} />
+            {/* <Route path="/flavour-flow" element={<FlavourFlowPage />} /> */}
             <Route
               path="/flavour-flow/results"
               element={<FlavourFlowResultPage />}
