@@ -68,7 +68,7 @@ ARG SENTRY_DSN
 ARG SENTRY_AUTH_TOKEN
 ARG NODE_ENV=production
 
-FROM node:20-alpine
+FROM node:20.12-alpine3.18
 
 # Set environment variables
 ENV NODE_ENV=${NODE_ENV}
@@ -86,12 +86,8 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Build based on environment
-RUN if [ "$NODE_ENV" = "production" ]; then \
-      npm run build; \
-    else \
-      npm run build:dev; \
-    fi
+# Build without Sentry sourcemaps
+RUN npm run build
 
 # Expose port
 EXPOSE 8080
