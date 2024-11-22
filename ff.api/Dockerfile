@@ -21,12 +21,21 @@
 # CMD ["npm", "run", "start"]
 
 # Use the official Node.js image
+FROM node:20.12-alpine3.18
 
 ARG FIREBASE_PROJECT_ID
 ARG FIREBASE_PRIVATE_KEY
+
 ARG FIREBASE_CLIENT_EMAIL
-ARG SENTRY_DSN
 ARG SENTRY_AUTH_TOKEN
+ENV SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
+
+# Use build:dev for development builds without Sentry
+RUN if [ "$NODE_ENV" = "production" ]; then \
+      npm run build; \
+    else \
+      npm run build:dev; \
+    fi
 
 FROM node:20-alpine
 
