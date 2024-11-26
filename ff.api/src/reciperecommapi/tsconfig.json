@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist", // Compiled files go here
+    "rootDir": "./src", // Source files are here
+    "module": "CommonJS", // Required for Node.js
+    "target": "ES6", // Compile to ES6 for modern Node.js
+    "baseUrl": "./src", // Root for module resolution
+    "moduleResolution": "node", // Resolve modules like Node.js
+    "esModuleInterop": true, // Support ES module imports
+    "allowSyntheticDefaultImports": true, // Support default imports
+    "strict": true, // Enable all strict type checking options
+    "sourceMap": true // Generate source maps for debugging
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
